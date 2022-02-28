@@ -9,7 +9,7 @@ services:
     depends_on: [tfm-database]
 
   tfm-database:
-    # restart: always
+    restart: always
     ports: ["4000:5432"]
     image: postgres:14.2-alpine
     container_name: tfm-database

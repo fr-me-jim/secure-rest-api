@@ -5,17 +5,20 @@
     "target": "es6",
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
     "rootDir": ".",
     "strict": true,
     "noEmit": false,
     "resolveJsonModule": true,
     "noUnusedLocals": true,
     "outDir": "./dist",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    }
   },
   "include": [
-    "src/**/**.ts"
+    "src/**/*",
   ],
   "exclude": ["node_modules"]
 }
