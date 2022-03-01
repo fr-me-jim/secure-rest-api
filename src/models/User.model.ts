@@ -35,7 +35,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
 
 User.init({
     id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
