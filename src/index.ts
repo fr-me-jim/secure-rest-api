@@ -35,12 +35,9 @@ app.listen(PORT, async () => {
         console.log('Database connected.');
 
         await connection.sync({ force: true });
-        // await File.sync({ force: true });
-        // await Token.sync({ force: true });
-        // await UserProfiles.sync({ force: true });
         console.log('Tables synced in Database.');
-    } catch (error) {
-        throw new Error("Error database connection");
+    } catch (error: any) {
+        throw new Error(error);
     }
     
     
