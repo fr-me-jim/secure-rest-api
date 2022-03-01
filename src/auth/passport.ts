@@ -1,10 +1,10 @@
 import { PassportStatic } from "passport";
-
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 // import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
-import User from "src/models/User.model";
+// model
+import User from "../models/User.model";
 
 export default class PassportConfig {
     private passport: PassportStatic;

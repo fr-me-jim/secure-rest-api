@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import User from 'src/models/User.model';
+import User from '../models/User.model';
 
 import {
     UserLogin,
     UserCreate,
     // UserAttributes,
-} from 'src/interfaces/User.interface';
+} from '../interfaces/User.interface';
 
 class UserController {
     // public id!: number;

@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 import sqlize from "sequelize";
-import { connection } from "src/index";
+import connection from "../models/index";
 import {
     UserInput,
     UserAttributes
-} from 'src/interfaces/User.interface';
+} from '../interfaces/User.interface';
 
 /**
  * @module  User

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Router } from "express";
 
-import PassportConfig from "src/auth/passport";
+import PassportConfig from "../auth/passport";
 
 const router = Router();
 const passportConfig = new PassportConfig(passport);
