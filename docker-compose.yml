@@ -10,7 +10,7 @@ services:
 
   tfm-database:
     restart: always
-    ports: ["4000:5432"]
+    ports: ["5432:5432"]
     image: postgres:14.2-alpine
     container_name: tfm-database
     env_file:
