@@ -15,6 +15,8 @@ export interface UserAttributes {
 export interface UserInput extends Optional<UserAttributes, 'id' | 'privileges'> {};
 export interface UserOuput extends Required<UserAttributes> {};
 
+export type UserType = UserAttributes;
+
 export type UserLogin = {
   email: string,
   password: string
@@ -27,3 +29,8 @@ export type UserCreate = {
   secondName: string,
   privileges?: number
 };
+
+export type UserSearchId = { id: number };
+export type UserSearchEmail = { email: string };
+
+export type UserSearchInfo = UserSearchId | UserSearchEmail;

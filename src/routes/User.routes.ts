@@ -5,3 +5,5 @@ import router, { strategy } from '../routes/index';
 
 router.post("/signin", UserController.createUser);
 router.post("/login", strategy.authenticate('local', { session: false }), UserController.login);
+
+router.get("/user/:id", strategy.authenticate('local', { session: false }), UserController.getUserInfo);
