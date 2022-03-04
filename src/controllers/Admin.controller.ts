@@ -6,7 +6,7 @@ import User from '../models/User.model';
 
 // User interfaces
 import {
-    UserCreate,
+    UserCreate
 } from '../interfaces/User.interface';
 
 class AdminController extends UserController {
@@ -17,7 +17,7 @@ class AdminController extends UserController {
     /**
      * GetAllUserInfo
      */
-    public static getAllUserInfo = async (req: Request, res: Response): Promise<Response> => {
+    public static getAllUserInfo = async (_req: Request, res: Response): Promise<Response> => {
         try {
             const result = await User.findAll();
 
@@ -27,6 +27,25 @@ class AdminController extends UserController {
             throw new Error(error);
         }
     };
+
+    /**
+     * GetUserInfo
+     */
+     public static getUserInfo = async (req: Request, res: Response): Promise<Response> => {
+        const user: User | undefined = req.user as User | undefined;
+        if (!user) return res.sendStatus(401);
+        if (!user.privileges) return res.sendStatus(403);
+        try {
+            const result = await User.findOne({ where: { id: user.id }});
+            if(!result) return res.sendStatus(404);
+
+            return res.send({ user: result }).status(200);
+        } catch (error: any) {  
+            res.sendStatus(500);
+            throw new Error(error);
+        }
+    };
+
 
     /**
      * CreateUser

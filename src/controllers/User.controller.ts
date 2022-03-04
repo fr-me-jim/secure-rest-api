@@ -8,6 +8,7 @@ import User from '../models/User.model';
 import {
     UserEdit,
     UserLogin,
+    UserCreate,
 } from '../interfaces/User.interface';
 
 class UserController {
@@ -49,21 +50,44 @@ class UserController {
     };
 
     /**
-     * GetUserInfo
+     * GetUserProfileInfo
      */
-     public static getUserInfo = async (req: Request, res: Response): Promise<Response> => {
+     public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
+        if (!req.user) return res.sendStatus(401);
         try {
-            const id: string | undefined = req.params?.id;
-            if(!id) return res.sendStatus(400);
-
-            const result = await User.findOne({ where: { id: parseInt(id) }});
-            if(!result) return res.sendStatus(404);
-
-            return res.send({ user: result }).status(200);
+            const finalUser = { ...req.user! };
+          
+            return res.send({ user: finalUser }).status(200);
         } catch (error: any) {  
             res.sendStatus(500);
             throw new Error(error);
         }
+    };
+
+    /**
+     * RegisterUser
+     */
+     public static registerUser = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const user: UserCreate | undefined = req.body;
+            if(!user) return res.sendStatus(400);
+
+            const result = await User.create(
+                { ...user },
+                { returning: true }    
+            );
+            if(!result) return res.sendStatus(500);
+
+            const token = jwt.sign({ id: result.id }, process.env.JWT_SECRET!, {
+                expiresIn: 60 * 60 * 24 // 24 hours
+            });
+        
+
+            return res.send({ token }).status(201);
+        } catch (error: any) {
+            res.sendStatus(500);
+            throw new Error(error);
+        }  
     };
 
     /**

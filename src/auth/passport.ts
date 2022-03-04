@@ -30,7 +30,7 @@ export default class PassportConfig {
                 if(!user) {
                     return done(null, false);
                 }
-            
+                
                 return done(null, user);
             } catch (error) {
                 return done(error, null);
