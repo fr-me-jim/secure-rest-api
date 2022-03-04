@@ -30,6 +30,14 @@ export type UserCreate = {
   privileges?: number
 };
 
+export type UserEdit = {
+  email?: string,
+  password?: string,
+  firstName?: string,
+  secondName?: string,
+  privileges?: number
+};
+
 export type UserSearchId = { id: number };
 export type UserSearchEmail = { email: string };
 

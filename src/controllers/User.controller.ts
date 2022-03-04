@@ -6,11 +6,8 @@ import User from '../models/User.model';
 
 // User interfaces
 import {
-    // UserType,
+    UserEdit,
     UserLogin,
-    UserCreate,
-    // UserSearchId
-    // UserSearchInfo
 } from '../interfaces/User.interface';
 
 class UserController {
@@ -70,26 +67,27 @@ class UserController {
     };
 
     /**
-     * CreateUser
+     * EditUser
      */
-    public static createUser = async (req: Request, res: Response): Promise<Response> => {
+     public static editUser = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const user: UserCreate | undefined = req.body;
-            if(!user) return res.sendStatus(400);
+            const id: string | undefined = req.params?.id;
+            if(!id) return res.sendStatus(400);
 
-            const result = await User.create(
-                { ...user },
-                { returning: true }    
-            );
+            const newUser: UserEdit = req.body;
+            if(!newUser) return res.sendStatus(400);
+
+            const result = await User.update({ 
+                ...newUser 
+            }, { where: { id: parseInt(id) }});
             if(!result) return res.sendStatus(500);
 
-            return res.send({ user: result }).status(201);
+            return res.send({ user: result }).status(204);
         } catch (error: any) {
             res.sendStatus(500);
             throw new Error(error);
         }  
     };
-
     
 
 };
