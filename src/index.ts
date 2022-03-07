@@ -12,6 +12,9 @@ dotenv.config();
 import passport from 'passport';
 import PassportConfig from "./auth/passport";
 
+const passportConfig = new PassportConfig(passport);
+export const strategy = passportConfig.SetStrategy();
+
 // routes
 import router from "./routes/index";
 
@@ -22,8 +25,7 @@ import connection from './models/index';
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT: string | number = process.env.PORT || 9000;
-const passportConfig = new PassportConfig(passport);
-export const strategy = passportConfig.SetStrategy();
+
 
 app.use(cors());
 app.use('/api', router);
