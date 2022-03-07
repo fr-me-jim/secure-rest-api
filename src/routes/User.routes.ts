@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { strategy } from '../index';
+import { strategy } from '../routes/index';
 
 // controllers
 import UserController from '../controllers/User.controller';
