@@ -3,7 +3,6 @@ import cors from 'cors';
 import dotenv from "dotenv";
 import express from "express";
 // import jwt from "jsonwebtoken";
-import bodyParser from "body-parser";
 // import { fileURLToPath } from 'url';
 
 // load environment variables
@@ -25,8 +24,9 @@ const PORT: string | number = process.env.PORT || 9000;
 
 app.use(cors());
 app.use('/api', router);
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(passport.initialize());
+app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: false }));
 
 app.listen(PORT, async () => {
