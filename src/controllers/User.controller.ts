@@ -70,6 +70,7 @@ class UserController {
      public static registerUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const user: UserCreate | undefined = req.body;
+            console.log(user)
             if(!user) return res.sendStatus(400);
 
             const result = await User.create(
