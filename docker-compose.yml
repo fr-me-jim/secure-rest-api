@@ -3,6 +3,7 @@ services:
   nginx: 
       image: nginx:alpine
       restart: always
+      container_name: tfm-nginx
       ports: 
         - "80:80"
         - "443:443"
