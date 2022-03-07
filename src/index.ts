@@ -10,10 +10,10 @@ dotenv.config();
 
 // passport
 import passport from 'passport';
-// import PassportConfig from "./auth/passport";
+import PassportConfig from "./auth/passport";
 
-// const passportConfig = new PassportConfig(passport);
-// export const strategy = passportConfig.SetStrategy();
+const passportConfig = new PassportConfig(passport);
+export const strategy = passportConfig.SetStrategy();
 
 // routes
 import router from "./routes/index";
