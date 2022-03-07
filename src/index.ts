@@ -2,7 +2,6 @@
 import cors from 'cors';
 import dotenv from "dotenv";
 import express from "express";
-// import jwt from "jsonwebtoken";
 // import { fileURLToPath } from 'url';
 
 // load environment variables
@@ -10,10 +9,6 @@ dotenv.config();
 
 // passport
 import passport from 'passport';
-// import PassportConfig from "./auth/passport";
-
-// const passportConfig = new PassportConfig(passport);
-// export const strategy = passportConfig.SetStrategy();
 
 // routes
 import router from "./routes/index";

@@ -11,10 +11,6 @@ const router = Router();
 const passportConfig = new PassportConfig(passport);
 export const strategy = passportConfig.SetStrategy();
 
-router.get('/', () => {
-    console.log("hello")
-});
-
 router.use('/', authRoutes);
 router.use('/users', userRoutes);
 
