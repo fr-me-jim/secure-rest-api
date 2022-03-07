@@ -28,8 +28,8 @@ const PORT: string | number = process.env.PORT || 9000;
 
 
 app.use(cors());
-app.use('/api', router);
 app.use(express.json());
+app.use('/api', router);
 app.use(passport.initialize());
 app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: false }));
