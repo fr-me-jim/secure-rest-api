@@ -23,7 +23,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     declare readonly createdAt?: Date;
     declare readonly updatedAt?: Date;
     declare readonly deletedAt?: Date;
-    static async isValidPassword(password: string, userPassword: string) {  
+    static async isValidPassword(password: string, userPassword: string): Promise<boolean> {  
         try {
             return await bcrypt.compare(password, userPassword);
         } catch (error: any) {
@@ -35,8 +35,8 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
 
 User.init({
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true
     },
@@ -68,8 +68,8 @@ User.beforeSave( async (user: User) => {
     try {
         const hashedPassword = await bcrypt.hash(user.password, 10);
         user.password = hashedPassword;
-    } catch (error: any) {
-        throw new Error(error);
+    } catch (error: unknown) {
+        throw new Error(<string>error);
     }
 });
 
