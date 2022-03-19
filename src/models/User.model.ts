@@ -13,7 +13,7 @@ import {
 const { Model, DataTypes } = sqlize;
 
 class User extends Model<UserAttributes, UserInput> implements UserAttributes {
-    declare id: number;
+    declare id: string;
     declare email: string;
     declare password: string;
     declare firstName: string;

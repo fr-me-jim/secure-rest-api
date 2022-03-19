@@ -103,7 +103,7 @@ class UserController {
 
             const result = await User.update({ 
                 ...newUser 
-            }, { where: { id: parseInt(id) }});
+            }, { where: { id }});
             if(!result) return res.sendStatus(500);
 
             return res.send({ user: result }).status(204);
