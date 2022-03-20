@@ -13,6 +13,6 @@ router.get("/show", strategy.authenticate('jwt', { session: false }), AuthContro
 router.get("/show/:id", strategy.authenticate('jwt', { session: false }), AdminController.getUserInfo);
 
 router.get("/profile", AuthController.checkNonAdminPermissions, UserController.getUserProfileInfo);
-router.post("/profile/edit", strategy.authenticate('jwt', { session: false }), UserController.editProfileUser);
+router.post("/profile/edit", AuthController.checkNonAdminPermissions, UserController.editProfileUser);
 
 export default router;
