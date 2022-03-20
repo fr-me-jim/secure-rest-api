@@ -54,6 +54,7 @@ class UserController {
      */
      public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
         if (!req.user) return res.sendStatus(401);
+        console.log('[GetUserProfileInfo]', req.user);
         try {
             const finalUser = { ...req.user! };
           

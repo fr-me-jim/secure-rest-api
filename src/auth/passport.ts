@@ -24,9 +24,10 @@ export default class PassportConfig {
         this.passport.use(new JWTStrategy({ 
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: process.env.JWT_SECRET
-        }, async (token, done) => {
+        }, async (token, done): Promise<void> => {
             try {
                 const user = await User.findOne({ where: { id: token.id } });
+                console.log('[JWT Strat]', user);
                 if(!user) {
                     return done(null, false);
                 }
@@ -41,7 +42,7 @@ export default class PassportConfig {
             usernameField: 'email',
             passwordField: 'password',
             session: false
-        }, async (email: string, password: string, done) => {
+        }, async (email: string, password: string, done): Promise<void> => {
             try {
                 const user = await User.findOne({ where: { email } });
                 if (!user) {
