@@ -27,11 +27,11 @@ export default class PassportConfig {
         }, async (token, done): Promise<void> => {
             try {
                 const user = await User.findOne({ where: { id: token.id } });
-                console.log('[JWT Strat]', user);
+                
                 if(!user) {
                     return done(null, false);
                 }
-                
+                console.log('[JWT Strat]', user);
                 return done(null, user);
             } catch (error) {
                 return done(error, null);
