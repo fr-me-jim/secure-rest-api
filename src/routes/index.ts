@@ -14,6 +14,6 @@ const router = Router();
 
 
 router.use('/', authRoutes);
-router.use('/users', userRoutes);
+router.use('/users', strategy.authenticate('jwt', { session: false }), userRoutes);
 
 export default router;

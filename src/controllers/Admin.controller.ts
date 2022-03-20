@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import UserController from './User.controller';
 
 // User model
@@ -6,7 +6,7 @@ import User from '../models/User.model';
 
 // User interfaces
 import {
-    UserCreate
+    UserCreate, UserEdit
 } from '../interfaces/User.interface';
 
 class AdminController extends UserController {
@@ -62,6 +62,29 @@ class AdminController extends UserController {
             if(!result) return res.sendStatus(500);
 
             return res.send({ user: result }).status(201);
+        } catch (error: any) {
+            res.sendStatus(500);
+            throw new Error(error);
+        }  
+    };
+
+    /**
+     * EditUser
+     */
+     public static editUser = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const id: string | undefined = req.params?.id;
+            if(!id) return res.sendStatus(400);
+
+            const newUser: UserEdit = req.body;
+            if(!newUser) return res.sendStatus(400);
+
+            const [rows, result] = await User.update({ 
+                ...newUser 
+            }, { where: { id }, returning: true });
+            if(!rows) return res.sendStatus(404);
+
+            return res.send({ ...result[0] }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
             throw new Error(error);

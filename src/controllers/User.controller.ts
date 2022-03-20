@@ -89,19 +89,17 @@ class UserController {
     };
 
     /**
-     * EditUser
+     * EditProfileUser
      */
      public static editProfileUser = async (req: Request, res: Response): Promise<Response> => {
+        if (!req.user) return res.sendStatus(401);
         try {
-            const id: string | undefined = req.params?.id;
-            if(!id) return res.sendStatus(400);
-
             const newUser: UserEdit = req.body;
             if(!newUser) return res.sendStatus(400);
 
             const [rows, result] = await User.update({ 
                 ...newUser 
-            }, { where: { id }, returning: true });
+            }, { where: { id: (req.user! as User).id }, returning: true });
             if(!rows) return res.sendStatus(404);
 
             return res.send({ ...result[0] }).status(200);

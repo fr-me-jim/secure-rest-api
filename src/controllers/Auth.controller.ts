@@ -1,10 +1,31 @@
 import { VerifiedCallback } from "passport-jwt";
+import { NextFunction, Request, Response } from 'express';
 
 // User model
 import User from '../models/User.model';
 
 class AuthController {
     constructor() {};
+
+    /**
+     * CheckPermissions
+     */
+    public static checkAdminPermissions = (req: Request, res: Response, next: NextFunction): Response | void => {
+        if (!req.user) return res.sendStatus(401);
+
+        if (!(req.user! as User).privileges) return res.sendStatus(403);
+
+        return next();
+    };
+
+    /**
+     * CheckPermissions
+     */
+     public static checkNonAdminPermissions = (req: Request, res: Response, next: NextFunction): Response | void => {
+        if (!req.user) return res.sendStatus(401);
+
+        return next();
+    };
 
     /**
      * GetUserByJWT
