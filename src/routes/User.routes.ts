@@ -11,5 +11,6 @@ const router = Router();
 router.get("/", strategy.authenticate('jwt', { session: false }), AdminController.getAllUserInfo);
 router.get("/show/:id", strategy.authenticate('jwt', { session: false }), AdminController.getUserInfo);
 router.get("/profile", strategy.authenticate('jwt', { session: false }), UserController.getUserProfileInfo);
+router.get("/edit/profile", strategy.authenticate('jwt', { session: false }), UserController.editProfileUser);
 
 export default router;
