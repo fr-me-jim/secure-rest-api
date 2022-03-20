@@ -9,7 +9,7 @@ class AuthController {
     /**
      * GetUserByJWT
      */
-    public static getUserByJWT = async (token: { id: any; }, done: VerifiedCallback): Promise<void> => {
+    public static getUserByJWT = async (token: { id: string; }, done: VerifiedCallback): Promise<void> => {
         try {
             const user = await User.findOne({ 
                 where: { id: token.id },
