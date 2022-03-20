@@ -50,21 +50,6 @@ class UserController {
     };
 
     /**
-     * GetUserProfileInfo
-     */
-     public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
-        if (!req.user) return res.sendStatus(401);
-        try {
-            const finalUser = { ...req.user! };
-            console.log((req.user! as User))
-            return res.send({ user: finalUser }).status(200);
-        } catch (error: any) {  
-            res.sendStatus(500);
-            throw new Error(error);
-        }
-    };
-
-    /**
      * RegisterUser
      */
      public static registerUser = async (req: Request, res: Response): Promise<Response> => {
@@ -74,7 +59,7 @@ class UserController {
 
             const result = await User.create(
                 { ...user },
-                { returning: true }    
+                { returning: true, raw: true }    
             );
             if(!result) return res.sendStatus(500);
 
@@ -91,9 +76,22 @@ class UserController {
     };
 
     /**
+     * GetUserProfileInfo
+     */
+     public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
+        if (!req.user) return res.sendStatus(401);
+        try {
+            return res.send({ ...req.user! }).status(200);
+        } catch (error: any) {  
+            res.sendStatus(500);
+            throw new Error(error);
+        }
+    };
+
+    /**
      * EditUser
      */
-     public static editUser = async (req: Request, res: Response): Promise<Response> => {
+     public static editProfileUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const id: string | undefined = req.params?.id;
             if(!id) return res.sendStatus(400);
@@ -101,12 +99,12 @@ class UserController {
             const newUser: UserEdit = req.body;
             if(!newUser) return res.sendStatus(400);
 
-            const result = await User.update({ 
+            const [rows, result] = await User.update({ 
                 ...newUser 
-            }, { where: { id }});
-            if(!result) return res.sendStatus(500);
+            }, { where: { id }, returning: true });
+            if(!rows) return res.sendStatus(404);
 
-            return res.send({ user: result }).status(204);
+            return res.send({ ...result[0] }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
             throw new Error(error);
