@@ -33,23 +33,7 @@ export default class PassportConfig {
             usernameField: 'email',
             passwordField: 'password',
             session: false
-        }, async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
-            try {
-                const user = await User.findOne({ where: { email } });
-                if (!user) {
-                    return done(401, false, { message: 'User not found' });
-                }
-
-                const isValid: boolean = await User.isValidPassword(password, user.password);
-                if (!isValid) {
-                    return done(401, false, { message: 'Wrong credentials' });
-                }
-
-                return done(null, user, { message: 'Login success' });
-            } catch (error) {
-                return done(error);  
-            }
-        }));
+        }, AuthController.checkOrCreateUserLocal));
 
     
         return this.passport;
