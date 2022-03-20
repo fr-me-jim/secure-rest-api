@@ -32,7 +32,7 @@ class AuthController {
      */
     public static checkOrCreateUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
         try {
-            const user = await User.findOne({ where: { email } });
+            const user = await User.findOne({ where: { email }, raw: true });
             if (!user) {
                 return done(401, false, { message: 'User not found' });
             }
