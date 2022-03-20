@@ -14,11 +14,13 @@ export default class PassportConfig {
 
     SetStrategy() {
         this.passport.serializeUser( (user, done) => {
-            done(null, user);
+            console.log('[SerializeUser]');
+            return done(null, user);
         });
 
         this.passport.deserializeUser( (user: false | User | null | undefined, done) => {
-            done(null, user);
+            console.log('[DeserializeUser]');
+            return done(null, user);
         });
 
         this.passport.use(new JWTStrategy({ 
