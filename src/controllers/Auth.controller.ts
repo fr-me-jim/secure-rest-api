@@ -13,7 +13,8 @@ class AuthController {
         try {
             const user = await User.findOne({ 
                 where: { id: token.id },
-                attributes: { exclude: ['password'] } 
+                attributes: { exclude: ['password'] },
+                raw: true
             });
 
             if (!user) {
