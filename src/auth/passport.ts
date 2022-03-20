@@ -17,7 +17,7 @@ export default class PassportConfig {
             done(null, user);
         });
 
-        this.passport.deserializeUser( (user: User, done) => {
+        this.passport.deserializeUser( (user: false | User | null | undefined, done) => {
             done(null, user);
         });
 
