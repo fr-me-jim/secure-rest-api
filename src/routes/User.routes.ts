@@ -9,7 +9,7 @@ import AdminController from '../controllers/Admin.controller';
 const router = Router();
 
 router.get("/", strategy.authenticate('jwt', { session: false }), AdminController.getAllUserInfo);
-router.get("/:id", strategy.authenticate('jwt', { session: false }), AdminController.getUserInfo);
-router.get("/me", strategy.authenticate('jwt', { session: false }), UserController.getUserProfileInfo);
+router.get("/show/:id", strategy.authenticate('jwt', { session: false }), AdminController.getUserInfo);
+router.get("/profile", strategy.authenticate('jwt', { session: false }), UserController.getUserProfileInfo);
 
 export default router;
