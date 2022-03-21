@@ -11,6 +11,9 @@ import {
     UserCreate,
 } from '../interfaces/User.interface';
 
+// controllers
+import TokenController from '../controllers/Token.controller';
+
 class UserController {
     constructor() {};
 
@@ -26,7 +29,7 @@ class UserController {
                 where: {
                     email, 
                     password
-                }
+                }, raw: true 
             });
             if(!result) return res.sendStatus(404);
             
@@ -45,9 +48,7 @@ class UserController {
     /**
      * Logout
      */
-    public static logout = (): void => {
-
-    };
+    public static logout = TokenController.addToBlacklist;
 
     /**
      * RegisterUser
@@ -97,12 +98,10 @@ class UserController {
             const newUser: UserEdit = req.body;
             if(!newUser) return res.sendStatus(400);
 
-            const [rows, result] = await User.update({ 
-                ...newUser 
-            }, { where: { id: (req.user! as User).id }, returning: true });
-            console.log('[ID]', (req.user! as User).id)
-            console.log('[Update result]', result)
-            console.log('[Rows]', rows)
+            const [rows, result] = await User.update({ ...newUser }, {  
+                where: { id: (req.user! as User).id }, 
+                returning: true,
+            });
             if(!rows) return res.sendStatus(404);
 
             return res.send({ ...result[0] }).status(200);

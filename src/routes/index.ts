@@ -10,11 +10,14 @@ export const strategy = passportConfig.SetStrategy();
 import authRoutes from './Auth.routes';
 import userRoutes from './User.routes';
 
-const middleware = [ strategy.authenticate('jwt', { session: false }) ];
+// middlewares
+import { isTokenBlacklisted } from '../middlewares/auth.middlewares';
+
+const middlewares = [ strategy.authenticate('jwt', { session: false }), isTokenBlacklisted ];
 
 const router = Router();
 
 router.use('/', authRoutes);
-router.use('/users', ...middleware, userRoutes);
+router.use('/users', ...middlewares, userRoutes);
 
 export default router;

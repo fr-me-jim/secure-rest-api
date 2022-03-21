@@ -19,15 +19,6 @@ class AuthController {
     };
 
     /**
-     * CheckPermissions
-     */
-     public static checkNonAdminPermissions = (req: Request, res: Response, next: NextFunction): Response | void => {
-        if (!req.user) return res.sendStatus(401);
-
-        return next();
-    };
-
-    /**
      * GetUserByJWT
      */
     public static getUserByJWT = async (token: { id: string; }, done: VerifiedCallback): Promise<void> => {
