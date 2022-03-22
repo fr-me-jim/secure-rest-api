@@ -6,9 +6,6 @@ import {
     UserAttributes
 } from '../interfaces/User.interface';
 
-// models
-import Token from "./Token.model";
-
 /**
  * @module  User
  * @description contain the details of Attribute
