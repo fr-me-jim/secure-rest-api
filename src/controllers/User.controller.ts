@@ -48,7 +48,7 @@ class UserController {
     /**
      * Logout
      */
-    public static logout = TokenController.addToBlacklist;
+    public static logout = async (req: Request, res: Response) => await TokenController.addToBlacklist(req, res);
 
     /**
      * RegisterUser
