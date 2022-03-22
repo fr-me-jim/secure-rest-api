@@ -7,8 +7,9 @@ const passportConfig = new PassportConfig(passport);
 export const strategy = passportConfig.SetStrategy();
 
 // routes
-import authRoutes from './Auth.routes';
-import userRoutes from './User.routes';
+import AuthRoutes from './Auth.routes';
+import AdminRoutes from './Admin.routes';
+import UserRoutes from './User.routes';
 
 // middlewares
 import { isTokenBlacklisted } from '../middlewares/auth.middlewares';
@@ -17,7 +18,8 @@ const middlewares = [ strategy.authenticate('jwt', { session: false }), isTokenB
 
 const router = Router();
 
-router.use('/', authRoutes);
-router.use('/users', ...middlewares, userRoutes);
+router.use('/', AuthRoutes);
+router.use('/users', ...middlewares, UserRoutes);
+router.use('/admin', ...middlewares, AdminRoutes);
 
 export default router;
