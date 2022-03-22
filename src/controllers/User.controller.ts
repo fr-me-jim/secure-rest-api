@@ -100,11 +100,12 @@ class UserController {
 
             const [rows, result] = await User.update({ ...newUser }, {  
                 where: { id: (req.user! as User).id }, 
-                returning: true,
+                returning: true
             });
             if(!rows) return res.sendStatus(404);
 
-            return res.send({ ...result[0].get() }).status(200);
+            const { password, ...user } = result[0].get();
+            return res.send({ ...user }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
             throw new Error(error);
