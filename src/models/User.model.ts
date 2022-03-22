@@ -76,6 +76,4 @@ User.beforeSave( async (user: User) => {
     }
 });
 
-User.hasMany(Token);
-
 export default User;
