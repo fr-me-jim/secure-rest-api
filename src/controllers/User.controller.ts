@@ -81,6 +81,7 @@ class UserController {
      */
      public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
         try {
+            console.log('in controller')
             return res.send({ ...req.user! }).status(200);
         } catch (error: any) {  
             res.sendStatus(500);

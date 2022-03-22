@@ -46,7 +46,7 @@ class AuthController {
         try {
             const user = await User.findOne({ where: { email }, raw: true });
             if (!user) {
-                return done(401, false, { message: 'User not found' });
+                return done(404, false, { message: 'User not found' });
             }
 
             const isValid: boolean = await User.isValidPassword(password, user.password);
@@ -54,6 +54,7 @@ class AuthController {
                 return done(401, false, { message: 'Wrong credentials' });
             }
 
+            console.log('[User]', user)
             return done(null, user, { message: 'Login success' });
         } catch (error) {
             return done(error);  
