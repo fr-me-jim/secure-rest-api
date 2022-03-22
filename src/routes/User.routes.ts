@@ -7,6 +7,6 @@ import UserController from '../controllers/User.controller';
 const router = Router();
 
 router.get("/profile", UserController.getUserProfileInfo);
-router.post("/profile/edit", UserController.editProfileUser);
+router.put("/profile/edit", UserController.editProfileUser);
 
 export default router;
