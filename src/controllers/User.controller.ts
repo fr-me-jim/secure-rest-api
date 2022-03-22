@@ -80,7 +80,6 @@ class UserController {
      * GetUserProfileInfo
      */
      public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
-        if (!req.user) return res.sendStatus(401);
         try {
             return res.send({ ...req.user! }).status(200);
         } catch (error: any) {  
@@ -93,7 +92,6 @@ class UserController {
      * EditProfileUser
      */
      public static editProfileUser = async (req: Request, res: Response): Promise<Response> => {
-        if (!req.user) return res.sendStatus(401);
         try {
             const newUser: UserEdit = req.body;
             if(!newUser) return res.sendStatus(400);
