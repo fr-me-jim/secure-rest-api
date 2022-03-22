@@ -9,6 +9,7 @@ export const isTokenBlacklisted = async (req: Request, res: Response, next: Next
     if (!req.headers.authorization) return res.sendStatus(401);
     
     const token: string | undefined = req.headers.authorization?.split(' ')[1];
+    console.log('[Token]', token)
     const blacklisted = await Token.findOne({ where: { token }, raw: true });
     if (blacklisted) return res.sendStatus(401);
     
