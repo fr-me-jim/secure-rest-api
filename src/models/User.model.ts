@@ -6,6 +6,9 @@ import {
     UserAttributes
 } from '../interfaces/User.interface';
 
+// models
+import Token from "./Token.model";
+
 /**
  * @module  User
  * @description contain the details of Attribute
@@ -72,5 +75,7 @@ User.beforeSave( async (user: User) => {
         throw new Error(<string>error);
     }
 });
+
+User.hasMany(Token);
 
 export default User;

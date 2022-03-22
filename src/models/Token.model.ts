@@ -12,7 +12,7 @@ import User from "./User.model";
  * @module  Token
  * @description contain the details of Attribute
  */
-const { Model, DataTypes, Deferrable } = sqlize;
+const { Model, DataTypes } = sqlize;
 
 class Token extends Model<TokenAttributes, TokenInput> implements TokenAttributes {
     declare id: string;
@@ -37,12 +37,11 @@ Token.init({
         unique: true
     },
     user_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         references: {
             model: User,
-            key: 'id',
-            deferrable: new Deferrable.INITIALLY_IMMEDIATE
+            key: 'id'
         }
     }
 }, { sequelize: connection, modelName: 'Token', tableName: 'token_blacklist', timestamps: true, createdAt: true, updatedAt: true, deletedAt: true });
