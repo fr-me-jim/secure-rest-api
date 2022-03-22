@@ -10,7 +10,7 @@ class TokenController {
     /**
      * AddToBlacklist
      */
-    public static addToBlacklist = async (req: Request, res: Response) => {
+    public static addToBlacklist = async (req: Request, res: Response): Promise<Response> => {
         try {
             const user_id = (req.user! as User).id;
             const token: string = req.headers.authorization!.split(' ')[1];
