@@ -18,6 +18,7 @@ class TokenController {
                 returning: true,
                 raw: true
             });
+            console.log('[New Token]', result)
             if (result) return res.sendStatus(500);
 
             return res.sendStatus(200);
