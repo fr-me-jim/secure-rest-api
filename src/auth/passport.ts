@@ -17,10 +17,12 @@ export default class PassportConfig {
 
     SetStrategy() {
         this.passport.serializeUser( (user, done: VerifiedCallback) => {
+            console.log('[Serialize]', user)
             return done(null, user);
         });
 
         this.passport.deserializeUser( (user: false | User | null | undefined, done: VerifiedCallback) => {
+            console.log('[Deserialize]', user)
             return done(null, user);
         });
 

@@ -7,7 +7,7 @@ import User from '../models/User.model';
 // User interfaces
 import {
     UserEdit,
-    UserLogin,
+    // UserLogin,
     UserCreate,
 } from '../interfaces/User.interface';
 
@@ -22,18 +22,8 @@ class UserController {
      */
     public static login = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const { email, password }: UserLogin = req.body;
-            if(!email || !password) return res.sendStatus(400);
-
-            const result = await User.findOne({ 
-                where: {
-                    email, 
-                    password
-                }, raw: true 
-            });
-            if(!result) return res.sendStatus(404);
-            
-            const token = jwt.sign({ id: result.id }, process.env.JWT_SECRET!, {
+            console.log('in controller')
+            const token = jwt.sign({ id: (req.user! as User).id }, process.env.JWT_SECRET!, {
                 expiresIn: 60 * 60 * 24 // 24 hours
             });
         
@@ -81,7 +71,6 @@ class UserController {
      */
      public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
         try {
-            console.log('in controller')
             return res.send({ ...req.user! }).status(200);
         } catch (error: any) {  
             res.sendStatus(500);
