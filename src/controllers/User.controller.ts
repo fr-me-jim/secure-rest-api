@@ -22,6 +22,7 @@ class UserController {
      */
     public static login = async (req: Request, res: Response): Promise<Response> => {
         try {
+            if (!req.user) return res.sendStatus(404);
             const token = jwt.sign({ id: (req.user! as User).id }, process.env.JWT_SECRET!, {
                 expiresIn: 60 * 60 * 24 // 24 hours
             });
@@ -70,6 +71,7 @@ class UserController {
      */
      public static getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
         try {
+            if (!req.user) res.sendStatus(404);
             return res.send({ ...req.user! }).status(200);
         } catch (error: any) {  
             res.sendStatus(500);
