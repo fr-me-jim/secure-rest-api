@@ -7,14 +7,6 @@ services:
       # mem_limit: 512m
       # mem_reservation: 128m
       # cpus: 0.5 
-      deploy:
-        resources:
-          limits:
-            cpus: 0.5
-            memory: 512m
-          reservations:
-            cpus: 0.5
-            memory: 128m
       ports: 
         - "80:80"
         - "443:443"
