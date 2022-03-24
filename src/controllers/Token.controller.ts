@@ -14,11 +14,10 @@ class TokenController {
     /**
      * CreateNewJWTToken
      */
-    public static createNewJWTToken = ( { id }: JWTAccessSignInfo ): string => {
-        // console.log('[Info]', info.id)
+    public static createNewJWTToken = ( info: JWTAccessSignInfo ): string => {
         const algorithm = (process.env.JWT_ALG! as Algorithm);
         const expiresIn = parseInt(process.env.JWT_EXPIRATION!);
-        const token = jwt.sign({ id }, process.env.JWT_SECRET!, {
+        const token = jwt.sign( info, process.env.JWT_SECRET!, {
             algorithm,
             expiresIn,
             issuer: process.env.JWT_ISSUER!,
