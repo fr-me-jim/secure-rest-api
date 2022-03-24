@@ -4,9 +4,13 @@ services:
       image: nginx:alpine
       restart: always
       container_name: tfm-nginx
-      mem_limit: 512m
-      mem_reservation: 128m
-      # cpus: 0.5 
+      deploy:
+        resources:
+            limits:
+              cpus: 0.50
+              memory: 512M
+            reservations:
+              memory: 1286M
       ports: 
         - "80:80"
         - "443:443"
