@@ -22,7 +22,6 @@ class UserController {
      */
     public static login = async (req: Request, res: Response): Promise<Response> => {
         try {
-            console.log('in controller')
             const token = jwt.sign({ id: (req.user! as User).id }, process.env.JWT_SECRET!, {
                 expiresIn: 60 * 60 * 24 // 24 hours
             });

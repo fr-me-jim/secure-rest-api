@@ -54,7 +54,6 @@ class AuthController {
                 return done(401, false, { message: 'Wrong credentials' });
             }
 
-            console.log('[User]', user)
             return done(null, user, { message: 'Login success' });
         } catch (error) {
             return done(error);  
