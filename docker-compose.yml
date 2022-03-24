@@ -10,25 +10,23 @@ services:
       volumes: 
         - ./nginx.conf:/etc/nginx/nginx.conf
         - /etc/letsencrypt:/etc/letsencrypt
+        - /var/log/nginx/:/var/log/nginx/
       depends_on:
-        - tfm-backend 
+        - tfm-backend
         - tfm-database
 
   tfm-backend:
     build: .
     restart: always
     image: tfm-backend
-    # ports: ["9000:9000"]
-    expose:
-      - 9000
+    expose: [ 9000 ]
     container_name: tfm-backend
-    depends_on: [tfm-database]
+    depends_on: [ tfm-database ]
 
   tfm-database:
     restart: always
     ports: ["8000:5432"]
-    expose:
-      - 5432
+    expose: [ 5432 ]
     image: postgres:14.2-alpine
     container_name: tfm-database
     env_file:
@@ -37,5 +35,3 @@ services:
       - /var/lib/postgresql/data/:/var/lib/postgresql/data/:rw
       # - ./postgresql.conf:/etc/postgresql/postgresql.conf
       - ./scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-      
-    # command: postgres -c config_file=/etc/postgresql/postgresql.conf
