@@ -5,7 +5,7 @@ services:
       restart: always
       container_name: tfm-nginx
       mem_limit: 512m
-      mem_reservation: 128M
+      mem_reservation: 128m
       cpus: 0.5 
       ports: 
         - "80:80"
