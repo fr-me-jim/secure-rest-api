@@ -1,11 +1,32 @@
 import { Request, Response } from 'express';
+import jwt, { Algorithm } from "jsonwebtoken";
 
 // models
 import User from '../models/User.model';
 import Token from '../models/Token.model';
 
+// types
+import { JWTSignInfo } from 'src/interfaces/Token.interface';
+
 class TokenController {
     constructor() {}
+
+    /**
+     * CreateNewJWTToken
+     */
+    public static createNewJWTToken( info: JWTSignInfo ): string {
+
+        const algorithm = (process.env.JWT_ALG! as Algorithm);
+        const expiresIn = parseInt(process.env.JWT_EXPIRATION!);
+        const token = jwt.sign( info, process.env.JWT_SECRET!, {
+            algorithm,
+            expiresIn,
+            issuer: process.env.JWT_ISSUER!,
+            audience: process.env.JWT_AUDIENCE!
+        });  
+
+        return token;
+    };
 
     /**
      * AddToBlacklist

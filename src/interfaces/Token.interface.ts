@@ -12,3 +12,5 @@ export interface TokenAttributes {
 
 export interface TokenInput extends Optional<TokenAttributes, 'id'> {};
 export interface TokenOuput extends Required<TokenAttributes> {};
+
+export type JWTSignInfo = { id: string };

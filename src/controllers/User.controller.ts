@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import { Request, Response } from 'express';
 
 // User model
@@ -23,11 +22,8 @@ class UserController {
     public static login = async (req: Request, res: Response): Promise<Response> => {
         try {
             if (!req.user) return res.sendStatus(404);
-            console.log('[Req User]', req.user)
-            const token = jwt.sign({ id: (req.user! as User).id }, process.env.JWT_SECRET!, {
-                expiresIn: 60 * 60 * 24 // 24 hours
-            });
-        
+
+            const token = TokenController.createNewJWTToken( { id: (req.user! as User).id } );
 
             return res.send({ token }).status(200);
         } catch (error: any) {  
@@ -55,11 +51,8 @@ class UserController {
             );
             if(!result) return res.sendStatus(500);
 
-            const token = jwt.sign({ id: result.id }, process.env.JWT_SECRET!, {
-                expiresIn: 60 * 60 * 24 // 24 hours
-            });
-        
-
+            const token = TokenController.createNewJWTToken( { id: (req.user! as User).id } );
+            
             return res.send({ token }).status(201);
         } catch (error: any) {
             res.sendStatus(500);
