@@ -24,8 +24,3 @@ docker-build:
     - echo "Hello world"
     - docker build -t tfm-secure-api:latest
     - docker push tfm-secure-api
-  # Run this job in a branch where a Dockerfile exists
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
-        - Dockerfile
