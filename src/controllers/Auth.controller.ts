@@ -56,6 +56,7 @@ class AuthController {
 
             return done(null, user, { message: 'Login success' });
         } catch (error) {
+            console.log('Check error')
             return done(error, false);  
         }
     }
