@@ -45,18 +45,13 @@ class AuthController {
     public static checkUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
         try {
             const user = await User.findOne({ where: { email }, raw: true });
-            if (!user) {
-                return done(404, false, { message: 'User not found' });
-            }
+            if (!user) return done(null, false);
 
             const isValid: boolean = await User.isValidPassword(password, user.password);
-            if (!isValid) {
-                return done(401, false, { message: 'Wrong credentials' });
-            }
+            if (!isValid) return done(null, false);
 
-            return done(null, user, { message: 'Login success' });
+            return done(null, user);
         } catch (error) {
-            console.log('Check error')
             return done(error, false);  
         }
     }
