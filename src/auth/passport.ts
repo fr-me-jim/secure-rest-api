@@ -35,7 +35,7 @@ export default class PassportConfig {
             usernameField: 'email',
             passwordField: 'password',
             session: false
-        }, AuthController.checkOrCreateUserLocal));
+        }, AuthController.checkUserLocal));
 
     
         return this.passport;

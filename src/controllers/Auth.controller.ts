@@ -40,9 +40,9 @@ class AuthController {
     };
 
     /**
-     * CheckOrCreateUserLocal
+     * CheckUserLocal
      */
-    public static checkOrCreateUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
+    public static checkUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
         try {
             const user = await User.findOne({ where: { email }, raw: true });
             if (!user) {
@@ -56,7 +56,7 @@ class AuthController {
 
             return done(null, user, { message: 'Login success' });
         } catch (error) {
-            return done(error);  
+            return done(error, false);  
         }
     }
         
