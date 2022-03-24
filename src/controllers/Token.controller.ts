@@ -20,7 +20,7 @@ class TokenController {
         const token = jwt.sign( info, process.env.JWT_SECRET!, {
             algorithm,
             expiresIn,
-            issuer: process.env.JWT_ISSUER!,
+            // issuer: process.env.JWT_ISSUER!,
             audience: process.env.JWT_AUDIENCE!
         });  
 
