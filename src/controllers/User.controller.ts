@@ -51,7 +51,7 @@ class UserController {
             );
             if(!result) return res.sendStatus(500);
 
-            const token = TokenController.createNewJWTToken({ id: result.id });
+            const token = TokenController.createNewJWTToken({ id: result!.id });
 
             return res.send({ token }).status(201);
         } catch (error: any) {
