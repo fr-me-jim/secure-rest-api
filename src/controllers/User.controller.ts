@@ -50,7 +50,7 @@ class UserController {
                 { returning: true, raw: true }    
             );
             if(!result) return res.sendStatus(500);
-
+            console.log('Error here')
             const token = TokenController.createNewJWTToken({ id: result!.id });
 
             return res.send({ token }).status(201);
