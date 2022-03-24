@@ -18,7 +18,7 @@ class TokenController {
         // const algorithm = (process.env.JWT_ALG! as Algorithm);
         const expiresIn = parseInt(process.env.JWT_EXPIRATION!);
         const token = jwt.sign( info, process.env.JWT_SECRET!, {
-            // algorithm,
+            algorithm: "ES256",
             expiresIn,
             issuer: process.env.JWT_ISSUER!,
             audience: process.env.JWT_AUDIENCE!
