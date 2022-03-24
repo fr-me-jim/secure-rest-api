@@ -19,7 +19,7 @@ class UserController {
     /**
      * Login
      */
-    public static login = async (req: Request, res: Response): Promise<Response> => {
+    public static login = (req: Request, res: Response): Response => {
         try {
             if (!req.user) return res.sendStatus(404);
 
@@ -52,7 +52,7 @@ class UserController {
             if(!result) return res.sendStatus(500);
 
             const token = TokenController.createNewJWTToken( { id: (req.user! as User).id } );
-            
+
             return res.send({ token }).status(201);
         } catch (error: any) {
             res.sendStatus(500);

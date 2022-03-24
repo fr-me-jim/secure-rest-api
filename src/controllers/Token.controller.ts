@@ -15,7 +15,7 @@ class TokenController {
      * CreateNewJWTToken
      */
     public static createNewJWTToken( info: JWTSignInfo ): string {
-
+        console.log('[Info]', info)
         const algorithm = (process.env.JWT_ALG! as Algorithm);
         const expiresIn = parseInt(process.env.JWT_EXPIRATION!);
         const token = jwt.sign( info, process.env.JWT_SECRET!, {
