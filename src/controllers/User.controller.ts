@@ -23,7 +23,7 @@ class UserController {
         try {
             if (!req.user) return res.sendStatus(404);
 
-            const token = TokenController.createNewJWTToken( { id: (req.user! as User).id } );
+            const token = TokenController.createNewJWTToken({ id: (req.user! as User).id });
 
             return res.send({ token }).status(200);
         } catch (error: any) {  
@@ -51,7 +51,7 @@ class UserController {
             );
             if(!result) return res.sendStatus(500);
 
-            const token = TokenController.createNewJWTToken( { id: (req.user! as User).id } );
+            const token = TokenController.createNewJWTToken({ id: (req.user! as User).id });
 
             return res.send({ token }).status(201);
         } catch (error: any) {

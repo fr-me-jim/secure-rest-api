@@ -6,7 +6,7 @@ import User from '../models/User.model';
 import Token from '../models/Token.model';
 
 // types
-import { JWTSignInfo } from 'src/interfaces/Token.interface';
+import { JWTAccessSignInfo } from 'src/interfaces/Token.interface';
 
 class TokenController {
     constructor() {}
@@ -14,11 +14,11 @@ class TokenController {
     /**
      * CreateNewJWTToken
      */
-    public static createNewJWTToken( info: JWTSignInfo ): string {
-        console.log('[Info]', info)
+    public static createNewJWTToken = ( { id }: JWTAccessSignInfo ): string => {
+        // console.log('[Info]', info.id)
         const algorithm = (process.env.JWT_ALG! as Algorithm);
         const expiresIn = parseInt(process.env.JWT_EXPIRATION!);
-        const token = jwt.sign( info, process.env.JWT_SECRET!, {
+        const token = jwt.sign({ id }, process.env.JWT_SECRET!, {
             algorithm,
             expiresIn,
             issuer: process.env.JWT_ISSUER!,
