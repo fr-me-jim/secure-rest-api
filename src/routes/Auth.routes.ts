@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { strategy, middlewares } from '../routes/index';
 
+// controllers
 import UserController from '../controllers/User.controller';
 
 // router
