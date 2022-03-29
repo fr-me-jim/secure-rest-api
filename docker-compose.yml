@@ -22,9 +22,9 @@ services:
         - tfm-database
 
   tfm-backend:
-    build: .
+    # build: .
     restart: always
-    image: tfm-backend
+    image: franmejim/tfm-backend
     expose: [ 9000 ]
     container_name: tfm-backend
     depends_on: [ tfm-database ]
