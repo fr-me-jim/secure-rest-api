@@ -32,7 +32,7 @@ Token.init({
         primaryKey: true
     },
     token: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(300),
         allowNull: false,
         unique: true
     },
