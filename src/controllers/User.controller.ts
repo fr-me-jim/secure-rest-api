@@ -55,10 +55,10 @@ class UserController {
             console.log(token)
 
             return res.send({ token }).status(201);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.log('error here')
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }  
     };
 
