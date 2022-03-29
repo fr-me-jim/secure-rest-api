@@ -24,7 +24,7 @@ class UserController {
             if (!req.user) return res.sendStatus(404);
 
             const token = TokenController.createNewJWTToken({ id: (req.user! as User).id });
-            console.log(token)
+            
             return res.send({ token }).status(200);
         } catch (error: unknown) {  
             res.sendStatus(500);
@@ -49,6 +49,7 @@ class UserController {
                 { ...user },
                 { returning: true, raw: true }    
             );
+            console.log(result)
             if(!result) return res.sendStatus(500);
             
             const token = TokenController.createNewJWTToken({ id: result!.id });
