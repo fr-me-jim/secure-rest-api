@@ -15,8 +15,8 @@ class TokenController {
      * CreateNewJWTToken
      */
     public static createNewJWTToken = ( info: JWTAccessSignInfo ): string => {
-        const algorithm = (process.env.JWT_ALG! as Algorithm);
-        const expiresIn = parseInt(process.env.JWT_EXPIRATION!);
+        const algorithm = (process.env.JWT_ALG! as Algorithm) || undefined;
+        const expiresIn = parseInt(process.env.JWT_EXPIRATION! || "0") || undefined;
         const token = jwt.sign( info, process.env.JWT_SECRET!, {
             algorithm,
             expiresIn,
@@ -41,7 +41,7 @@ class TokenController {
             return res.sendStatus(200);
         } catch (error: any) {
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }
     };
 };
