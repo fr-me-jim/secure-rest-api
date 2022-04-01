@@ -27,6 +27,12 @@ services:
     image: franmejim/tfm-backend
     expose: [ 9000 ]
     container_name: tfm-backend
+    deploy:
+        resources:
+            limits:
+              memory: 2G
+            reservations:
+              memory: 128M
     depends_on: [ tfm-database ]
 
   tfm-database:
@@ -35,6 +41,12 @@ services:
     expose: [ 5432 ]
     image: postgres:14.2-alpine
     container_name: tfm-database
+    deploy:
+        resources:
+            limits:
+              memory: 1G
+            reservations:
+              memory: 128M
     env_file:
       - .env.docker
     volumes:
