@@ -21,7 +21,7 @@ class UserController {
      */
     public static login = (req: Request, res: Response): Response => {
         try {
-            if (!req.user) return res.sendStatus(404);
+            if (!req.user) return res.sendStatus(401);
 
             const token = TokenController.createNewJWTToken({ id: (req.user! as User).id });
 
