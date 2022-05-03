@@ -23,7 +23,12 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     declare readonly createdAt?: Date;
     declare readonly updatedAt?: Date;
     declare readonly deletedAt?: Date;
-    static async isValidPassword(password: string, userPassword: string): Promise<boolean> {  
+
+    /**
+     * @method isValidPassword
+     * @desc Instance Method to check passwords
+     **/
+    async isValidPassword(password: string, userPassword: string): Promise<boolean> {  
         try {
             return await bcrypt.compare(password, userPassword);
         } catch (error: any) {
