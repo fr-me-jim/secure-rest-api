@@ -1,6 +1,17 @@
 import { Optional } from 'sequelize'
+import User from '../models/User.model';
 
-export interface UserAttributes {
+export interface IUserRepository {
+  getAllUsers(): Promise<User[]>;
+  getUserById(id: string): Promise<User | null>;
+  getUsersByAttributes(userAttributes: UserAttributes): Promise<User[]>;
+  createNewUser(newUser: UserCreate): Promise<User | null>;
+  updateUser(id:string, newUserData: UserEdit): Promise<User | null>;
+  updateUserPassword(id:string, newUserPassword: string): Promise<User | null>;
+  deleteUser( id:string ): Promise<number | null>;
+};
+
+export type UserAttributes = {
   id: string;
   email: string;
   password: string;
@@ -32,7 +43,6 @@ export type UserCreate = {
 
 export type UserEdit = {
   email?: string,
-  password?: string,
   firstName?: string,
   secondName?: string,
   privileges?: number

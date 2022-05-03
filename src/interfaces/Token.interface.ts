@@ -1,6 +1,14 @@
 import { Optional } from 'sequelize'
 
-export interface TokenAttributes {
+// models
+import Token from 'src/models/Token.model';
+
+export interface ITokenRepositories {
+  createNewBlacklistedToken(token: string, user_id: string): Promise<Token>;
+}
+
+export type TokenModel = Token;
+export type TokenAttributes = {
   id: string;
   token: string;
   user_id: string;
