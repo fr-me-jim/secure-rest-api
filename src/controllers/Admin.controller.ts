@@ -6,18 +6,19 @@ import User from '../models/User.model';
 
 // User interfaces
 import {
+    IUserRepository,
     UserCreate, UserEdit
 } from '../interfaces/User.interface';
 
 class AdminController extends UserController {
-    constructor() {
-        super();
+    constructor(respository: IUserRepository) {
+        super(respository);
     }
 
     /**
      * GetAllUserInfo
      */
-    public static getAllUserInfo = async (_req: Request, res: Response): Promise<Response> => {
+    public readonly getAllUserInfo = async (_req: Request, res: Response): Promise<Response> => {
         try {
             const result = await User.findAll();
 
@@ -31,7 +32,7 @@ class AdminController extends UserController {
     /**
      * GetUserInfo
      */
-     public static getUserInfo = async (req: Request, res: Response): Promise<Response> => {
+     public readonly getUserInfo = async (req: Request, res: Response): Promise<Response> => {
         const user: User | undefined = req.user as User | undefined;
         if (!user) return res.sendStatus(401);
         if (!user.privileges) return res.sendStatus(403);
@@ -50,7 +51,7 @@ class AdminController extends UserController {
     /**
      * CreateUser
      */
-    public static createUser = async (req: Request, res: Response): Promise<Response> => {
+    public readonly createUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const user: UserCreate | undefined = req.body;
             if(!user) return res.sendStatus(400);
@@ -71,7 +72,7 @@ class AdminController extends UserController {
     /**
      * EditUser
      */
-     public static editUser = async (req: Request, res: Response): Promise<Response> => {
+     public readonly editUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const id: string | undefined = req.params?.id;
             if(!id) return res.sendStatus(400);
@@ -94,7 +95,7 @@ class AdminController extends UserController {
     /**
      * DeleteUser
      */
-     public static deleteUser = async (req: Request, res: Response): Promise<Response> => {
+     public readonly deleteUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const id: string | undefined = req.params?.id;
             if(!id) return res.sendStatus(400);
