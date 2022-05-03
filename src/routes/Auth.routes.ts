@@ -2,13 +2,25 @@ import { Router } from "express";
 import { strategy, middlewares } from '../routes/index';
 
 // controllers
-import UserController from '../controllers/User.controller';
+import AuthController from "src/controllers/Auth.controller";
+
+// repositories
+import UserRepositories from '../repositories/User.repositories';
+import TokenRepositories from "src/repositories/Token.repositories";
 
 // router
 const router = Router();
+const controller = new AuthController(new UserRepositories(), new TokenRepositories());
+router.post("/signin", controller.registerUser);
+router.get("/logout", ...middlewares, controller.logout);
+router.post("/login", strategy.authenticate('local', { session: false }), controller.login);
 
-router.post("/signin", UserController.registerUser);
-router.get("/logout", ...middlewares, UserController.logout);
-router.post("/login", strategy.authenticate('local', { session: false }), UserController.login);
+// class AuthRouter {
+//     private controller: UserController;
+
+//     constructor(controller: UserController) {
+//         this.controller = controller;
+//     }
+// }
 
 export default router;

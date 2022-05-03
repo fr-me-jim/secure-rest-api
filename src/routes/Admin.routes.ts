@@ -1,13 +1,15 @@
 import { Router } from "express";
 
 // controllers
-import AuthController from '../controllers/Auth.controller';
 import AdminController from '../controllers/Admin.controller';
+
+// repos
+import UserRepositories from "src/repositories/User.repositories";
 
 // router
 const router = Router();
-
-router.get("/users/show", AuthController.checkAdminPermissions, AdminController.getAllUserInfo);
-router.get("/users/show/:id", AuthController.checkAdminPermissions, AdminController.getUserInfo);
+const controller = new AdminController(new UserRepositories());
+router.get("/users/show", controller.getAllUserInfo);
+router.get("/users/show/:id", controller.getUserInfo);
 
 export default router;
