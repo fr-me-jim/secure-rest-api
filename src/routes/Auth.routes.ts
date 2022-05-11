@@ -11,16 +11,9 @@ import TokenRepositories from "src/repositories/Token.repositories";
 // router
 const router = Router();
 const controller = new AuthController(new UserRepositories(), new TokenRepositories());
+
 router.post("/signin", controller.registerUser);
 router.get("/logout", ...middlewares, controller.logout);
 router.post("/login", strategy.authenticate('local', { session: false }), controller.login);
-
-// class AuthRouter {
-//     private controller: UserController;
-
-//     constructor(controller: UserController) {
-//         this.controller = controller;
-//     }
-// }
 
 export default router;

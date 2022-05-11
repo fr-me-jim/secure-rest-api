@@ -10,6 +10,7 @@ import UserRepositories from "src/repositories/User.repositories";
 const router = Router();
 
 const controller = new UserController(new UserRepositories());
+
 router.get("/profile", controller.getUserProfileInfo);
 router.put("/profile/edit", controller.editProfileUser);
 
