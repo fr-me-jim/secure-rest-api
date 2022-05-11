@@ -6,16 +6,22 @@ import { Strategy as JWTStrategy, ExtractJwt, VerifiedCallback } from "passport-
 // model
 import User from "../models/User.model";
 
-// controllers
-import AuthController from '../controllers/Auth.controller';
+// interfaces
+import { 
+    UserAttributes,
+    IUserRepository 
+} from "../interfaces/User.interface";
 
 export default class PassportConfig {
     private passport: PassportStatic;
-    constructor(passport: PassportStatic) {
+    private UsersRepository: IUserRepository; 
+
+    constructor(passport: PassportStatic, repository: IUserRepository) {
         this.passport = passport;
+        this.UsersRepository = repository;
     }
 
-    SetStrategy() {
+    public readonly SetStrategy = (): PassportStatic => {
         this.passport.serializeUser( (user, done: VerifiedCallback) => {
             return done(null, user);
         });
@@ -27,16 +33,48 @@ export default class PassportConfig {
         this.passport.use(new JWTStrategy({ 
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: process.env.JWT_SECRET!
-        }, AuthController.getUserByJWT));
+        }, this.getUserByJWT));
 
         this.passport.use(new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
             session: false
-        }, AuthController.checkUserLocal));
+        }, this.checkUserLocal));
 
     
         return this.passport;
+    };
+
+    /**
+     * GetUserByJWT
+     */
+    private getUserByJWT = async (token: { id: string; }, done: VerifiedCallback): Promise<void> => {
+        try {
+            const user = await this.UsersRepository.getUserById(token.id);
+            if (!user) return done(null, false);
+
+            return done(null, user);
+        } catch (error) {
+            return done(error, null);
+        }
+    };
+
+
+    /**
+     * CheckUserLocal
+     */
+    private checkUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
+        try {
+            const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserAttributes));
+            if (!user) return done(null, false);
+
+            const isValid: boolean = await user.isValidPassword(password, user.password);
+            if (!isValid) return done(null, false);
+
+            return done(null, user);
+        } catch (error) {
+            return done(error, false);  
+        }
     }
 };
 
