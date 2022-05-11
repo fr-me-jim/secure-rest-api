@@ -4,7 +4,7 @@ import { Router } from "express";
 import AdminController from '../controllers/Admin.controller';
 
 // repos
-import UserRepositories from "src/repositories/User.repositories";
+import UserRepositories from "../repositories/User.repositories";
 
 // router
 const router = Router();

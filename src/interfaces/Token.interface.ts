@@ -1,7 +1,7 @@
 import { Optional } from 'sequelize'
 
 // models
-import Token from 'src/models/Token.model';
+import Token from '../models/Token.model';
 
 export interface ITokenRepositories {
   createNewBlacklistedToken(token: string, user_id: string): Promise<Token>;

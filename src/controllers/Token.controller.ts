@@ -6,7 +6,7 @@ import User from '../models/User.model';
 import Token from '../models/Token.model';
 
 // types
-import { JWTAccessSignInfo } from 'src/interfaces/Token.interface';
+import { JWTAccessSignInfo } from '../interfaces/Token.interface';
 
 class TokenController {
     constructor() {}

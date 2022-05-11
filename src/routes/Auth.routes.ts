@@ -2,11 +2,11 @@ import { Router } from "express";
 import { strategy, middlewares } from '../routes/index';
 
 // controllers
-import AuthController from "src/controllers/Auth.controller";
+import AuthController from "../controllers/Auth.controller";
 
 // repositories
 import UserRepositories from '../repositories/User.repositories';
-import TokenRepositories from "src/repositories/Token.repositories";
+import TokenRepositories from "../repositories/Token.repositories";
 
 // router
 const router = Router();

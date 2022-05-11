@@ -5,9 +5,9 @@ import { Request, Response } from 'express';
 import User from '../models/User.model';
 
 // interfaces
-// import { IAuthController } from "src/interfaces/Auth.interface";
+// import { IAuthController } from "../interfaces/Auth.interface";
 import { IUserRepository, UserCreate } from "../interfaces/User.interface";
-import { ITokenRepositories, JWTAccessSignInfo } from 'src/interfaces/Token.interface';
+import { ITokenRepositories, JWTAccessSignInfo } from '../interfaces/Token.interface';
 
 export default class AuthController {
     private jwtSecret: jwt.Secret;
