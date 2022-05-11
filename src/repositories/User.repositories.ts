@@ -12,11 +12,13 @@ import {
 } from '../interfaces/User.interface';
 
 class UserRepositories implements IUserRepository {
+    private readonly _model = User;
+
     constructor() {};
 
     public readonly getAllUsers = async (): Promise<User[]> => {
         try {
-            const users = await User.findAll({ 
+            const users = await this._model.findAll({ 
                 attributes: { exclude: ["password"] },
                 raw: true 
             });
@@ -30,7 +32,7 @@ class UserRepositories implements IUserRepository {
         if (!id) throw new Error("Wrong number of parameters.");
         
         try {
-            const user = await User.findOne({ 
+            const user = await this._model.findOne({ 
                 where: { id },
                 attributes: { exclude: ["password"] }, 
                 raw: true 
@@ -47,7 +49,7 @@ class UserRepositories implements IUserRepository {
         if (!userAttributes) throw new Error("Wrong number of parameters.");
         
         try {
-            const users = await User.findAll({ 
+            const users = await this._model.findAll({ 
                 where: { ...userAttributes }, 
                 attributes: { exclude: ["password"] },
                 raw: true 
@@ -62,7 +64,7 @@ class UserRepositories implements IUserRepository {
         if (!newUser) throw new Error("Wrong number of parameters.");
         
         try {
-            const user = await User.create({ ...newUser }, { 
+            const user = await this._model.create({ ...newUser }, { 
                 returning: true,
                 raw: true
             });
@@ -78,7 +80,7 @@ class UserRepositories implements IUserRepository {
         if (!newUserData) throw new Error("Wrong number of parameters.");
         
         try {
-            const [affectedRows, [ result ]] = await User.update({ ...newUserData }, { 
+            const [affectedRows, [ result ]] = await this._model.update({ ...newUserData }, { 
                 where: { id },
                 returning: true,
             });
@@ -95,7 +97,7 @@ class UserRepositories implements IUserRepository {
         
         try {
             const password = await bcrypt.hash(newUserPassword, 10);
-            const [affectedRows, [ result ]] = await User.update({ password }, { 
+            const [affectedRows, [ result ]] = await this._model.update({ password }, { 
                 where: { id },
                 returning: true
             });
@@ -111,7 +113,7 @@ class UserRepositories implements IUserRepository {
         if (!id) throw new Error("Wrong number of parameters.");
         
         try {
-            return await User.destroy({ where: { id } });
+            return await this._model.destroy({ where: { id } });
         } catch (error) {
             throw error;
         }

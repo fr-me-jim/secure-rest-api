@@ -1,14 +1,16 @@
 // models
-import Token from 'src/models/Token.model';
+import Token from '../models/Token.model';
 
 // interfaces
-import { ITokenRepositories } from 'src/interfaces/Token.interface';
+import { ITokenRepositories } from '../interfaces/Token.interface';
 
 /**
  * @class TokenRepositories
  * @desc Responsible for handling database operations in table Token
  **/
 class TokenRepositories implements ITokenRepositories{
+    private readonly _model = Token;
+
     constructor() {};
 
     /**
@@ -19,7 +21,7 @@ class TokenRepositories implements ITokenRepositories{
         if (!token || !user_id) throw new Error("Wrong number of parameters.");
 
         try {
-            const result = await Token.create({ token, user_id }, { 
+            const result = await this._model.create({ token, user_id }, { 
                 returning: true,
                 raw: true 
             });
