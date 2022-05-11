@@ -1,20 +1,20 @@
 import jwt, { Algorithm } from "jsonwebtoken";
-import { VerifiedCallback } from "passport-jwt";
 import { Request, Response } from 'express';
 
 // User model
 import User from '../models/User.model';
 
 // interfaces
-import { IUserRepository, UserAttributes, UserCreate } from "../interfaces/User.interface";
+// import { IAuthController } from "src/interfaces/Auth.interface";
+import { IUserRepository, UserCreate } from "../interfaces/User.interface";
 import { ITokenRepositories, JWTAccessSignInfo } from 'src/interfaces/Token.interface';
 
-class AuthController {
+export default class AuthController {
     private jwtSecret: jwt.Secret;
     private jwtOptions: jwt.SignOptions;
 
     private TokenRepository: ITokenRepositories;
-    protected UsersRepository: IUserRepository;
+    private UsersRepository: IUserRepository;
     
     constructor( userRepository: IUserRepository, tokenRepository: ITokenRepositories ) {
         this.UsersRepository = userRepository;
@@ -55,37 +55,6 @@ class AuthController {
             throw error;
         }
     };
-
-    /**
-     * GetUserByJWT
-     */
-    public readonly getUserByJWT = async (token: { id: string; }, done: VerifiedCallback): Promise<void> => {
-        try {
-            const user = await this.UsersRepository.getUserById(token.id);
-            if (!user) return done(null, false);
-
-            return done(null, user);
-        } catch (error) {
-            return done(error, null);
-        }
-    };
-
-    /**
-     * CheckUserLocal
-     */
-    public readonly checkUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
-        try {
-            const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserAttributes));
-            if (!user) return done(null, false);
-
-            const isValid: boolean = await user.isValidPassword(password, user.password);
-            if (!isValid) return done(null, false);
-
-            return done(null, user);
-        } catch (error) {
-            return done(error, false);  
-        }
-    }
 
     /**
      * RegisterUser
@@ -129,6 +98,3 @@ class AuthController {
       public readonly logout = async (req: Request, res: Response) => await this.addToBlacklist(req, res);
         
 };
-    
-
-export default AuthController;
