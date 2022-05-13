@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 import sqlize from "sequelize";
 import connection from "../models/index";
 import {
@@ -30,7 +30,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
      **/
     async isValidPassword(password: string, userPassword: string): Promise<boolean> {  
         try {
-            return await bcrypt.compare(password, userPassword);
+            return await argon2.verify(password, userPassword);
         } catch (error: any) {
             throw new Error(error);
         }
@@ -66,12 +66,18 @@ User.init({
         allowNull: false,
         defaultValue: 0
     }
-}, { sequelize: connection, modelName: 'User', tableName: 'users', timestamps: true, createdAt: true, updatedAt: true, deletedAt: true });
+}, { 
+    sequelize: connection, 
+    modelName: 'User', 
+    tableName: 'users', 
+    timestamps: true, createdAt: true, updatedAt: true, deletedAt: true 
+});
 
 User.beforeSave( async (user: User) => {
     if (!user.password) return;
     try {
-        const hashedPassword = await bcrypt.hash(user.password, 10);
+        // const hashedPassword = await bcrypt.hash(user.password, 10);
+        const hashedPassword = await argon2.hash(user.password);
         user.password = hashedPassword;
     } catch (error: unknown) {
         throw new Error(<string>error);
