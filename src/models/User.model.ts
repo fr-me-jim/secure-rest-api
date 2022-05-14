@@ -28,9 +28,10 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    async isValidPassword(password: string, userPassword: string): Promise<boolean> {  
+    async isValidPassword(userPassword: string, inputPassword: string): Promise<boolean> {  
+        console.log('[Password: ', this.password);
         try {
-            return await argon2.verify(password, userPassword);
+            return await argon2.verify(userPassword, inputPassword);
         } catch (error: any) {
             throw new Error(error);
         }
@@ -49,6 +50,7 @@ User.init({
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
+        validate: { isEmail: true }
     },
     password: {
         type: DataTypes.STRING

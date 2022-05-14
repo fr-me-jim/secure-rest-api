@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 
 // models
 import User from '../models/User.model';
@@ -29,7 +29,7 @@ class UserRepositories implements IUserRepository {
     };
 
     public readonly getUserById = async (id: string): Promise<User | null> => {
-        if (!id) throw new Error("Wrong number of parameters.");
+        if (!id) throw new Error("Required Id must be a non-empty string");
         
         try {
             const user = await this._model.findOne({ 
@@ -37,7 +37,6 @@ class UserRepositories implements IUserRepository {
                 attributes: { exclude: ["password"] }, 
                 raw: true 
             });
-            if (!user) return null;
 
             return user;
         } catch (error) {
@@ -46,7 +45,7 @@ class UserRepositories implements IUserRepository {
     };
 
     public readonly getUsersByAttributes = async (userAttributes: UserAttributes): Promise<User[]> => {
-        if (!userAttributes) throw new Error("Wrong number of parameters.");
+        if (!userAttributes) throw new Error("Required Object with attributes to search");
         
         try {
             const users = await this._model.findAll({ 
@@ -77,10 +76,11 @@ class UserRepositories implements IUserRepository {
     };
 
     public readonly updateUser = async (id:string, newUserData: UserEdit): Promise<User | null> => {
-        if (!newUserData) throw new Error("Wrong number of parameters.");
+        if (!id || !newUserData) throw new Error("Wrong number of parameters.");
         
         try {
-            const [affectedRows, [ result ]] = await this._model.update({ ...newUserData }, { 
+            const [affectedRows, [ result ]] = await this._model.update({ ...newUserData }, 
+            { 
                 where: { id },
                 returning: true,
             });
@@ -96,7 +96,7 @@ class UserRepositories implements IUserRepository {
         if (!newUserPassword || !id) throw new Error("Wrong number of parameters.");
         
         try {
-            const password = await bcrypt.hash(newUserPassword, 10);
+            const password = await argon2.hash(newUserPassword);
             const [affectedRows, [ result ]] = await this._model.update({ password }, { 
                 where: { id },
                 returning: true
