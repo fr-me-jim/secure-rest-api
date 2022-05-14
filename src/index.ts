@@ -12,7 +12,7 @@ import passport from 'passport';
 
 // routes
 // import Routes from "./routes/index";
-import router from "./routes/index";
+import router, { RouterAPI } from "./routes/index";
 
 // database
 import connection from './models/index';
@@ -20,13 +20,14 @@ import connection from './models/index';
 // const { dirname } = path;
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
+const routerAPI = new RouterAPI();
 const PORT: string | number = process.env.PORT || 9000;
 
 
 app.use(cors());
 app.use(express.json());
-app.use('/api', router);
 app.use(passport.initialize());
+app.use('/api', routerAPI.InitializeRouter());
 app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: false }));
 
