@@ -13,8 +13,8 @@ export default class AuthController {
     private jwtSecret: jwt.Secret;
     private jwtOptions: jwt.SignOptions;
 
-    private TokenRepository: ITokenRepositories;
     private UsersRepository: IUserRepository;
+    private TokenRepository: ITokenRepositories;
     
     constructor( userRepository: IUserRepository, tokenRepository: ITokenRepositories ) {
         this.UsersRepository = userRepository;

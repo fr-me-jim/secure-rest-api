@@ -20,7 +20,7 @@ class AdminController extends UserController {
      */
     public readonly getAllUserInfo = async (_req: Request, res: Response): Promise<Response> => {
         try {
-            const result = await User.findAll();
+            const result = await this.UsersRepository.getAllUsers();
 
             return res.send({ users: result }).status(200);
         } catch (error: any) {  
@@ -37,7 +37,7 @@ class AdminController extends UserController {
         if (!user) return res.sendStatus(401);
         if (!user.privileges) return res.sendStatus(403);
         try {
-            const result = await User.findOne({ where: { id: user.id }});
+            const result = await this.UsersRepository.getUserById( user.id );
             if(!result) return res.sendStatus(404);
 
             return res.send({ user: result }).status(200);
@@ -56,10 +56,7 @@ class AdminController extends UserController {
             const user: UserCreate | undefined = req.body;
             if(!user) return res.sendStatus(400);
 
-            const result = await User.create(
-                { ...user },
-                { returning: true }    
-            );
+            const result = await this.UsersRepository.createNewUser( user );
             if(!result) return res.sendStatus(500);
 
             return res.send({ user: result }).status(201);
@@ -80,12 +77,10 @@ class AdminController extends UserController {
             const newUser: UserEdit = req.body;
             if(!newUser) return res.sendStatus(400);
 
-            const [rows, result] = await User.update({ 
-                ...newUser 
-            }, { where: { id }, returning: true });
-            if(!rows) return res.sendStatus(404);
+            const user = await this.UsersRepository.updateUser( id, newUser );
+            if(!user) return res.sendStatus(404);
 
-            return res.send({ ...result[0] }).status(200);
+            return res.send({ ...user }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
             throw new Error(error);
@@ -100,7 +95,7 @@ class AdminController extends UserController {
             const id: string | undefined = req.params?.id;
             if(!id) return res.sendStatus(400);
 
-            const result = await User.destroy({ where: { id: parseInt(id) } });
+            const result = await this.UsersRepository.deleteUser( id );
             if(!result) return res.sendStatus(404);
 
             return res.sendStatus(204);
