@@ -8,39 +8,28 @@ import PassportConfig from "../auth/passport";
 import { IUserRepository } from "../interfaces/User.interface";
 import { ITokenRepositories } from "src/interfaces/Token.interface";
 
-
-// const passportConfig = new PassportConfig(passport, new UserRepositories());
-// export const strategy = passportConfig.SetStrategy();
-
-// middlewares
-import { isTokenBlacklisted, isAdminUser } from '../middlewares/auth.middlewares';
-// export const middlewares = [ 
-//     strategy.authenticate('jwt', { session: false }), 
-//     isTokenBlacklisted 
-// ];
-
 // repositories
 import UserRepositories from '../repositories/User.repositories';
 import TokenRepositories from '../repositories/Token.repositories';
+
+// middlewares
+import { 
+    isAdminUser,
+    isTokenBlacklisted 
+} from '../middlewares/auth.middlewares';
 
 // routes
 import AuthRouter from './Auth.routes';
 import UserRouter from './User.routes';
 import AdminRouter from "./Admin.routes";
 
-const router = Router();
+export default class RouterAPI {
+    private router: Router;
+    public readonly strategy: PassportStatic;
+    public readonly middlewares: { (): void }[];
 
-// router.use('/', AuthRoutes);
-// router.use('/users', ...middlewares, UserRoutes);
-// router.use('/admin', ...middlewares, isAdminUser, AdminRoutes);
-
-export class RouterAPI {
-    protected router: Router;
-    protected strategy: PassportStatic;
-    protected middlewares: { (): void }[];
-
-    protected UserRepository: IUserRepository;
-    protected TokenRepository: ITokenRepositories;
+    public readonly UserRepository: IUserRepository;
+    public readonly TokenRepository: ITokenRepositories;
 
     private AuthRouter: Router;
     private UserRouter: Router;
@@ -59,13 +48,13 @@ export class RouterAPI {
             isTokenBlacklisted 
         ];
 
-        this.AuthRouter = new AuthRouter().SetRoutes();    
-        this.UserRouter = new UserRouter().SetRoutes();
-        this.AdminRouter = new AdminRouter().SetRoutes();
+        this.AuthRouter = new AuthRouter(this).SetRoutes();    
+        this.UserRouter = new UserRouter(this).SetRoutes();
+        this.AdminRouter = new AdminRouter(this).SetRoutes();
     };
 
     public readonly InitializeRouter = (): Router => {
-        // TODO: add instances
+
         this.router.use('/', this.AuthRouter);
         this.router.use('/users', ...this.middlewares, this.UserRouter);
         this.router.use('/admin', ...this.middlewares, isAdminUser, this.AdminRouter);
@@ -73,5 +62,3 @@ export class RouterAPI {
         return this.router;
     };
 };
-
-export default router;

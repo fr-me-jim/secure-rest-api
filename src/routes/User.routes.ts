@@ -1,27 +1,21 @@
 import { Router } from "express";
-import { RouterAPI } from ".";
+
+// main RouterAPI
+import RouterAPI from ".";
 
 // controllers
 import UserController from '../controllers/User.controller';
 
-// repos
-// import UserRepositories from "../repositories/User.repositories";
-
-// router
-// const router = Router();
-
-// const controller = new UserController(new UserRepositories());
-
-// router.get("/profile", controller.getUserProfileInfo);
-// router.put("/profile/edit", controller.editProfileUser);
-
-export default class UserRouter extends RouterAPI {
+export default class UserRouter {
+    private router: Router;
+    // private routerAPI: RouterAPI;
     private userController: UserController;
 
-    constructor() {
-        super();
+    constructor(routerAPI: RouterAPI) {
+        this.router = Router();
 
-        this.userController = new UserController(this.UserRepository);
+        // this.routerAPI = routerAPI;
+        this.userController = new UserController(routerAPI.UserRepository);
     };
 
 
@@ -32,5 +26,3 @@ export default class UserRouter extends RouterAPI {
         return this.router;
     };
 };
-
-// export default router;

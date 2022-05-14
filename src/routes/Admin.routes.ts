@@ -1,26 +1,22 @@
 import { Router } from "express";
-import { RouterAPI } from ".";
+
+// main RouterAPI
+import RouterAPI from ".";
 
 // controllers
 import AdminController from '../controllers/Admin.controller';
 
-// repos
-// import UserRepositories from "../repositories/User.repositories";
+export default class AdminRouter {
+    private router: Router;
 
-// router
-// const router = Router();
-// const controller = new AdminController(new UserRepositories());
-
-// router.get("/users/show", controller.getAllUserInfo);
-// router.get("/users/show/:id", controller.getUserInfo);
-
-export default class AdminRouter extends RouterAPI {
+    private routerAPI: RouterAPI;
     private adminController: AdminController;
 
-    constructor() {
-        super();
+    constructor(routerAPI: RouterAPI) {
+        this.router = Router();
 
-        this.adminController = new AdminController(this.UserRepository);
+        this.routerAPI = routerAPI;
+        this.adminController = new AdminController(this.routerAPI.UserRepository);
     };
 
 

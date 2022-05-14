@@ -1,44 +1,31 @@
 import { Router } from "express";
-import { 
-    // strategy, middlewares, 
-    RouterAPI 
-} from '../routes/index';
+
+// main RouterAPI
+import RouterAPI from ".";
 
 // controllers
 import AuthController from "../controllers/Auth.controller";
 
-// repositories
-// import UserRepositories from '../repositories/User.repositories';
-// import TokenRepositories from "../repositories/Token.repositories";
-
-// router
-// const router = Router();
-// const controller = new AuthController(new UserRepositories(), new TokenRepositories());
-
-// router.post("/signin", controller.registerUser);
-// router.get("/logout", ...middlewares, controller.logout);
-// router.post("/login", strategy.authenticate('local', { session: false }), controller.login);
-
-export default class AuthRouter extends RouterAPI {
+export default class AuthRouter {
+    private router: Router;
+    private routerAPI: RouterAPI;
     private authController: AuthController;
 
-    constructor() {
-        super();
-
+    constructor(routerAPI: RouterAPI) {
+        this.router = Router();
+        this.routerAPI = routerAPI;
         this.authController = new AuthController(
-            this.UserRepository, 
-            this.TokenRepository
+            routerAPI.UserRepository, 
+            routerAPI.TokenRepository
         );
     };
 
     public readonly SetRoutes = (): Router => {
         this.router.post("/signin", this.authController.registerUser);
-        this.router.get("/logout", ...this.middlewares, this.authController.logout);
-        this.router.post("/login", this.strategy.authenticate('local', { session: false }), this.authController.login);
+        this.router.get("/logout", ...this.routerAPI.middlewares, this.authController.logout);
+        this.router.post("/login", this.routerAPI.strategy.authenticate('local', { session: false }), this.authController.login);
 
         return this.router;
     };
 
 };
-
-// export default router;
