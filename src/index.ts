@@ -12,7 +12,7 @@ import passport from 'passport';
 
 // routes
 // import Routes from "./routes/index";
-import router, { RouterAPI } from "./routes/index";
+import { RouterAPI } from "./routes/index";
 
 // database
 import connection from './models/index';

@@ -25,7 +25,6 @@ import TokenRepositories from '../repositories/Token.repositories';
 
 // routes
 import AuthRouter from './Auth.routes';
-import AdminRoutes from './Admin.routes';
 import UserRouter from './User.routes';
 import AdminRouter from "./Admin.routes";
 
