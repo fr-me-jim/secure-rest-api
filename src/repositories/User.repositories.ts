@@ -16,10 +16,10 @@ class UserRepositories implements IUserRepository {
 
     constructor() {};
 
-    public readonly getAllUsers = async (): Promise<User[]> => {
+    public readonly getAllUsers = async (exclusions: string[] = []): Promise<User[]> => {
         try {
             const users = await this._model.findAll({ 
-                attributes: { exclude: ["password"] },
+                attributes: { exclude: exclusions },
                 raw: true 
             });
             return users;
@@ -28,13 +28,13 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUserById = async (id: string): Promise<User | null> => {
+    public readonly getUserById = async (id: string, exclusions: string[] = []): Promise<User | null> => {
         if (!id) throw new Error("Required Id must be a non-empty string");
         
         try {
             const user = await this._model.findOne({ 
                 where: { id },
-                attributes: { exclude: ["password"] }, 
+                attributes: { exclude: exclusions }, 
                 raw: true 
             });
 
@@ -44,13 +44,29 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUsersByAttributes = async (userAttributes: UserAttributes): Promise<User[]> => {
+    public readonly getUserByEmail = async (email: string, exclusions: string[] = []): Promise<User | null> => {
+        if (!email) throw new Error("Required Id must be a non-empty string");
+        
+        try {
+            const user = await this._model.findOne({ 
+                where: { email },
+                attributes: { exclude: exclusions }, 
+                raw: true 
+            });
+
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public readonly getUsersByAttributes = async (userAttributes: UserAttributes, exclusions: string[] = []): Promise<User[]> => {
         if (!userAttributes) throw new Error("Required Object with attributes to search");
         
         try {
             const users = await this._model.findAll({ 
                 where: { ...userAttributes }, 
-                attributes: { exclude: ["password"] },
+                attributes: { exclude: exclusions },
                 raw: true 
             });
             return users;
