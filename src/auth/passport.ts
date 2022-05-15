@@ -69,7 +69,7 @@ export default class PassportConfig {
             if (!user) return done(null, false);
             console.log('[USER]: ', user)
             console.log('[User Password]: ', user.password);
-            const isValid: boolean = await user.isValidPassword(user.password, password);
+            const isValid: boolean = await (user as User).isValidPassword(user.password, password);
             if (!isValid) return done(null, false);
 
             return done(null, user);
