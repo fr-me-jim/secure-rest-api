@@ -29,7 +29,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
      * @desc Instance Method to check passwords
      **/
     async isValidPassword(userPassword: string, inputPassword: string): Promise<boolean> {  
-        console.log('[Password: ', this.password);
+        console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(userPassword, inputPassword);
         } catch (error: any) {
@@ -82,7 +82,7 @@ User.beforeSave( async (user: User) => {
         const hashedPassword = await argon2.hash(user.password);
         user.password = hashedPassword;
     } catch (error: unknown) {
-        throw new Error(<string>error);
+        throw error;
     }
 });
 
