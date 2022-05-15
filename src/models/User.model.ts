@@ -39,6 +39,16 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     };
 };
 
+// User.prototype.isValidPassword = async (inputPassword: string): Promise<boolean> => {  
+//     console.log('[This Password]: ', this.password);
+//     try {
+//         return await argon2.verify(this.password, inputPassword);
+//     } catch (error: any) {
+//         throw new Error(error);
+//     }
+    
+// };
+
 User.init({
     id: {
         type: DataTypes.UUID,
