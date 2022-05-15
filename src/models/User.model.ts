@@ -28,7 +28,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    isValidPassword = async (inputPassword: string): Promise<boolean> => {  
+    public readonly isValidPassword = async (inputPassword: string): Promise<boolean> => {  
         console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(this.password, inputPassword);
@@ -38,16 +38,6 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
         
     };
 };
-
-// User.prototype.isValidPassword = async (inputPassword: string): Promise<boolean> => {  
-//     console.log('[This Password]: ', this.password);
-//     try {
-//         return await argon2.verify(this.password, inputPassword);
-//     } catch (error: any) {
-//         throw new Error(error);
-//     }
-    
-// };
 
 User.init({
     id: {
@@ -82,13 +72,12 @@ User.init({
     sequelize: connection, 
     modelName: 'User', 
     tableName: 'users', 
-    timestamps: true, createdAt: true, updatedAt: true, deletedAt: true 
+    timestamps: true, createdAt: true, updatedAt: true, deletedAt: true
 });
 
 User.beforeSave( async (user: User) => {
     if (!user.password) return;
     try {
-        // const hashedPassword = await bcrypt.hash(user.password, 10);
         const hashedPassword = await argon2.hash(user.password);
         user.password = hashedPassword;
     } catch (error: unknown) {
