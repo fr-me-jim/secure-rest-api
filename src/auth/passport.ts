@@ -67,6 +67,7 @@ export default class PassportConfig {
         try {
             const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserAttributes));
             if (!user) return done(null, false);
+            console.log('[USER]: ', user)
             console.log('[User Password]: ', user.password);
             const isValid: boolean = await user.isValidPassword(user.password, password);
             if (!isValid) return done(null, false);
