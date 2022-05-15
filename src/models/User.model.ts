@@ -28,10 +28,10 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    public readonly isValidPassword = async (inputPassword: string): Promise<boolean> => {  
-        console.log('[This Password]: ', this.password);
+    public readonly isValidPassword = async (userPassword:string, inputPassword: string): Promise<boolean> => {  
+        // console.log('[This Password]: ', this.password);
         try {
-            return await argon2.verify(this.password, inputPassword);
+            return await argon2.verify(userPassword, inputPassword);
         } catch (error: any) {
             throw new Error(error);
         }
