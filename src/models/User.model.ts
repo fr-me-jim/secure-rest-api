@@ -28,7 +28,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    async isValidPassword(_userPassword: string | undefined, _inputPassword: string): Promise<boolean> {  
+    public async isValidPassword(_userPassword: string | undefined, _inputPassword: string): Promise<boolean> {  
         console.log('[This Password]: ', this.password);
         try {
             return true;
