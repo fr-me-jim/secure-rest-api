@@ -15,8 +15,6 @@ import {
  * @module  User
  * @description contain the details of Attribute
  */
-// const { Model, DataTypes } = sqlize;
-
 class User extends Model<IUserAttributes, IUserInput> implements IUserInstance {
     declare id: string;
     declare email: string;
@@ -29,10 +27,10 @@ class User extends Model<IUserAttributes, IUserInput> implements IUserInstance {
     declare readonly updatedAt?: Date;
     declare readonly deletedAt?: Date;
 
-    // /**
-    //  * @method isValidPassword
-    //  * @desc Instance Method to check passwords
-    //  **/
+    /**
+     * @method isValidPassword
+     * @desc Instance Method to check passwords
+     **/
     isValidPassword = async (inputPassword: string): Promise<boolean> => {  
         console.log('[This Password]: ', this.password);
         try {

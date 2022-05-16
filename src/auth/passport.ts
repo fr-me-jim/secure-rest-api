@@ -9,7 +9,8 @@ import User from "../models/User.model";
 // interfaces
 import { 
     UserType,
-    IUserRepository 
+    IUserRepository, 
+    IUserInstance
 } from "../interfaces/User.interface";
 
 export default class PassportConfig {
@@ -68,7 +69,7 @@ export default class PassportConfig {
             const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserType),  []);
             if (!user) return done(null, false);
             console.log('[USER]: ', user)
-            const isValid: boolean = await user.isValidPassword(password);
+            const isValid: boolean = await (user as User).isValidPassword(password);
             if (!isValid) return done(null, false);
 
             return done(null, user);
