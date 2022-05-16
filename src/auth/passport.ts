@@ -10,7 +10,6 @@ import User from "../models/User.model";
 import { 
     UserType,
     IUserRepository, 
-    IUserInstance
 } from "../interfaces/User.interface";
 
 export default class PassportConfig {
