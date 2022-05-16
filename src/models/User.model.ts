@@ -12,7 +12,7 @@ import {
  */
 const { Model, DataTypes } = sqlize;
 
-class User extends Model<UserAttributes, UserInput> implements UserAttributes {
+class User extends Model<UserAttributes, UserInput> {
     declare id: string;
     declare email: string;
     declare password: string;

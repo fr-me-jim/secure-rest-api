@@ -21,6 +21,8 @@ export type UserAttributes = {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
+
+  // isValidPassword?(password: string): Promise<boolean>;
 };
 
 export interface UserInput extends Optional<UserAttributes, 'id' | 'privileges'> {};
