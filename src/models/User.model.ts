@@ -1,10 +1,10 @@
 import argon2 from "argon2";
 import sqlize from "sequelize";
 import connection from "../models/index";
-import {
-    UserInput,
-    UserAttributes
-} from '../interfaces/User.interface';
+// import {
+//     UserInput,
+//     UserAttributes
+// } from '../interfaces/User.interface';
 
 /**
  * @module  User
@@ -12,7 +12,7 @@ import {
  */
 const { Model, DataTypes } = sqlize;
 
-class User extends Model<UserAttributes, UserInput> {
+class User extends Model {
     declare id: string;
     declare email: string;
     declare password: string;
