@@ -20,7 +20,7 @@ class AdminController extends UserController {
      */
     public readonly getAllUserInfo = async (_req: Request, res: Response): Promise<Response> => {
         try {
-            const result = await this.UsersRepository.getAllUsers(["password"]);
+            const result = await this.UsersRepository.getAllUsers();
 
             return res.send({ users: result }).status(200);
         } catch (error: any) {  
@@ -37,7 +37,7 @@ class AdminController extends UserController {
         if (!user) return res.sendStatus(401);
         if (!user.privileges) return res.sendStatus(403);
         try {
-            const result = await this.UsersRepository.getUserById( user.id, ["password"] );
+            const result = await this.UsersRepository.getUserById( user.id );
             if(!result) return res.sendStatus(404);
 
             return res.send({ user: result }).status(200);

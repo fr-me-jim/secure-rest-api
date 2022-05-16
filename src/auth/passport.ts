@@ -50,7 +50,7 @@ export default class PassportConfig {
      */
     private getUserByJWT = async (token: { id: string; }, done: VerifiedCallback): Promise<void> => {
         try {
-            const user = await this.UsersRepository.getUserById(token.id, ["password"]);
+            const user = await this.UsersRepository.getUserById(token.id);
             if (!user) return done(null, false);
 
             return done(null, user);
@@ -65,10 +65,10 @@ export default class PassportConfig {
      */
     private checkUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
         try {
-            const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserAttributes));
+            const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserAttributes),  []);
             if (!user) return done(null, false);
             console.log('[USER]: ', user)
-            const isValid: boolean = await user.isValidPassword(user.password, password);
+            const isValid: boolean = await user.isValidPassword(password);
             if (!isValid) return done(null, false);
 
             return done(null, user);

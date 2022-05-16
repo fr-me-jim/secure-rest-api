@@ -16,7 +16,7 @@ class UserRepositories implements IUserRepository {
 
     constructor() {};
 
-    public readonly getAllUsers = async (exclusions: string[] = []): Promise<User[]> => {
+    public readonly getAllUsers = async (exclusions: string[] = ["password"]): Promise<User[]> => {
         try {
             const users = await this._model.findAll({ 
                 attributes: { exclude: exclusions },
@@ -28,7 +28,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUserById = async (id: string, exclusions: string[] = []): Promise<User | null> => {
+    public readonly getUserById = async (id: string, exclusions: string[] = ["password"]): Promise<User | null> => {
         if (!id) throw new Error("Required Id must be a non-empty string");
         
         try {
@@ -44,7 +44,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUserByEmail = async (email: string, exclusions: string[] = []): Promise<User | null> => {
+    public readonly getUserByEmail = async (email: string, exclusions: string[] = ["password"]): Promise<User | null> => {
         if (!email) throw new Error("Required Id must be a non-empty string");
         
         try {
