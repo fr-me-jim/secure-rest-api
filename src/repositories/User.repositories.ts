@@ -7,7 +7,7 @@ import User from '../models/User.model';
 import { 
     UserEdit,
     UserCreate,
-    UserAttributes,
+    UserType,
     IUserRepository
 } from '../interfaces/User.interface';
 
@@ -60,7 +60,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUsersByAttributes = async (userAttributes: UserAttributes, exclusions: string[] = []): Promise<User[]> => {
+    public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = []): Promise<User[]> => {
         if (!userAttributes) throw new Error("Required Object with attributes to search");
         
         try {

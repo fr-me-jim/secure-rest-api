@@ -1,17 +1,19 @@
-import { Optional } from 'sequelize'
+import { Optional } from 'sequelize';
+
+// model
 import User from '../models/User.model';
 
 export interface IUserRepository {
   getAllUsers(exclusions?: string[]): Promise<User[]>;
   getUserById(id: string, exclusions?: string[]): Promise<User | null>;
-  getUsersByAttributes(userAttributes: UserAttributes, exclusions?: string[]): Promise<User[]>;
+  getUsersByAttributes(userAttributes: UserType, exclusions?: string[]): Promise<User[]>;
   createNewUser(newUser: UserCreate): Promise<User | null>;
   updateUser(id:string, newUserData: UserEdit): Promise<User | null>;
   updateUserPassword(id:string, newUserPassword: string): Promise<User | null>;
   deleteUser( id:string ): Promise<number | null>;
 };
 
-export type UserAttributes = {
+export interface IUserAttributes {
   id: string;
   email: string;
   password: string;
@@ -21,14 +23,15 @@ export type UserAttributes = {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
-
-  // isValidPassword?(password: string): Promise<boolean>;
 };
 
-export interface UserInput extends Optional<UserAttributes, 'id' | 'privileges'> {};
-export interface UserOuput extends Required<UserAttributes> {};
+export interface IUserInstance extends IUserAttributes {
+  isValidPassword(password: string): Promise<boolean>;
+};
+export interface IUserInput extends Optional<IUserAttributes, 'id' | 'privileges'> {};
+export interface IUserOuput extends Required<IUserAttributes> {};
 
-export type UserType = UserAttributes;
+export type UserType = IUserAttributes;
 
 export type UserLogin = {
   email: string,

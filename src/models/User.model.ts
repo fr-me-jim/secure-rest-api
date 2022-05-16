@@ -1,18 +1,23 @@
 import argon2 from "argon2";
-import sqlize from "sequelize";
+import { Model, DataTypes } from "sequelize";
+
+// database connection
 import connection from "../models/index";
-// import {
-//     UserInput,
-//     UserAttributes
-// } from '../interfaces/User.interface';
+
+// interfaces
+import {
+    IUserInput,
+    IUserInstance,
+    IUserAttributes
+} from '../interfaces/User.interface';
 
 /**
  * @module  User
  * @description contain the details of Attribute
  */
-const { Model, DataTypes } = sqlize;
+// const { Model, DataTypes } = sqlize;
 
-class User extends Model {
+class User extends Model<IUserAttributes, IUserInput> implements IUserInstance {
     declare id: string;
     declare email: string;
     declare password: string;
@@ -52,7 +57,8 @@ User.init({
         validate: { isEmail: true }
     },
     password: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
     },
     firstName: {
         type: DataTypes.STRING,

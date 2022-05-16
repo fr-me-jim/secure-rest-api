@@ -8,7 +8,7 @@ import User from "../models/User.model";
 
 // interfaces
 import { 
-    UserAttributes,
+    UserType,
     IUserRepository 
 } from "../interfaces/User.interface";
 
@@ -65,7 +65,7 @@ export default class PassportConfig {
      */
     private checkUserLocal = async (email: string, password: string, done: VerifiedCallback): Promise<void> => {
         try {
-            const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserAttributes),  []);
+            const [ user ] = await this.UsersRepository.getUsersByAttributes(({ email } as UserType),  []);
             if (!user) return done(null, false);
             console.log('[USER]: ', user)
             const isValid: boolean = await user.isValidPassword(password);
