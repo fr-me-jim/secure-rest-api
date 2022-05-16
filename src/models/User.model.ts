@@ -29,11 +29,11 @@ class User extends Model<IUserAttributes, IUserInput> implements IUserInstance {
     declare readonly updatedAt?: Date;
     declare readonly deletedAt?: Date;
 
-    /**
-     * @method isValidPassword
-     * @desc Instance Method to check passwords
-     **/
-    public readonly isValidPassword = async (inputPassword: string): Promise<boolean> => {  
+    // /**
+    //  * @method isValidPassword
+    //  * @desc Instance Method to check passwords
+    //  **/
+    isValidPassword = async (inputPassword: string): Promise<boolean> => {  
         console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(this.password, inputPassword);
