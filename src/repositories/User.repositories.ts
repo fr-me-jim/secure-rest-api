@@ -108,7 +108,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly updateUserPassword = async (id:string, newUserPassword: string): Promise<User | null> => {
+    public readonly updateUserPassword = async (id: string, newUserPassword: string): Promise<User | null> => {
         if (!newUserPassword || !id) throw new Error("Wrong number of parameters.");
         
         try {

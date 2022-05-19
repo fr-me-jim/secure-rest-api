@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import { Model, DataTypes } from "sequelize";
 import { 
-    // NonAttribute, 
+    NonAttribute, 
     InferAttributes, 
     CreationOptional, 
     InferCreationAttributes, 
@@ -39,7 +39,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>>
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    isValidPassword = async (inputPassword: string): Promise<boolean> => {  
+    async isValidPassword(inputPassword: string): Promise<NonAttribute<boolean>> {  
         console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(this.password, inputPassword);

@@ -1,15 +1,15 @@
 import { Optional } from 'sequelize';
 
 // model
-// import User from '../models/User.model';
+import User from '../models/User.model';
 
 export interface IUserRepository {
-  getAllUsers(exclusions?: string[]): Promise<UserType[]>;
-  getUserById(id: string, exclusions?: string[]): Promise<UserType | null>;
-  getUsersByAttributes(userAttributes: UserType, exclusions?: string[]): Promise<UserType[]>;
-  createNewUser(newUser: UserCreate): Promise<UserType | null>;
-  updateUser(id:string, newUserData: UserEdit): Promise<UserType | null>;
-  updateUserPassword(id:string, newUserPassword: string): Promise<UserType | null>;
+  getAllUsers(exclusions?: string[]): Promise<User[]>;
+  getUserById(id: string, exclusions?: string[]): Promise<User | null>;
+  getUsersByAttributes(userAttributes: UserType, exclusions?: string[]): Promise<User[]>;
+  createNewUser(newUser: UserCreate): Promise<User | null>;
+  updateUser(id:string, newUserData: UserEdit): Promise<User | null>;
+  updateUserPassword(id:string, newUserPassword: string): Promise<User | null>;
   deleteUser( id:string ): Promise<number | null>;
 };
 
