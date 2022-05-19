@@ -1,28 +1,28 @@
 import argon2 from "argon2";
 import { Model, DataTypes } from "sequelize";
 import { 
-    NonAttribute, 
+    // NonAttribute, 
     InferAttributes, 
     CreationOptional, 
-    InferCreationAttributes, 
+    InferCreationAttributes
 } from "sequelize";
 
 // database connection
 import connection from "../models/index";
 
 // interfaces
-// import {
-//     IUserInput,
-//     IUserInstance,
-//     IUserAttributes
-// } from '../interfaces/User.interface';
+import {
+    // IUserInput,
+    IUserInstance,
+    // IUserAttributes
+} from '../interfaces/User.interface';
 
 /**
  * @module  User
  * @description contain the details of Attribute
  */
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> 
-// implements IUserInstance 
+implements IUserInstance 
 {
     declare id: CreationOptional<string>;
     declare email: string;
@@ -34,18 +34,22 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>>
     declare readonly createdAt?: CreationOptional<Date>;
     declare readonly updatedAt?: CreationOptional<Date>;
     declare readonly deletedAt?: CreationOptional<Date>;
-
+    
     /**
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    async isValidPassword(inputPassword: string): Promise<NonAttribute<boolean>> {  
+    async isValidPassword(inputPassword: string): Promise<boolean> {  
         console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(this.password, inputPassword);
         } catch (error: any) {
             throw new Error(error);
         }
+    };
+
+    testMethod(): void {
+        console.log("Working")
     };
 };
 
