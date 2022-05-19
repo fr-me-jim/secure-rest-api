@@ -69,8 +69,7 @@ class UserRepositories implements IUserRepository {
                 attributes: { exclude: exclusions },
                 raw: true 
             });
-            console.log("Repository\n")
-            users[0].testMethod()
+            
             return users;
         } catch (error) {
             throw error;

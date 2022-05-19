@@ -25,12 +25,11 @@ export interface IUserAttributes {
   updatedAt?: Date;
   deletedAt?: Date;
 
-  isValidPassword(password: string): Promise<boolean>;
-  testMethod(): void;
+  isValidPassword(userPwd:string, password: string): Promise<boolean>;
 };
 
 export interface IUserInstance extends IUserAttributes {
-  isValidPassword(password: string): Promise<boolean>;
+  isValidPassword(userPwd:string, password: string): Promise<boolean>;
 };
 export interface IUserInput extends Optional<IUserAttributes, 'id' | 'privileges'> {};
 export interface IUserOuput extends Required<IUserAttributes> {};

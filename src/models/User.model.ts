@@ -39,17 +39,13 @@ implements IUserInstance
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    async isValidPassword(inputPassword: string): Promise<boolean> {  
-        console.log('[This Password]: ', this.password);
+    async isValidPassword(userPassword: string, inputPassword: string): Promise<boolean> {  
+        // console.log('[This Password]: ', this.password);
         try {
-            return await argon2.verify(this.password, inputPassword);
+            return await argon2.verify(userPassword, inputPassword);
         } catch (error: any) {
             throw new Error(error);
         }
-    };
-
-    testMethod(): void {
-        console.log("Working")
     };
 };
 
@@ -89,7 +85,14 @@ User.init({
     tableName: 'users', 
     timestamps: true, createdAt: true, updatedAt: true, deletedAt: true
 });
-
+User.prototype.isValidPassword = async (userPassword: string, inputPassword: string): Promise<boolean> => {
+    // console.log('[This Password]: ', this.password);
+    try {
+        return await argon2.verify(userPassword, inputPassword);
+    } catch (error: any) {
+        throw new Error(error);
+    }
+}
 User.beforeSave( async (user: User) => {
     if (!user.password) return;
     try {
