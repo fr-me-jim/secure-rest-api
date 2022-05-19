@@ -20,9 +20,12 @@ export interface IUserAttributes {
   firstName: string;
   secondName: string;
   privileges: number;
+
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
+
+  isValidPassword(password: string): Promise<boolean>;
 };
 
 export interface IUserInstance extends IUserAttributes {

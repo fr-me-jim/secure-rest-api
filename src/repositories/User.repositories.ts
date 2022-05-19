@@ -5,10 +5,10 @@ import User from '../models/User.model';
 
 // interfaces
 import { 
+    UserType,
     UserEdit,
     UserCreate,
-    UserType,
-    IUserRepository
+    IUserRepository,
 } from '../interfaces/User.interface';
 
 class UserRepositories implements IUserRepository {
@@ -16,7 +16,7 @@ class UserRepositories implements IUserRepository {
 
     constructor() {};
 
-    public readonly getAllUsers = async (exclusions: string[] = ["password"]): Promise<UserType[]> => {
+    public readonly getAllUsers = async (exclusions: string[] = ["password"]): Promise<User[]> => {
         try {
             const users = await this._model.findAll({ 
                 attributes: { exclude: exclusions },
@@ -28,7 +28,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUserById = async (id: string, exclusions: string[] = ["password"]): Promise<UserType | null> => {
+    public readonly getUserById = async (id: string, exclusions: string[] = ["password"]): Promise<User | null> => {
         if (!id) throw new Error("Required Id must be a non-empty string");
         
         try {
@@ -44,7 +44,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUserByEmail = async (email: string, exclusions: string[] = ["password"]): Promise<UserType | null> => {
+    public readonly getUserByEmail = async (email: string, exclusions: string[] = ["password"]): Promise<User | null> => {
         if (!email) throw new Error("Required Id must be a non-empty string");
         
         try {
@@ -60,7 +60,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = []): Promise<UserType[]> => {
+    public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = []): Promise<User[]> => {
         if (!userAttributes) throw new Error("Required Object with attributes to search");
         
         try {
@@ -75,7 +75,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly createNewUser = async (newUser: UserCreate): Promise<UserType | null> => {
+    public readonly createNewUser = async (newUser: UserCreate): Promise<User | null> => {
         if (!newUser) throw new Error("Wrong number of parameters.");
         
         try {
@@ -91,7 +91,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly updateUser = async (id:string, newUserData: UserEdit): Promise<UserType | null> => {
+    public readonly updateUser = async (id:string, newUserData: UserEdit): Promise<User | null> => {
         if (!id || !newUserData) throw new Error("Wrong number of parameters.");
         
         try {
@@ -108,7 +108,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly updateUserPassword = async (id:string, newUserPassword: string): Promise<UserType | null> => {
+    public readonly updateUserPassword = async (id:string, newUserPassword: string): Promise<User | null> => {
         if (!newUserPassword || !id) throw new Error("Wrong number of parameters.");
         
         try {
