@@ -2,9 +2,9 @@ import argon2 from "argon2";
 import { Model, DataTypes } from "sequelize";
 import { 
     // NonAttribute, 
-    InferAttributes, 
-    CreationOptional, 
-    InferCreationAttributes
+    // InferAttributes, 
+    // CreationOptional, 
+    // InferCreationAttributes
 } from "sequelize";
 
 // database connection
@@ -12,34 +12,34 @@ import connection from "../models/index";
 
 // interfaces
 import {
-    // IUserInput,
+    IUserInput,
     IUserInstance,
-    // IUserAttributes
+    IUserAttributes
 } from '../interfaces/User.interface';
 
 /**
  * @module  User
  * @description contain the details of Attribute
  */
-class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> 
+class User extends Model<IUserAttributes, IUserInput> 
 implements IUserInstance 
 {
-    declare id: CreationOptional<string>;
+    declare id: string;
     declare email: string;
     declare password: string;
     declare firstName: string;
     declare secondName: string;
-    declare privileges: CreationOptional<number>;
+    declare privileges: number;
 
-    declare readonly createdAt?: CreationOptional<Date>;
-    declare readonly updatedAt?: CreationOptional<Date>;
-    declare readonly deletedAt?: CreationOptional<Date>;
+    declare readonly createdAt?: Date;
+    declare readonly updatedAt?: Date;
+    declare readonly deletedAt?: Date;
     
     /**
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    async isValidPassword(inputPassword: string): Promise<boolean> {  
+    public async isValidPassword(inputPassword: string): Promise<boolean> {  
         console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(this.password, inputPassword);
@@ -86,14 +86,14 @@ User.init({
     timestamps: true, createdAt: true, updatedAt: true, deletedAt: true
 });
 
-User.prototype.isValidPassword = async function(inputPassword: string) {
-    console.log('[This Password]: ', this.password);
-        try {
-            return await argon2.verify(this.password, inputPassword);
-        } catch (error: any) {
-            throw new Error(error);
-        }
-};
+// User.prototype.isValidPassword = async function(inputPassword: string) {
+//     console.log('[This Password]: ', this.password);
+//         try {
+//             return await argon2.verify(this.password, inputPassword);
+//         } catch (error: any) {
+//             throw new Error(error);
+//         }
+// };
 
 User.beforeSave( async (user: User) => {
     if (!user.password) return;

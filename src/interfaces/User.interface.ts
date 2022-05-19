@@ -25,7 +25,7 @@ export interface IUserAttributes {
   updatedAt?: Date;
   deletedAt?: Date;
 
-  isValidPassword(password: string): Promise<boolean>;
+  // isValidPassword(password: string): Promise<boolean>;
 };
 
 export interface IUserInstance extends IUserAttributes {
