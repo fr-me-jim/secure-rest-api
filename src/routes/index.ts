@@ -6,7 +6,7 @@ import PassportConfig from "../auth/passport";
 
 // interfaces
 import { IUserRepository } from "../interfaces/User.interface";
-import { ITokenRepositories } from "src/interfaces/Token.interface";
+import { ITokenRepositories } from "../interfaces/Token.interface";
 
 // repositories
 import UserRepositories from '../repositories/User.repositories';
