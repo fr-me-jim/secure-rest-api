@@ -39,12 +39,12 @@ implements IUserInstance
      * @method isValidPassword
      * @desc Instance Method to check passwords
      **/
-    public async isValidPassword(inputPassword: string): Promise<boolean> {  
+    async isValidPassword(inputPassword: string): Promise<boolean> {  
         console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(this.password, inputPassword);
-        } catch (error: any) {
-            throw new Error(error);
+        } catch (error: unknown) {
+            throw error;
         }
     };
 };

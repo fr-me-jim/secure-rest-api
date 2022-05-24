@@ -28,7 +28,7 @@ export interface IUserAttributes {
   // isValidPassword(password: string): Promise<boolean>;
 };
 
-export interface IUserInstance extends IUserAttributes {
+export interface IUserInstance {
   isValidPassword(password: string): Promise<boolean>;
 };
 export interface IUserInput extends Optional<IUserAttributes, 'id' | 'privileges'> {};
