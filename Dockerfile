@@ -1,7 +1,7 @@
 FROM node:16.14.0-alpine
 
 # user for server
-RUN groupadd -r api && adduser -r -g api api 
+# RUN groupadd -r api && adduser -r -g api api 
 
 # Create app directory
 WORKDIR /usr/src/app
