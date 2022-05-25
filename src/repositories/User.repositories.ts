@@ -70,7 +70,8 @@ class UserRepositories implements IUserRepository {
                 raw: true 
             });
             console.log("Login")
-            await users[0].isValidPassword("test")
+            const user = users.pop()
+            if(user) await user.isValidPassword("test")
             return users;
         } catch (error) {
             throw error;
