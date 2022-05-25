@@ -12,16 +12,17 @@ import connection from "../models/index";
 
 // interfaces
 import {
-    IUserInput,
+    // IUserInput,
     IUserInstance,
-    IUserAttributes
+    // IUserAttributes
 } from '../interfaces/User.interface';
 
 /**
  * @module  User
  * @description contain the details of Attribute
  */
-class User extends Model<IUserAttributes, IUserInput> 
+class User extends Model
+// <IUserAttributes, IUserInput> 
 implements IUserInstance 
 {
     declare id: string;
@@ -88,14 +89,14 @@ User.init({
     updatedAt: true
 });
 
-User.prototype.isValidPassword = async function(inputPassword: string) {
-    console.log('[This Password]: ', this.password);
-        try {
-            return await argon2.verify(this.password, inputPassword);
-        } catch (error: any) {
-            throw new Error(error);
-        }
-};
+// User.prototype.isValidPassword = async function(inputPassword: string) {
+//     console.log('[This Password]: ', this.password);
+//         try {
+//             return await argon2.verify(this.password, inputPassword);
+//         } catch (error: any) {
+//             throw new Error(error);
+//         }
+// };
 
 User.beforeSave( async (user: User) => {
     if (!user.password) return;
