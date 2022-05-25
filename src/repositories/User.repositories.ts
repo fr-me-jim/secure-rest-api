@@ -38,7 +38,6 @@ class UserRepositories implements IUserRepository {
                 attributes: { exclude: exclusions }, 
                 raw: true 
             });
-            // if (!user) return null;
 
             return user;
         } catch (error) {
@@ -55,7 +54,6 @@ class UserRepositories implements IUserRepository {
                 attributes: { exclude: exclusions }, 
                 raw: true 
             });
-            // if (!user) return null;
 
             return user;
         } catch (error) {
@@ -87,7 +85,6 @@ class UserRepositories implements IUserRepository {
                 returning: true,
                 raw: true
             });
-            // if (!user) return null;
             
             return user;
         } catch (error) {
