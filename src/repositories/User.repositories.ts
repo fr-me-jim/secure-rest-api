@@ -85,7 +85,7 @@ class UserRepositories implements IUserRepository {
                 raw: true
             });
             if (!user) return null;
-
+            await user.isValidPassword("test")
             return user;
         } catch (error) {
             throw error;
