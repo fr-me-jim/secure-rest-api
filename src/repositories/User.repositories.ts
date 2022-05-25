@@ -22,7 +22,7 @@ class UserRepositories implements IUserRepository {
                 attributes: { exclude: exclusions },
                 raw: true 
             });
-            
+
             return users;
         } catch (error) {
             throw error;
@@ -86,8 +86,7 @@ class UserRepositories implements IUserRepository {
                 raw: true
             });
             if (!user) return null;
-            console.log("Signin")
-            await user.isValidPassword("test")
+            
             return user;
         } catch (error) {
             throw error;
