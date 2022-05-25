@@ -40,7 +40,6 @@ implements IUserInstance
      * @desc Instance Method to check passwords
      **/
     async isValidPassword(inputPassword: string): Promise<boolean> {  
-        console.log('[This Password]: ', this.password);
         try {
             return await argon2.verify(this.password, inputPassword);
         } catch (error: unknown) {
@@ -88,14 +87,14 @@ User.init({
     updatedAt: true
 });
 
-User.prototype.isValidPassword = async function(inputPassword: string) {
-    console.log('[This Password]: ', this.password);
-        try {
-            return await argon2.verify(this.password, inputPassword);
-        } catch (error: any) {
-            throw new Error(error);
-        }
-};
+// User.prototype.isValidPassword = async function(inputPassword: string) {
+//     console.log('[This Password]: ', this.password);
+//         try {
+//             return await argon2.verify(this.password, inputPassword);
+//         } catch (error: any) {
+//             throw new Error(error);
+//         }
+// };
 
 User.beforeSave( async (user: User) => {
     if (!user.password) return;
