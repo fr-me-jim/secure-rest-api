@@ -1,5 +1,8 @@
 FROM node:16.14.0-alpine
 
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH=$PATH:/home/node/.npm-global/bin
+
 # Create app directory
 WORKDIR /usr/src/app
 
