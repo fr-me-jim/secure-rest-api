@@ -1,8 +1,5 @@
 FROM node:16.14.0-alpine
 
-# user for server
-# RUN groupadd -r api && adduser -r -g api api 
-
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -17,6 +14,6 @@ RUN npm run build
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
 
 EXPOSE 9000
-USER api:api
+USER node
 
 CMD ["npm", "start"]
