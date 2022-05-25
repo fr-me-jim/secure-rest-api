@@ -16,7 +16,7 @@ class UserRepositories implements IUserRepository {
 
     constructor() {};
 
-    public readonly getAllUsers = async (exclusions: string[] = ["password"]): Promise<User[]> => {
+    public readonly getAllUsers = async (exclusions: string[] = ["password"]): Promise<User []> => {
         try {
             const users = await this._model.findAll({ 
                 attributes: { exclude: exclusions },
@@ -60,7 +60,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = []): Promise<User[]> => {
+    public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = []): Promise<User []> => {
         if (!userAttributes) throw new Error("Required Object with attributes to search");
         
         try {
@@ -70,7 +70,7 @@ class UserRepositories implements IUserRepository {
                 raw: true 
             });
             console.log("Login")
-            const user = users.pop()
+            const user = new User(users[0]);
             if(user) await user.isValidPassword("test")
             return users;
         } catch (error) {
