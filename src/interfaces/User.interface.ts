@@ -6,6 +6,7 @@ import User from '../models/User.model';
 export interface IUserRepository {
   getAllUsers(exclusions?: string[]): Promise<User[]>;
   getUserById(id: string, exclusions?: string[]): Promise<User | null>;
+  getUserByEmail(email: string, exclusions: string[]): Promise<User | null>
   getUsersByAttributes(userAttributes: UserType, exclusions?: string[]): Promise<User[]>;
   createNewUser(newUser: UserCreate): Promise<User | null>;
   updateUser(id:string, newUserData: UserEdit): Promise<User | null>;
