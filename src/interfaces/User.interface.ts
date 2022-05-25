@@ -23,12 +23,11 @@ export interface IUserAttributes {
 
   createdAt?: Date;
   updatedAt?: Date;
-  deletedAt?: Date;
-
+  
   // isValidPassword(password: string): Promise<boolean>;
 };
 
-export interface IUserInstance {
+export interface IUserInstance extends IUserAttributes {
   isValidPassword(password: string): Promise<boolean>;
 };
 export interface IUserInput extends Optional<IUserAttributes, 'id' | 'privileges'> {};

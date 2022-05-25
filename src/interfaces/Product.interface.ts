@@ -8,9 +8,9 @@ export type ProductAttributes = {
     premium: boolean;
     category: string;
     description: string;
+    
     createdAt?: Date;
     updatedAt?: Date;
-    deletedAt?: Date;
   };
   
   export interface ProductInput extends Optional<ProductAttributes, 'id'> {};

@@ -15,7 +15,6 @@ export type TokenAttributes = {
 
   createdAt?: Date;
   updatedAt?: Date;
-  deletedAt?: Date;
 };
 
 export interface TokenInput extends Optional<TokenAttributes, 'id'> {};
