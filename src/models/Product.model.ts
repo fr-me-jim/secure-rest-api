@@ -67,7 +67,9 @@ Product.init({
     sequelize: connection, 
     modelName: 'Product', 
     tableName: 'products', 
-    timestamps: true, createdAt: true, updatedAt: true, deletedAt: true 
+    timestamps: true, 
+    createdAt: true, 
+    updatedAt: true
 });
 
 export default Product;

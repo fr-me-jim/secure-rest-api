@@ -83,7 +83,9 @@ User.init({
     sequelize: connection, 
     modelName: 'User', 
     tableName: 'users', 
-    timestamps: true, createdAt: true, updatedAt: true, deletedAt: true
+    timestamps: true, 
+    createdAt: true, 
+    updatedAt: true
 });
 
 User.prototype.isValidPassword = async function(inputPassword: string) {

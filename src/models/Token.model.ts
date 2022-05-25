@@ -44,6 +44,13 @@ Token.init({
             key: 'id'
         }
     }
-}, { sequelize: connection, modelName: 'Token', tableName: 'token_blacklist', timestamps: true, createdAt: true, updatedAt: true, deletedAt: true });
+}, { 
+    sequelize: connection, 
+    modelName: 'Token', 
+    tableName: 'token_blacklist', 
+    timestamps: true, 
+    createdAt: true, 
+    updatedAt: true 
+});
 
 export default Token;
