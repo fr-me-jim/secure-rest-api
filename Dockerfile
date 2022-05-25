@@ -17,6 +17,6 @@ RUN npm run build
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
 
 EXPOSE 9000
-USER api
+USER api:api
 
 CMD ["npm", "start"]
