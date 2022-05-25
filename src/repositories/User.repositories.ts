@@ -38,6 +38,7 @@ class UserRepositories implements IUserRepository {
                 attributes: { exclude: exclusions }, 
                 raw: true 
             });
+            // if (!user) return null;
 
             return user;
         } catch (error) {
@@ -47,13 +48,14 @@ class UserRepositories implements IUserRepository {
 
     public readonly getUserByEmail = async (email: string, exclusions: string[] = ["password"]): Promise<User | null> => {
         if (!email) throw new Error("Required Id must be a non-empty string");
-        
+        console.log(exclusions)
         try {
             const user = await this._model.findOne({ 
                 where: { email },
                 attributes: { exclude: exclusions }, 
                 raw: true 
             });
+            // if (!user) return null;
 
             return user;
         } catch (error) {
@@ -61,7 +63,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = []): Promise<User []> => {
+    public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = ["password"]): Promise<User []> => {
         if (!userAttributes) throw new Error("Required Object with attributes to search");
         
         try {
@@ -85,7 +87,7 @@ class UserRepositories implements IUserRepository {
                 returning: true,
                 raw: true
             });
-            if (!user) return null;
+            // if (!user) return null;
             
             return user;
         } catch (error) {
@@ -93,7 +95,7 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly updateUser = async (id:string, newUserData: UserEdit): Promise<User | null> => {
+    public readonly updateUser = async (id: string, newUserData: UserEdit): Promise<User | null> => {
         if (!id || !newUserData) throw new Error("Wrong number of parameters.");
         
         try {
