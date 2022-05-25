@@ -34,8 +34,8 @@ app.listen(PORT, async () => {
 
         await connection.sync({ force: true });
         console.log('Tables synced in Database.');
-    } catch (error: any) {
-        throw new Error(error);
+    } catch (error: unknown) {
+        throw error;
     }
     
     
