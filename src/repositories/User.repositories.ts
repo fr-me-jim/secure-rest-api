@@ -120,8 +120,9 @@ class UserRepositories implements IUserRepository {
                 returning: true
             });
             if (!affectedRows) return null;
+            const user = result.save();
 
-            return result;
+            return user;
         } catch (error) {
             throw error;
         }
