@@ -17,9 +17,9 @@ services:
         - ./nginx.conf:/etc/nginx/nginx.conf
         - /etc/letsencrypt:/etc/letsencrypt
         - /var/log/nginx/:/var/log/nginx/
-      # depends_on:
-      #   - tfm-backend
-      #   - tfm-database
+      depends_on:
+        - tfm-backend
+        # - tfm-database
 
   tfm-backend:
     # build: .
