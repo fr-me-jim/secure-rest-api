@@ -1,4 +1,4 @@
-import argon2 from "argon2";
+// import argon2 from "argon2";
 
 // models
 import User from '../models/User.model';
@@ -30,7 +30,7 @@ class UserRepositories implements IUserRepository {
     };
 
     public readonly getUserById = async (id: string, exclusions: string[] = ["password"]): Promise<User | null> => {
-        if (!id) throw new Error("Required Id must be a non-empty string");
+        if (!id) throw new Error("Required ID must be a non-empty string.");
         
         try {
             const user = await this._model.findOne({ 
@@ -46,8 +46,9 @@ class UserRepositories implements IUserRepository {
     };
 
     public readonly getUserByEmail = async (email: string, exclusions: string[] = ["password"]): Promise<User | null> => {
-        if (!email) throw new Error("Required Id must be a non-empty string");
-        console.log(exclusions)
+        if (!email) throw new Error("Required Email must be a non-empty string.");
+
+        
         try {
             const user = await this._model.findOne({ 
                 where: { email },
@@ -62,7 +63,7 @@ class UserRepositories implements IUserRepository {
     };
 
     public readonly getUsersByAttributes = async (userAttributes: UserType, exclusions: string[] = ["password"]): Promise<User []> => {
-        if (!userAttributes) throw new Error("Required Object with attributes to search");
+        if (!userAttributes) throw new Error("Required Object with attributes to search.");
         
         try {
             const users = await this._model.findAll({ 
@@ -113,8 +114,8 @@ class UserRepositories implements IUserRepository {
         if (!newUserPassword || !id) throw new Error("Wrong number of parameters.");
         
         try {
-            const password = await argon2.hash(newUserPassword);
-            const [affectedRows, [ result ]] = await this._model.update({ password }, { 
+            // const password = await argon2.hash(newUserPassword);
+            const [affectedRows, [ result ]] = await this._model.update({ password: newUserPassword }, { 
                 where: { id },
                 returning: true
             });
@@ -126,8 +127,8 @@ class UserRepositories implements IUserRepository {
         }
     };
 
-    public readonly deleteUser = async ( id:string ): Promise<number | null> => {
-        if (!id) throw new Error("Wrong number of parameters.");
+    public readonly deleteUser = async (id: string): Promise<number | null> => {
+        if (!id) throw new Error("Required ID must be a non-empty string.");
         
         try {
             return await this._model.destroy({ where: { id } });
