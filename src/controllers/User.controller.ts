@@ -61,7 +61,7 @@ class UserController {
      */
      public readonly editPasswordUser = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const newPassword: string = req.body;
+            const newPassword: string = req.body.password;
             if(!newPassword || newPassword.length < 8) return res.sendStatus(400);
 
             const result = await this.UsersRepository.updateUserPassword((req.user! as User).id, newPassword);
