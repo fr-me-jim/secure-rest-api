@@ -49,7 +49,7 @@ export default class PassportConfig {
      */
     private getUserByJWT = async (token: { id: string; }, done: VerifiedCallback): Promise<void> => {
         try {
-            const user = await this.UsersRepository.getUserById(token.id);
+            const user = await this.UsersRepository.getUserById(token.id, []);
             if (!user) return done(null, false);
 
             return done(null, user);
