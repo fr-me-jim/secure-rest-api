@@ -22,6 +22,7 @@ export default class UserRouter {
     public readonly SetRoutes = (): Router => {
         this.router.get("/profile", this.userController.getUserProfileInfo);
         this.router.put("/profile/edit", this.userController.editProfileUser);
+        this.router.put("/profile/edit/password", this.userController.editPasswordUser);
 
         return this.router;
     };
