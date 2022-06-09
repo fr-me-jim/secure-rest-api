@@ -62,7 +62,7 @@ export default class AuthController {
      public readonly registerUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const user: UserCreate | undefined = req.body;
-            if(!user) return res.sendStatus(400);
+            if(!user || user.password.length < 8) return res.sendStatus(400);
 
             const result = await this.UsersRepository.createNewUser(user);
             if(!result) return res.sendStatus(500);

@@ -120,7 +120,7 @@ class UserRepositories implements IUserRepository {
                 returning: true
             });
             if (!affectedRows) return null;
-            const user = result.save();
+            const user = await result.save();
 
             return user;
         } catch (error) {

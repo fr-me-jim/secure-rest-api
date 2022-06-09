@@ -86,19 +86,20 @@ User.init({
     createdAt: true, 
     updatedAt: true
 });
-// User.beforeBulkUpdate(async (users: User[]) => {
-//     // if (!user.password) return;
-//     for (const user of users) {
-//         if (!user.password) continue;
+User.beforeBulkUpdate(async (users) => {
+    // if (!user.password) return;
+    console.log('[beforeBulkUpdate]:', users)
+    // for (const user of users) {
+    //     if (!user.password) continue;
         
-//         try {
-//             const hashedPassword = await argon2.hash(user.password);
-//             user.password = hashedPassword;
-//         } catch (error: unknown) {
-//             throw error;
-//         }
-//     }
-// })
+    //     try {
+    //         const hashedPassword = await argon2.hash(user.password);
+    //         user.password = hashedPassword;
+    //     } catch (error: unknown) {
+    //         throw error;
+    //     }
+    // }
+})
 
 User.beforeSave( async (user: User) => {
     if (!user.password) return;
