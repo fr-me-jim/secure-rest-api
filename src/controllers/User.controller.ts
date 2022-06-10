@@ -48,7 +48,7 @@ class UserController {
             const result = await this.UsersRepository.updateUser((req.user! as User).id, newUser);
             if(!result) return res.sendStatus(404);
 
-            const { password, ...user } = result;
+            const { password, ...user } = result.get();
             return res.send({ ...user }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
@@ -67,7 +67,7 @@ class UserController {
             const result = await this.UsersRepository.updateUserPassword((req.user! as User).id, newPassword);
             if(!result) return res.sendStatus(404);
 
-            const { password, ...user } = result;
+            const { password, ...user } = result.get();
             return res.send({ ...user }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
