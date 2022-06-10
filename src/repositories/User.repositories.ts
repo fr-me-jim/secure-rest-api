@@ -1,4 +1,4 @@
-// import argon2 from "argon2";
+import argon2 from "argon2";
 
 // models
 import User from '../models/User.model';
@@ -114,13 +114,14 @@ class UserRepositories implements IUserRepository {
         if (!newUserPassword || !id) throw new Error("Wrong number of parameters.");
         
         try {
-            // const password = await argon2.hash(newUserPassword);
-            const [affectedRows, [ result ]] = await this._model.update({ password: newUserPassword }, { 
+            const hashedPassword = await argon2.hash(newUserPassword);
+            const [affectedRows, [ user ]] = await this._model.update(
+            { password: hashedPassword }, 
+            { 
                 where: { id },
                 returning: true
             });
             if (!affectedRows) return null;
-            const user = await result.save();
 
             return user;
         } catch (error) {

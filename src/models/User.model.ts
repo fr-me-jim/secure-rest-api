@@ -1,11 +1,5 @@
 import argon2 from "argon2";
 import { Model, DataTypes } from "sequelize";
-import { 
-    // NonAttribute, 
-    // InferAttributes, 
-    // CreationOptional, 
-    // InferCreationAttributes
-} from "sequelize";
 
 // database connection
 import connection from "../models/index";
@@ -86,20 +80,6 @@ User.init({
     createdAt: true, 
     updatedAt: true
 });
-User.beforeBulkUpdate(async (users) => {
-    // if (!user.password) return;
-    console.log('[beforeBulkUpdate]:', users)
-    // for (const user of users) {
-    //     if (!user.password) continue;
-        
-    //     try {
-    //         const hashedPassword = await argon2.hash(user.password);
-    //         user.password = hashedPassword;
-    //     } catch (error: unknown) {
-    //         throw error;
-    //     }
-    // }
-})
 
 User.beforeSave( async (user: User) => {
     if (!user.password) return;
