@@ -1,17 +1,51 @@
-import { Optional } from 'sequelize'
+import { Optional } from 'sequelize';
 
-export type ProductAttributes = {
-    id: string;
-    name: string;
-    image: string;
-    price: number;
-    premium: boolean;
-    category: string;
-    description: string;
-    
-    createdAt?: Date;
-    updatedAt?: Date;
-  };
+// model
+import Product from '../models/Product.model';
+
+export interface IProductRepository {
+  getAllProducts(): Promise<Product[]>;
+  getProductById(id: string): Promise<Product | null>;
+  getProductsByCategory(category_id: string): Promise<Product[]>;
+  getProductsByAttributes(productAttributes: ProductType): Promise<Product[]>;
+  createProduct(newProduct: ProductCreate): Promise<Product | null>;
+  updateProduct(id: string, newProductData: ProductEdit): Promise<Product | null>;
+  deleteProduct(id: string): Promise<number | null>
+};
+
+export interface IProductAttributes {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  premium: boolean;
+  category: string;
+  description: string;
+  category_id: string;
   
-  export interface ProductInput extends Optional<ProductAttributes, 'id'> {};
-  export interface ProductOuput extends Required<ProductAttributes> {};
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+  
+export interface IProductInput extends Optional<IProductAttributes, 'id' | 'category_id' | 'premium'> {};
+export interface IProductOuput extends Required<IProductAttributes> {};
+
+export type ProductType = IProductAttributes;
+
+export type ProductCreate = {
+  name: string;
+  image: string;
+  price: number;
+  category: string;
+  premium?: boolean;
+  description: string;
+};
+
+export type ProductEdit = {
+  name: string;
+  image: string;
+  price: number;
+  category: string;
+  premium?: boolean;
+  description: string;
+};

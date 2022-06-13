@@ -33,7 +33,7 @@ class UserController {
             return res.send({ ...req.user! }).status(200);
         } catch (error: any) {  
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }
     };
 
@@ -52,7 +52,7 @@ class UserController {
             return res.send({ ...user }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }  
     };
 
@@ -71,7 +71,7 @@ class UserController {
             return res.send({ ...user }).status(200);
         } catch (error: any) {
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }  
     };
     

@@ -1,9 +1,12 @@
 import sqlize from "sequelize";
 import connection from "../models/index";
 import {
-    ProductInput,
-    ProductAttributes
+    IProductInput,
+    IProductAttributes
 } from '../interfaces/Product.interface';
+
+// models
+import Category from "./Category.model";
 
 /**
  * @module  Product
@@ -11,7 +14,7 @@ import {
  */
 const { Model, DataTypes } = sqlize;
 
-class Product extends Model<ProductAttributes, ProductInput> implements ProductAttributes {
+class Product extends Model<IProductAttributes, IProductInput> {
     declare id: string;
     declare name: string;
     declare image: string;
@@ -19,10 +22,10 @@ class Product extends Model<ProductAttributes, ProductInput> implements ProductA
     declare premium: boolean;
     declare category: string;
     declare description: string;
+    declare category_id: string;
 
     declare readonly createdAt?: Date;
     declare readonly updatedAt?: Date;
-    declare readonly deletedAt?: Date;
 };
 
 Product.init({
@@ -57,11 +60,24 @@ Product.init({
     },
     category: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Category,
+            key: 'name'
+        }
+    
     },
     description: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    category_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: Category,
+            key: 'id'
+        }
     }
 }, { 
     sequelize: connection, 

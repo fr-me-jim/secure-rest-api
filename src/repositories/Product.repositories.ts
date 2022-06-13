@@ -3,13 +3,13 @@ import Product from '../models/Product.model';
 
 // interfaces
 import { 
-    // UserEdit,
-    // UserCreate,
-    ProductAttributes,
-    // IUserRepository
+    ProductType,
+    ProductCreate,
+    IProductRepository,
+    ProductEdit,
 } from '../interfaces/Product.interface';
 
-export default class ProductRepositories {
+export default class ProductRepositories implements IProductRepository {
     private readonly _model = Product; 
 
     constructor() {};
@@ -18,7 +18,7 @@ export default class ProductRepositories {
         try {
             const products: Product[] = await this._model.findAll({ raw: true });
             return products;
-        } catch (error) {
+        } catch (error: unknown) {
             throw error;
         }
     };
@@ -33,21 +33,78 @@ export default class ProductRepositories {
             });
 
             return product;
-        } catch (error) {
+        } catch (error: unknown) {
             throw error;
         }
     };
 
-    public readonly getProductByAttributes = async (productAttributes: ProductAttributes): Promise<Product[] | null> => { 
+    public readonly getProductsByCategory = async (category_id: string): Promise<Product[]> => { 
+        if (!category_id) throw new Error("Required Object with attributes to search");
+
+        try {
+            const products = await this._model.findAll({ 
+                where: { category_id }, 
+                raw: true 
+            });
+
+            return products;
+        } catch (error: unknown) {
+            throw error;
+        }
+    };
+
+    public readonly getProductsByAttributes = async (productAttributes: ProductType): Promise<Product[]> => { 
         if (!productAttributes) throw new Error("Required Object with attributes to search");
 
         try {
-            const product = await this._model.findAll({ 
+            const products = await this._model.findAll({ 
                 where: { ...productAttributes }, 
                 raw: true 
             });
 
+            return products;
+        } catch (error: unknown) {
+            throw error;
+        }
+    };
+
+    public readonly createProduct = async (newProduct: ProductCreate): Promise<Product | null> => { 
+        if (!newProduct) throw new Error("Required Object with attributes to search");
+
+        try {
+            const product = await this._model.create({ ...newProduct }, {
+                returning: true,
+                raw: true
+            });
+            if (!product) return null;
+
             return product;
+        } catch (error: unknown) {
+            throw error;
+        }
+    };
+
+    public readonly updateProduct = async (id: string, newProductData: ProductEdit): Promise<Product | null> => { 
+        if (!id || !newProductData) throw new Error("Required Object with attributes to search");
+
+        try {
+            const [affectedRows, [product]] = await this._model.update({ ...newProductData }, {
+                where: { id },
+                returning: true
+            });
+            if (!affectedRows) return null;
+
+            return product;
+        } catch (error: unknown) {
+            throw error;
+        }
+    };
+
+    public readonly deleteProduct = async (id: string): Promise<number | null> => { 
+        if (!id) throw new Error("Required Object with attributes to search");
+
+        try {
+            return await this._model.destroy({ where: { id } });
         } catch (error) {
             throw error;
         }

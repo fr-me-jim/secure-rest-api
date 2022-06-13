@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import UserController from './User.controller';
 
-// User model
-import User from '../models/User.model';
+// class
+import UserController from './User.controller';
 
 // User interfaces
 import {
@@ -10,7 +9,7 @@ import {
     UserCreate, UserEdit
 } from '../interfaces/User.interface';
 
-class AdminController extends UserController {
+class SuperAdminController extends UserController {
     constructor(respository: IUserRepository) {
         super(respository);
     }
@@ -33,14 +32,14 @@ class AdminController extends UserController {
      * GetUserInfo
      */
      public readonly getUserInfo = async (req: Request, res: Response): Promise<Response> => {
-        const user: User | undefined = req.user as User | undefined;
-        if (!user) return res.sendStatus(401);
-        if (!user.privileges) return res.sendStatus(403);
-        try {
-            const result = await this.UsersRepository.getUserById( user.id );
-            if(!result) return res.sendStatus(404);
+        const id: string | undefined = req.params.id;
+        if (!id) return res.sendStatus(404);
 
-            return res.send({ user: result }).status(200);
+        try {
+            const user = await this.UsersRepository.getUserById( id );
+            if(!user) return res.sendStatus(404);
+
+            return res.send( user ).status(200);
         } catch (error: any) {  
             res.sendStatus(500);
             throw new Error(error);
@@ -49,9 +48,9 @@ class AdminController extends UserController {
 
 
     /**
-     * CreateUser
+     * AddNewUser
      */
-    public readonly createUser = async (req: Request, res: Response): Promise<Response> => {
+    public readonly addNewUser = async (req: Request, res: Response): Promise<Response> => {
         try {
             const user: UserCreate | undefined = req.body;
             if(!user) return res.sendStatus(400);
@@ -106,4 +105,4 @@ class AdminController extends UserController {
     };
 };
 
-export default AdminController;
+export default SuperAdminController;
