@@ -26,4 +26,10 @@ export const isAdminUser = (req: Request, res: Response, next: NextFunction): Re
     
   return next();
 };
+
+export const isSuperAdminUser = (req: Request, res: Response, next: NextFunction): Response | void => {
+  if ((req.user as User).privileges !== 2) return res.sendStatus(403);
+    
+  return next();
+};
   
