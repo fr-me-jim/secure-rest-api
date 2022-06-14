@@ -7,3 +7,4 @@ dist
 data
 logs
 postgres-data
+logs
