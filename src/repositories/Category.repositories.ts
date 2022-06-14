@@ -38,6 +38,21 @@ export default class CategoryRepositories implements ICategoryRepository {
         }
     };
 
+    public readonly getCategoryByName = async (name: string): Promise<Category | null> => { 
+        if (!name) throw new Error("Required name must be a non-empty string");
+
+        try {
+            const category = await this._model.findOne({ 
+                where: { name }, 
+                raw: true 
+            });
+
+            return category;
+        } catch (error: unknown) {
+            throw error;
+        }
+    };
+
     public readonly getCategorysByAttributes = async (categoryAttributes: CategoryType): Promise<Category[]> => { 
         if (!categoryAttributes) throw new Error("Required Object with attributes to search");
 

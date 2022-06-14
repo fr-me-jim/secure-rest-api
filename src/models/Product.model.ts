@@ -22,7 +22,6 @@ class Product extends Model<IProductAttributes, IProductInput> {
     declare premium: boolean;
     declare category: string;
     declare description: string;
-    declare category_id: string;
 
     declare readonly createdAt?: Date;
     declare readonly updatedAt?: Date;
@@ -70,14 +69,6 @@ Product.init({
     description: {
         type: DataTypes.TEXT,
         allowNull: false
-    },
-    category_id: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: Category,
-            key: 'id'
-        }
     }
 }, { 
     sequelize: connection, 

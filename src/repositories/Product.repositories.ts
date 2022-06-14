@@ -38,12 +38,12 @@ export default class ProductRepositories implements IProductRepository {
         }
     };
 
-    public readonly getProductsByCategory = async (category_id: string): Promise<Product[]> => { 
-        if (!category_id) throw new Error("Required Object with attributes to search");
+    public readonly getProductsByCategory = async (category: string): Promise<Product[]> => { 
+        if (!category) throw new Error("Required Object with attributes to search");
 
         try {
             const products = await this._model.findAll({ 
-                where: { category_id }, 
+                where: { category }, 
                 raw: true 
             });
 

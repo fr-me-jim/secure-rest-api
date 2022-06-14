@@ -6,6 +6,7 @@ import Category from '../models/Category.model';
 export interface ICategoryRepository {
     getAllCategories(): Promise<Category[]>;
     getCategoryById(id: string): Promise<Category | null>;
+    getCategoryByName(name: string): Promise<Category | null>;
     getCategorysByAttributes(categoryAttributes: CategoryType): Promise<Category[]>;
     createCategory(newCategory: CategoryCreate): Promise<Category | null>;
     updateCategory(id: string, newCategoryData: CategoryEdit): Promise<Category | null>;

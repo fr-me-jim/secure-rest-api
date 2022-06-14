@@ -56,7 +56,7 @@ class CategoryController {
             const category = await this.CategoriesRepository.createCategory(newCategory);
             if (!category) return res.sendStatus(404);
 
-            return res.status(201).send({ category: category.get() });
+            return res.status(201).send({ ...category.get() });
         } catch (error: unknown) {
             res.sendStatus(500);
             throw error;
@@ -72,7 +72,7 @@ class CategoryController {
             const category = await this.CategoriesRepository.updateCategory(id, newCategoryData);
             if (!category) return res.sendStatus(404);
 
-            return res.status(200).send({ category: category.get() });
+            return res.status(200).send({ ...category.get() });
         } catch (error: unknown) {
             res.sendStatus(500);
             throw error;

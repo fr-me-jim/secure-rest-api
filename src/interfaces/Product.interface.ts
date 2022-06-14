@@ -6,7 +6,7 @@ import Product from '../models/Product.model';
 export interface IProductRepository {
   getAllProducts(): Promise<Product[]>;
   getProductById(id: string): Promise<Product | null>;
-  getProductsByCategory(category_id: string): Promise<Product[]>;
+  getProductsByCategory(category: string): Promise<Product[]>;
   getProductsByAttributes(productAttributes: ProductSearch): Promise<Product[]>;
   createProduct(newProduct: ProductCreate): Promise<Product | null>;
   updateProduct(id: string, newProductData: ProductEdit): Promise<Product | null>;
@@ -21,13 +21,12 @@ export interface IProductAttributes {
   premium: boolean;
   category: string;
   description: string;
-  category_id: string;
   
   createdAt?: Date;
   updatedAt?: Date;
 };
   
-export interface IProductInput extends Optional<IProductAttributes, 'id' | 'category_id' | 'premium'> {};
+export interface IProductInput extends Optional<IProductAttributes, 'id' | 'premium'> {};
 export interface IProductOuput extends Required<IProductAttributes> {};
 
 export type ProductType = IProductAttributes;

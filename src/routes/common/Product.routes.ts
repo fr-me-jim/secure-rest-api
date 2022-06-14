@@ -24,7 +24,7 @@ export default class ProductRouter {
         this.router.get("/", this.productController.getAllProducts);
         this.router.get("/:id", this.productController.getProductInfo);
         this.router.get("/filter", this.productController.getFilteredProducts);
-        this.router.get("/filter/categories/:category_name", this.productController.getProductsByCategory);
+        this.router.get("/filter/:category_name", this.productController.getProductsByCategory);
 
         return this.router;
     };

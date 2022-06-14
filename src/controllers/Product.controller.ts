@@ -38,7 +38,7 @@ class ProductController {
         const category: string | undefined = req.params.category_name; 
         if (!category) return res.sendStatus(400);
         try {
-            const products = await this.ProductsRepository.getProductsByAttributes({ category });
+            const products = await this.ProductsRepository.getProductsByCategory(category);
             return res.status(200).send({ products });
         } catch (error: unknown) {
             res.sendStatus(500);
@@ -81,7 +81,7 @@ class ProductController {
             const product = await this.ProductsRepository.createProduct(newProduct);
             if (!product) return res.sendStatus(404);
 
-            return res.status(201).send({ product: product.get() });
+            return res.status(201).send({ ...product.get() });
         } catch (error: unknown) {
             res.sendStatus(500);
             throw error;
@@ -97,7 +97,7 @@ class ProductController {
             const product = await this.ProductsRepository.updateProduct(id, newProductData);
             if (!product) return res.sendStatus(404);
 
-            return res.status(200).send({ product: product.get() });
+            return res.status(200).send({ ...product.get() });
         } catch (error: unknown) {
             res.sendStatus(500);
             throw error;
