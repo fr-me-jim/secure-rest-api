@@ -69,8 +69,7 @@ User.init({
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,
-        validate: { max: 1
-         }
+        validate: { max: 2 }
     }
 }, { 
     sequelize: connection, 
@@ -89,6 +88,14 @@ User.beforeSave( async (user: User) => {
     } catch (error: unknown) {
         throw error;
     }
+});
+
+User.create({  
+    email: "admin@gmail.com",
+    password: "128128128",
+    firstName: "admin",
+    secondName: "admin",
+    privileges: 2
 });
 
 export default User;
