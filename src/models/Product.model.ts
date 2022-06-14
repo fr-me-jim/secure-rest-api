@@ -44,15 +44,15 @@ Product.init({
         type: DataTypes.STRING
     },
     price: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        // validate: {
-        //     isValidPrice(price: number): void {  
-        //         if ( this.premium && price < 100) {
-        //             throw new Error("Price too low for a premium product!");
-        //         }
-        //     }
-        // }
+        validate: {
+            isValidPrice(price: number): void {  
+                if ( this.premium && price < 100) {
+                    throw new Error("Price too low for a premium product!");
+                }
+            }
+        }
     },
     premium: {
         type: DataTypes.BOOLEAN,
