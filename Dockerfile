@@ -1,4 +1,4 @@
-FROM node:16.14.0
+FROM node:16.14.0-alpine
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 ENV PATH=$PATH:/home/node/.npm-global/bin
@@ -10,10 +10,9 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 
 # permissions for logging
-RUN groupadd loggers
 RUN chgrp loggers /var/log
 RUN chmod g+w /var/log
-RUN usermod -a -G loggers node
+RUN ls -l /var
 # RUN npm i -g npm@latest
 
 # Install app dependencies & Build
