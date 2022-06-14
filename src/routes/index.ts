@@ -2,7 +2,7 @@ import { Router } from "express";
 import passport, { PassportStatic } from 'passport';
 
 // config 
-import PassportConfig from "../config/passport";
+import PassportConfig from "../config/passport.config";
 
 // interfaces
 import { IUserRepository } from "../interfaces/User.interface";
