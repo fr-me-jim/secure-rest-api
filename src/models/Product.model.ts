@@ -54,8 +54,10 @@ Product.init({
         }
     },
     premium: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: { max: 1 }
     },
     category: {
         type: DataTypes.STRING,
