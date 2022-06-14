@@ -40,7 +40,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: false }));
 
 // const upload = multer({ storage, fileFilter: (_req, file, callback) => checkAllowedFiles(file, callback) });
-console.log(path.resolve('../logs'))
+console.log(path.resolve('/var/log'))
 app.listen(PORT, async () => {
     try {
         await connection.authenticate();
