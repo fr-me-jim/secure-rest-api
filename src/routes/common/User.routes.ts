@@ -1,10 +1,10 @@
 import { Router } from "express";
 
 // main RouterAPI
-import RouterAPI from ".";
+import RouterAPI from "../";
 
 // controllers
-import UserController from '../controllers/User.controller';
+import UserController from '../../controllers/User.controller';
 
 export default class UserRouter {
     private router: Router;

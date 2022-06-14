@@ -1,12 +1,12 @@
 import { Router } from "express";
 
 // main RouterAPI
-import RouterAPI from ".";
+import RouterAPI from "../";
 
 // controllers
-import ProductController from '../controllers/Product.controller';
+import ProductController from '../../controllers/Product.controller';
 
-export default class AdminProductRouter {
+export default class ProductRouter {
     private router: Router;
 
     private routerAPI: RouterAPI;
@@ -21,9 +21,8 @@ export default class AdminProductRouter {
 
 
     public readonly SetRoutes = (): Router => {
-        this.router.post("/", this.productController.addNewProduct);
-        this.router.put("/:id", this.productController.getProductInfo);
-        this.router.delete("/:id", this.productController.deleteProduct);
+        this.router.get("/", this.productController.getAllProducts);
+        this.router.get("/:id", this.productController.getProductInfo);
 
         return this.router;
     };

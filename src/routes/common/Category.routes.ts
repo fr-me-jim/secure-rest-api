@@ -1,12 +1,12 @@
 import { Router } from "express";
 
 // main RouterAPI
-import RouterAPI from ".";
+import RouterAPI from "../";
 
 // controllers
-import CategoryController from '../controllers/Category.controller';
+import CategoryController from '../../controllers/Category.controller';
 
-export default class AdminCategoryRouter {
+export default class CategoryRouter {
     private router: Router;
 
     private routerAPI: RouterAPI;
@@ -21,9 +21,8 @@ export default class AdminCategoryRouter {
 
 
     public readonly SetRoutes = (): Router => {
-        this.router.post("/", this.categoryController.addNewCategory);
-        this.router.put("/:id", this.categoryController.editCategory);
-        this.router.delete("/:id", this.categoryController.deletecategory);
+        this.router.get("/", this.categoryController.getAllCategories);
+        this.router.get("/:id", this.categoryController.getCategoryInfo);
 
         return this.router;
     };

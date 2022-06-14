@@ -1,10 +1,10 @@
 import { Router } from "express";
 
 // main RouterAPI
-import RouterAPI from ".";
+import RouterAPI from "../";
 
 // controllers
-import SuperAdminController from '../controllers/SuperAdmin.controller';
+import SuperAdminController from '../../controllers/SuperAdmin.controller';
 
 export default class SuperAdminRouter {
     private router: Router;

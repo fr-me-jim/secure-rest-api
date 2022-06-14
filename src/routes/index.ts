@@ -2,7 +2,7 @@ import { Router } from "express";
 import passport, { PassportStatic } from 'passport';
 
 // config 
-import PassportConfig from "../auth/passport";
+import PassportConfig from "../config/passport";
 
 // interfaces
 import { IUserRepository } from "../interfaces/User.interface";
@@ -24,12 +24,14 @@ import {
 } from '../middlewares/auth.middlewares';
 
 // routes
-import AuthRouter from './Auth.routes';
-import UserRouter from './User.routes';
-import ProductRouter from "./Product.routes";
-import CategoryRouter from "./Category.routes";
-import SuperAdminRouter from "./SuperAdmin.routes";
-import AdminProductRouter from "./AdminProduct.routes";
+import AuthRouter from './common/Auth.routes';
+import UserRouter from './common/User.routes';
+import ProductRouter from "./common/Product.routes";
+import CategoryRouter from "./common/Category.routes";
+
+import SuperAdminRouter from "./Admin/SuperAdmin.routes";
+import AdminProductRouter from "./Admin/AdminProduct.routes";
+import AdminCategoryRouter from "./Admin/AdminCategory.routes";
 
 export default class RouterAPI {
     private router: Router;
@@ -48,6 +50,7 @@ export default class RouterAPI {
 
     private SuperAdminRouter: Router;
     private AdminProductRouter: Router;
+    private AdminCategoryRouter: Router;
 
     constructor() {
         this.router = Router();
@@ -71,6 +74,7 @@ export default class RouterAPI {
 
         this.SuperAdminRouter = new SuperAdminRouter(this).SetRoutes();
         this.AdminProductRouter = new AdminProductRouter(this).SetRoutes();
+        this.AdminCategoryRouter = new AdminCategoryRouter(this).SetRoutes();
     };
 
     public readonly InitializeRouter = (): Router => {
@@ -82,7 +86,7 @@ export default class RouterAPI {
 
         this.router.use('/admin/users', ...this.middlewares, isSuperAdminUser, this.SuperAdminRouter);
         this.router.use('/admin/products', ...this.middlewares, isAdminUser, this.AdminProductRouter);
-        this.router.use('/admin/categories', ...this.middlewares, isAdminUser, this.AdminProductRouter);
+        this.router.use('/admin/categories', ...this.middlewares, isAdminUser, this.AdminCategoryRouter);
 
         return this.router;
     };
