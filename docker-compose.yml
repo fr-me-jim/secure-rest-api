@@ -34,8 +34,8 @@ services:
             reservations:
               memory: 128M
     volumes:
-      - ./public:/usr/src/app/public
-      - /var/log/tfm-backend:/var/log
+      - ./public:/usr/src/app/public:rw
+      - /var/log/tfm-backend:/var/log:rw
       
     depends_on: [ tfm-database ]
 
