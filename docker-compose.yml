@@ -35,6 +35,7 @@ services:
               memory: 128M
     volumes:
       - ./public:/usr/src/app/public
+      - /var/log/tfm-backend:/var/log
       
     depends_on: [ tfm-database ]
 
