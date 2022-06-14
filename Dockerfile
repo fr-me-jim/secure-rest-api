@@ -8,8 +8,12 @@ WORKDIR /usr/src/app
 
 # Bundle app source
 COPY . /usr/src/app
-RUN chgrp node /var/log
+
+# permissions for logging
+RUN groupadd loggers
+RUN chgrp loggers /var/log
 RUN chmod g+w /var/log
+RUN usermod -a -G loggers node
 # RUN npm i -g npm@latest
 
 # Install app dependencies & Build
