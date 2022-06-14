@@ -1,4 +1,5 @@
-// import path from 'path';
+// import fs from "fs";
+import path from 'path';
 import cors from 'cors';
 // import multer from "multer";
 import logger from "morgan";
@@ -28,6 +29,7 @@ const app = express();
 const routerAPI = new RouterAPI();
 const PORT: string | number = process.env.PORT || 9000;
 const debugLevel: string = process.env.NODE_ENV === "production" ? "combined" : "dev"; 
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: 'a' });
 
 app.use(cors());
 app.use(express.json());
@@ -38,7 +40,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: false }));
 
 // const upload = multer({ storage, fileFilter: (_req, file, callback) => checkAllowedFiles(file, callback) });
-console.log(__dirname)
+console.log(path.resolve('../logs'))
 app.listen(PORT, async () => {
     try {
         await connection.authenticate();
