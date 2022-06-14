@@ -27,10 +27,11 @@ import connection from './models/index';
 const app = express();
 const routerAPI = new RouterAPI();
 const PORT: string | number = process.env.PORT || 9000;
+const debugLevel: string = process.env.NODE_ENV === "production" ? "combined" : "dev"; 
 
 app.use(cors());
-app.use(logger('dev'));
 app.use(express.json());
+app.use(logger(debugLevel));
 app.use(passport.initialize());
 app.use('/api', routerAPI.InitializeRouter());
 app.use(express.static(`${__dirname}/public`));
