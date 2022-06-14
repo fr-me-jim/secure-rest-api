@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 
 # permissions for logging
-RUN chgrp loggers /var/log
+RUN chgrp node /var/log
 RUN chmod g+w /var/log
 RUN ls -l /var
 # RUN npm i -g npm@latest
