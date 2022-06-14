@@ -90,12 +90,18 @@ User.beforeSave( async (user: User) => {
     }
 });
 
-User.create({  
-    email: "admin@gmail.com",
-    password: "128128128",
-    firstName: "admin",
-    secondName: "admin",
-    privileges: 2
-});
+User.afterSync( async () =>{
+    try {
+        await User.create({  
+            email: "admin@gmail.com",
+            password: "128128128",
+            firstName: "admin",
+            secondName: "admin",
+            privileges: 2
+        });
+    } catch (error: unknown) {
+        throw error;
+    }
+})
 
 export default User;

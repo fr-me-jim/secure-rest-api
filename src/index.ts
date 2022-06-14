@@ -46,12 +46,11 @@ app.listen(PORT, async () => {
         await connection.authenticate();
         console.log('Database connected.');
 
-        await connection.sync({ force: true });
+        await connection.sync({ force: true, });
         console.log('Tables synced in Database.');
     } catch (error: unknown) {
         throw error;
     }
-    
     
     console.log("Server running on port:", PORT);
 });
