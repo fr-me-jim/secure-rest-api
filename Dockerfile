@@ -8,7 +8,8 @@ WORKDIR /usr/src/app
 
 # Bundle app source
 COPY . /usr/src/app
-
+RUN chgrp node /var/log
+RUN chmod g+w /var/log
 # RUN npm i -g npm@latest
 
 # Install app dependencies & Build
