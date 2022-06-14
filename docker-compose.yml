@@ -33,6 +33,9 @@ services:
               memory: 2G
             reservations:
               memory: 128M
+    volumes:
+      - ./public:/usr/src/app/public
+      
     depends_on: [ tfm-database ]
 
   tfm-database:
