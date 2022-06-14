@@ -3,7 +3,7 @@ import Product from '../models/Product.model';
 
 // interfaces
 import { 
-    ProductType,
+    ProductSearch,
     ProductCreate,
     IProductRepository,
     ProductEdit,
@@ -53,7 +53,7 @@ export default class ProductRepositories implements IProductRepository {
         }
     };
 
-    public readonly getProductsByAttributes = async (productAttributes: ProductType): Promise<Product[]> => { 
+    public readonly getProductsByAttributes = async (productAttributes: ProductSearch): Promise<Product[]> => { 
         if (!productAttributes) throw new Error("Required Object with attributes to search");
 
         try {

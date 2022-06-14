@@ -23,6 +23,8 @@ export default class ProductRouter {
     public readonly SetRoutes = (): Router => {
         this.router.get("/", this.productController.getAllProducts);
         this.router.get("/:id", this.productController.getProductInfo);
+        this.router.get("/filter", this.productController.getFilteredProducts);
+        this.router.get("/filter/categories/:category_name", this.productController.getProductsByCategory);
 
         return this.router;
     };

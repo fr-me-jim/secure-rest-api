@@ -13,7 +13,7 @@ import {
 /**
  * @class ProductController
  * @desc Responsible for handling API requests for the
- * /products and /admin/products routes.
+ * /categories and /admin/categories routes.
  **/
 class CategoryController {
     protected CategoriesRepository: ICategoryRepository;

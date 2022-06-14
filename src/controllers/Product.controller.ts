@@ -8,6 +8,7 @@ import {
     ProductEdit, 
     ProductCreate, 
     IProductRepository,
+    ProductSearch,
 } from '../interfaces/Product.interface';
 
 /**
@@ -26,6 +27,30 @@ class ProductController {
     public readonly getAllProducts = async (_req: Request, res: Response): Promise<Response> => {
         try {
             const products = await this.ProductsRepository.getAllProducts();
+            return res.status(200).send({ products });
+        } catch (error: unknown) {
+            res.sendStatus(500);
+            throw error;
+        }
+    };
+
+    public readonly getProductsByCategory = async (req: Request, res: Response): Promise<Response> => {
+        const category: string | undefined = req.params.category_name; 
+        if (!category) return res.sendStatus(400);
+        try {
+            const products = await this.ProductsRepository.getProductsByAttributes({ category });
+            return res.status(200).send({ products });
+        } catch (error: unknown) {
+            res.sendStatus(500);
+            throw error;
+        }
+    };
+
+    public readonly getFilteredProducts = async (req: Request, res: Response): Promise<Response> => {
+        const productFilter: ProductSearch | undefined = req.body.filter; 
+        if (!productFilter || !Object.keys(productFilter).length) return res.sendStatus(400);
+        try {
+            const products = await this.ProductsRepository.getProductsByAttributes(productFilter);
             return res.status(200).send({ products });
         } catch (error: unknown) {
             res.sendStatus(500);

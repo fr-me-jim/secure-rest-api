@@ -32,3 +32,7 @@ export type CategoryCreate = {
 export type CategoryEdit = {
     name: string;
 };
+
+export type CategorySearch = {
+    name?: string;
+};

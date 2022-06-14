@@ -7,7 +7,7 @@ export interface IProductRepository {
   getAllProducts(): Promise<Product[]>;
   getProductById(id: string): Promise<Product | null>;
   getProductsByCategory(category_id: string): Promise<Product[]>;
-  getProductsByAttributes(productAttributes: ProductType): Promise<Product[]>;
+  getProductsByAttributes(productAttributes: ProductSearch): Promise<Product[]>;
   createProduct(newProduct: ProductCreate): Promise<Product | null>;
   updateProduct(id: string, newProductData: ProductEdit): Promise<Product | null>;
   deleteProduct(id: string): Promise<number | null>
@@ -48,4 +48,12 @@ export type ProductEdit = {
   category: string;
   premium?: boolean;
   description: string;
+};
+
+export type ProductSearch = {
+  name?: string;
+  price?: number;
+  category?: string;
+  premium?: boolean;
+  description?: string;
 };
