@@ -1,5 +1,5 @@
 import validator from "validator";
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 // User model
 // import Product from '../models/Product.model';
@@ -91,7 +91,7 @@ class ProductController {
         }
     };
 
-    public readonly editProduct = async (req: Request, res: Response): Promise<Response> => {
+    public readonly editProduct = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
         const id: string | undefined = req.params?.id;
         const newProductData: ProductEdit | undefined = req.body;
         if ( !id || !validator.isUUID(id) || !newProductData) return res.sendStatus(400);
@@ -103,7 +103,7 @@ class ProductController {
             return res.status(200).send({ ...product.get() });
         } catch (error: unknown) {
             res.sendStatus(500);
-            throw error;
+            next(error);
         }
     };
 
