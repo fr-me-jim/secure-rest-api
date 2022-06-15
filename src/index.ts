@@ -46,7 +46,7 @@ app.use((error: unknown, _req: Request, res: Response, _next: NextFunction): Res
 
     return res.sendStatus(500);
 });
-
+console.log(path.join(path.resolve('/usr/src/app/logs'), "server-access.log"))
 // const upload = multer({ storage, fileFilter: (_req, file, callback) => checkAllowedFiles(file, callback) });
 app.listen(PORT, async () => {
     try {
