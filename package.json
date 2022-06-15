@@ -53,6 +53,7 @@
     "@types/passport": "^1.0.7",
     "@types/passport-jwt": "^3.0.6",
     "@types/passport-local": "^1.0.34",
+    "@types/sequelize": "^4.28.13",
     "@types/validator": "^13.7.1",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
