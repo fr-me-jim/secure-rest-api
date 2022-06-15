@@ -5,6 +5,7 @@ ENV PATH=$PATH:/home/node/.npm-global/bin
 
 # Create app directory
 WORKDIR /usr/src/app
+RUN mkdir logs
 
 # Bundle app source
 COPY . /usr/src/app
