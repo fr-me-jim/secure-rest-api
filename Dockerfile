@@ -11,8 +11,8 @@ RUN mkdir logs
 COPY . /usr/src/app
 
 # permissions for logging
-RUN chgrp -R node logs
-RUN chmod -R g+wx logs
+RUN chgrp -R node /usr/src/app/logs
+RUN chmod -R g+wx /usr/src/app/logs
 RUN ls -l .
 # RUN npm i -g npm@latest
 
