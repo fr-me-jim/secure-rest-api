@@ -91,7 +91,7 @@ class ProductController {
         }
     };
 
-    public readonly editProduct = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+    public readonly editProduct = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const id: string | undefined = req.params?.id;
         const newProductData: ProductEdit | undefined = req.body;
         if ( !id || !validator.isUUID(id) || !newProductData) return res.sendStatus(400);
