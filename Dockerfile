@@ -17,6 +17,7 @@ RUN ls -l .
 # RUN npm i -g npm@latest
 
 # Install app dependencies & Build
+RUN npm i -g npm
 RUN npm i
 RUN npm run build
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
