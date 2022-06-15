@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ValidationError } from 'sequelize/types';
+import { ValidationError } from 'sequelize';
 
 // class
 import UserController from './User.controller';

@@ -18,7 +18,7 @@ import RouterAPI from "./routes/index";
 
 // database
 import connection from './models/index';
-import { ValidationError } from "sequelize/types";
+import { ValidationError } from "sequelize";
 
 // config
 // import storage from "./config/multer.storage";
