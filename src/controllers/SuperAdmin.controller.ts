@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ValidationError } from 'sequelize/types';
 
 // class
 import UserController from './User.controller';
@@ -22,9 +23,10 @@ class SuperAdminController extends UserController {
             const result = await this.UsersRepository.getAllUsers();
 
             return res.send({ users: result }).status(200);
-        } catch (error: any) {  
-            res.sendStatus(500);
-            throw new Error(error);
+        } catch (error: unknown) {  
+            if (error instanceof ValidationError) res.sendStatus(400);
+            else res.sendStatus(500);
+            throw error;
         }
     };
 
@@ -40,9 +42,9 @@ class SuperAdminController extends UserController {
             if(!user) return res.sendStatus(404);
 
             return res.send( user ).status(200);
-        } catch (error: any) {  
+        } catch (error: unknown) {  
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }
     };
 
@@ -59,9 +61,9 @@ class SuperAdminController extends UserController {
             if(!result) return res.sendStatus(500);
 
             return res.send({ user: result }).status(201);
-        } catch (error: any) {
+        } catch (error: unknown) {
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }  
     };
 
@@ -80,9 +82,9 @@ class SuperAdminController extends UserController {
             if(!user) return res.sendStatus(404);
 
             return res.send({ ...user }).status(200);
-        } catch (error: any) {
+        } catch (error: unknown) {
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }  
     };
 
@@ -98,9 +100,9 @@ class SuperAdminController extends UserController {
             if(!result) return res.sendStatus(404);
 
             return res.sendStatus(204);
-        } catch (error: any) {
+        } catch (error: unknown) {
             res.sendStatus(500);
-            throw new Error(error);
+            throw error;
         }  
     };
 };

@@ -38,9 +38,15 @@ Product.init({
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
+        validate: {
+            isAlphanumeric: true
+        }
     },
     image: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        validate: {
+            // isUrl: true
+        }
     },
     price: {
         type: DataTypes.INTEGER,
@@ -65,6 +71,9 @@ Product.init({
         references: {
             model: Category,
             key: 'name'
+        },
+        validate: {
+            isAlpha: true
         }
     
     },

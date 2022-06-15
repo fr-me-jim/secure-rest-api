@@ -1,7 +1,9 @@
+import validator from "validator";
 import { Request, Response } from 'express';
 
 // User model
 // import Product from '../models/Product.model';
+import { sanitizeString } from "../utils/helpers";
 
 // User interfaces
 import {
@@ -35,8 +37,8 @@ class ProductController {
     };
 
     public readonly getProductsByCategory = async (req: Request, res: Response): Promise<Response> => {
-        const category: string | undefined = req.params.category_name; 
-        if (!category) return res.sendStatus(400);
+        const category: string | undefined = req.params.category_name && sanitizeString(req.params.category_name); 
+        if (!category || !validator.isAlpha(category)) return res.sendStatus(400);
         try {
             const products = await this.ProductsRepository.getProductsByCategory(category);
             return res.status(200).send({ products });
@@ -61,7 +63,7 @@ class ProductController {
 
     public readonly getProductInfo = async (req: Request, res: Response): Promise<Response> => {
         const id: string | undefined = req.params?.id;
-        if (!id) return res.sendStatus(400);
+        if (!id || !validator.isUUID(id)) return res.sendStatus(400);
 
         try {
             const product = await this.ProductsRepository.getProductById(id);
@@ -92,7 +94,7 @@ class ProductController {
     public readonly editProduct = async (req: Request, res: Response): Promise<Response> => {
         const id: string | undefined = req.params?.id;
         const newProductData: ProductEdit | undefined = req.body;
-        if ( !id || !newProductData) return res.sendStatus(400);
+        if ( !id || !validator.isUUID(id) || !newProductData) return res.sendStatus(400);
 
         try {
             const product = await this.ProductsRepository.updateProduct(id, newProductData);
@@ -108,7 +110,7 @@ class ProductController {
     public readonly deleteProduct = async (req: Request, res: Response): Promise<Response> => {
         try {
             const id: string | undefined = req.params?.id;
-            if(!id) return res.sendStatus(400);
+            if(!id || !validator.isUUID(id)) return res.sendStatus(400);
 
             const result = await this.ProductsRepository.deleteProduct( id );
             if(!result) return res.sendStatus(404);

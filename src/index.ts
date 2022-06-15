@@ -4,7 +4,7 @@ import cors from 'cors';
 // import multer from "multer";
 import logger from "morgan";
 import dotenv from "dotenv";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 // import { fileURLToPath } from 'url';
 
 // load environment variables
@@ -18,6 +18,7 @@ import RouterAPI from "./routes/index";
 
 // database
 import connection from './models/index';
+import { ValidationError } from "sequelize/types";
 
 // config
 // import storage from "./config/multer.storage";
@@ -39,6 +40,12 @@ app.use('/api', routerAPI.InitializeRouter());
 app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: false }));
 app.use(logger(debugLevel, { stream: accessLogStream }));
+
+app.use((error: unknown, _req: Request, res: Response, _next: NextFunction): Response =>{
+    if (error instanceof ValidationError) return res.sendStatus(400);
+
+    return res.sendStatus(500);
+});
 
 // const upload = multer({ storage, fileFilter: (_req, file, callback) => checkAllowedFiles(file, callback) });
 app.listen(PORT, async () => {
