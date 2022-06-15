@@ -31,7 +31,7 @@ const routerAPI = new RouterAPI();
 const PORT: string | number = process.env.PORT || 9000;
 const debugLevel: string = process.env.NODE_ENV === "production" ? "combined" : "dev"; 
 console.log(path.resolve('/var/log'), "server-access.log")
-const accessLogStream = fs.createWriteStream(path.join(path.resolve('/usr/src/app/logs'), "server-access.log"), { flags: 'a+' });
+const accessLogStream = fs.createWriteStream(path.join(path.resolve('./logs'), "server-access.log"), { flags: 'a+' });
 
 app.use(cors());
 app.use(express.json());
@@ -46,7 +46,7 @@ app.use((error: unknown, _req: Request, res: Response, _next: NextFunction): Res
 
     return res.sendStatus(500);
 });
-console.log(path.join(path.resolve('/usr/src/app/logs'), "server-access.log"))
+console.log(path.join(path.resolve('./logs'), "server-access.log"))
 // const upload = multer({ storage, fileFilter: (_req, file, callback) => checkAllowedFiles(file, callback) });
 app.listen(PORT, async () => {
     try {
