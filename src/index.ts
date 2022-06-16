@@ -42,6 +42,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger(debugLevel, { stream: accessLogStream }));
 
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction): Response =>{
+    console.log(error)
     if (error instanceof ValidationErrorItem) return res.sendStatus(400);
 
     return res.sendStatus(500);
