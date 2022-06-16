@@ -31,7 +31,7 @@ const routerAPI = new RouterAPI();
 const PORT: string | number = process.env.PORT || 9000;
 const debugLevel: string = process.env.NODE_ENV === "production" ? "combined" : "dev"; 
 console.log(path.resolve('/var/log'), "server-access.log")
-const accessLogStream = fs.createWriteStream(path.join(path.resolve('~/logs'), "server-access.log"), { flags: 'a+' });
+const accessLogStream = fs.createWriteStream(path.join(path.resolve('/home/node/logs'), "server-access.log"), { flags: 'a+' });
 
 app.use(cors());
 app.use(express.json());
