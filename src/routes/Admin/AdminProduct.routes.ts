@@ -22,7 +22,7 @@ export default class AdminProductRouter {
 
     public readonly SetRoutes = (): Router => {
         this.router.post("/", this.productController.addNewProduct);
-        this.router.put("/:id", this.productController.getProductInfo);
+        this.router.put("/:id", this.productController.editProduct);
         this.router.delete("/:id", this.productController.deleteProduct);
 
         return this.router;
