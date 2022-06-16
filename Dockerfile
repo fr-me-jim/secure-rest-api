@@ -5,15 +5,15 @@ ENV PATH=$PATH:/home/node/.npm-global/bin
 
 # Create app directory
 WORKDIR /usr/src/app
-RUN mkdir logs
+# RUN mkdir -R ~/logs
 
 # Bundle app source
 COPY . /usr/src/app
 
 # permissions for logging
-RUN chown -R node:node /usr/src/app/logs
-RUN chmod -R g+wx /usr/src/app/logs
-RUN ls -l .
+# RUN chown -R node:node /usr/src/app/logs
+# RUN chmod -R g+wx /usr/src/app/logs
+# RUN ls -l .
 # RUN npm i -g npm@latest
 
 # Install app dependencies & Build
@@ -23,5 +23,6 @@ RUN npm run build
 
 EXPOSE 9000
 USER node
+RUN mkdir -R ~/logs
 
 CMD ["npm", "start"]
