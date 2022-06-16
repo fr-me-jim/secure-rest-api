@@ -55,6 +55,7 @@ export default class APIServer {
     };
 
     private ExpressErrorHandler(error: unknown, _req: Request, res: Response): Response {
+        console.log(error)
         if (error instanceof ValidationError) return res.sendStatus(400);
 
         return res.sendStatus(500);
