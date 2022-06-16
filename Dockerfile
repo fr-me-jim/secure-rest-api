@@ -13,7 +13,7 @@ COPY . /usr/src/app
 # permissions for logging
 RUN chown -R root:node /usr/src/app/logs
 RUN chmod -R g+wx /usr/src/app/logs
-RUN ls -l ..
+RUN ls -l ./logs
 # RUN npm i -g npm@latest
 
 # Install app dependencies & Build
