@@ -102,7 +102,7 @@ class ProductController {
 
             return res.status(200).send({ ...product.get() });
         } catch (error: unknown) {
-            res.sendStatus(500);
+            // res.sendStatus(500);
             next(error);
         }
     };
