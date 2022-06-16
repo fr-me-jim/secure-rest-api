@@ -21,6 +21,7 @@ export default class AdminProductRouter {
 
 
     public readonly SetRoutes = (): Router => {
+        // TODO: this.routerAPI.upload.single('image')
         this.router.post("/", this.productController.addNewProduct);
         this.router.put("/:id", this.productController.editProduct);
         this.router.delete("/:id", this.productController.deleteProduct);

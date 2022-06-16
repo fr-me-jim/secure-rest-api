@@ -1,3 +1,4 @@
+import multer, { Multer } from "multer";
 import { Router } from "express";
 import passport, { PassportStatic } from 'passport';
 
@@ -23,6 +24,12 @@ import {
     isTokenBlacklisted 
 } from '../middlewares/auth.middlewares';
 
+// utils
+import { checkAllowedFiles } from "src/utils/helpers";
+
+// config
+import storage from "../config/multer-storage.config";
+
 // routes
 import AuthRouter from './common/Auth.routes';
 import UserRouter from './common/User.routes';
@@ -35,6 +42,7 @@ import AdminCategoryRouter from "./Admin/AdminCategory.routes";
 
 export default class RouterAPI {
     private router: Router;
+    public readonly upload: Multer;
     public readonly strategy: PassportStatic;
     public readonly middlewares: { (): void }[];
 
@@ -54,6 +62,7 @@ export default class RouterAPI {
 
     constructor() {
         this.router = Router();
+        this.upload = multer({ storage, fileFilter: checkAllowedFiles });
         
         this.UserRepository = new UserRepositories();
         this.TokenRepository = new TokenRepositories();
