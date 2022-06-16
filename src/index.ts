@@ -3,10 +3,7 @@ import path from 'path';
 // import cors from 'cors';
 // import logger from "morgan";
 import dotenv from "dotenv";
-import express
-// , 
-// { Request, Response } 
-from "express";
+// import express, { Request, Response } from "express";
 
 // load environment variables
 dotenv.config();

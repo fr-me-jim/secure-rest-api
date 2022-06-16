@@ -32,20 +32,13 @@ export default class APIServer {
         this.accessLogStream = logWriteStream;
 
 
-        this.SetMiddlewares();
         this.SetAssets();
-        // this.SetRouter();
-
-        // this.app.use(this.ExpressErrorHandler);
+        this.SetMiddlewares();
     };
 
     private readonly SetAssets = (): void => {
       this.app.use(express.static(`${__dirname}/public`));  
     };
-
-    // private readonly SetRouter = (): void => {
-    //     this.app.use('/api', this.router);  
-    // };
 
     private readonly SetMiddlewares = (): void => {
         this.app.use(cors());
