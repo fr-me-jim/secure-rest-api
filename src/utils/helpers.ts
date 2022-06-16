@@ -10,7 +10,7 @@ export const storeFileToFS = (file: NodeJS.ArrayBufferView): void => {
         fs.mkdirSync(storagePath, { recursive: true });
     }
 
-    fs.writeFileSync(storagePath, file);
+    // fs.writeFileSync(storagePath, file);
 };
 export const sanitizeString = (input: string): string => input.replace(/[<>\n\t]/g, "");
 
@@ -23,7 +23,7 @@ export const sanitizeObject = (input: any): void => {
     });
 };
 
-export const checkAllowedFiles = (file: Express.Multer.File, cb: FileFilterCallback): void => {
+export const checkAllowedFiles = (_req: any, file: Express.Multer.File, cb: FileFilterCallback): void => {
     // allowed ext
     const whitelist = /jpeg|jpg|png/;
 

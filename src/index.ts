@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from 'path';
 import cors from 'cors';
-// import multer from "multer";
 import logger from "morgan";
 import dotenv from "dotenv";
 import express, { Request, Response, NextFunction } from "express";
@@ -20,9 +19,6 @@ import RouterAPI from "./routes/index";
 import connection from './models/index';
 import { ValidationError } from "sequelize";
 
-// config
-// import storage from "./config/multer.storage";
-
 // utils
 // import { checkAllowedFiles } from './utils/helpers';
 
@@ -34,7 +30,7 @@ console.log(path.resolve('/var/log'), "server-access.log")
 const accessLogStream = fs.createWriteStream(path.join(path.resolve('/home/node/logs'), "server-access.log"), { flags: 'a+' });
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({}));
 app.use(passport.initialize());
 app.use('/api', routerAPI.InitializeRouter());
 app.use(express.static(`${__dirname}/public`));
