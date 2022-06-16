@@ -45,19 +45,14 @@ Product.init({
     image: {
         type: DataTypes.STRING,
         validate: {
-            // isUrl: true
+            isUrl: true
         }
     },
     price: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            isNumeric: true,
-            isValidPrice(price: number): void {  
-                if ( this.premium && price < 100) {
-                    throw new Error("Price too low for a premium product!");
-                }
-            }
+            isNumeric: true
         }
     },
     premium: {
