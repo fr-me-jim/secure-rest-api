@@ -23,6 +23,6 @@ RUN npm run build
 
 EXPOSE 9000
 USER node
-RUN mkdir -R ~/logs
+RUN mkdir -p ~/logs
 
 CMD ["npm", "start"]
