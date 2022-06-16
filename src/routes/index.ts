@@ -25,7 +25,7 @@ import {
 } from '../middlewares/auth.middlewares';
 
 // utils
-import { checkAllowedFiles } from "src/utils/helpers";
+import { checkAllowedFiles } from "../utils/helpers";
 
 // config
 import storage from "../config/multer-storage.config";
