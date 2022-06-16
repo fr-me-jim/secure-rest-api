@@ -11,14 +11,12 @@ RUN mkdir logs
 COPY . /usr/src/app
 
 # permissions for logging
-RUN chown -R root:node /usr/src/app/logs
+RUN chown -R node:node /usr/src/app/logs
 RUN chmod -R g+wx /usr/src/app/logs
 RUN ls -l .
 # RUN npm i -g npm@latest
 
 # Install app dependencies & Build
-RUN npm cache clean -f
-RUN npm i -g npm
 RUN npm i
 RUN npm run build
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
