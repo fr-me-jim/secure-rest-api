@@ -1,10 +1,17 @@
-// import fs from "fs";
+import fs from "fs";
 import path from 'path';
 import { FileFilterCallback } from 'multer';
 
-// const writeFileToFS = (file: ArrayBufferView): void => {
-//     // fs.writeFileSync(`${ __dirname }`, file)
-// };
+export const storeFileToFS = (file: NodeJS.ArrayBufferView): void => {
+    const rootPath: string = path.resolve("."); 
+    const storagePath: string = path.join(rootPath, "/public");
+
+    if (!fs.existsSync(storagePath)) {
+        fs.mkdirSync(storagePath, { recursive: true });
+    }
+
+    fs.writeFileSync(storagePath, file);
+};
 export const sanitizeString = (input: string): string => input.replace(/[<>\n\t]/g, "");
 
 export const sanitizeObject = (input: any): void => {
