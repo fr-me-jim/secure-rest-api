@@ -31,31 +31,34 @@ export default class APIServer {
         this.router = routerAPI.InitializeRouter();
         this.accessLogStream = logWriteStream;
 
-        this.SetAssets();
-        this.SetRouter();
+
         this.SetMiddlewares();
-    }
+        this.SetAssets();
+        // this.SetRouter();
+
+        // this.app.use(this.ExpressErrorHandler);
+    };
 
     private readonly SetAssets = (): void => {
       this.app.use(express.static(`${__dirname}/public`));  
     };
 
-    private readonly SetRouter = (): void => {
-        this.app.use('/api', this.router);  
-    };
+    // private readonly SetRouter = (): void => {
+    //     this.app.use('/api', this.router);  
+    // };
 
     private readonly SetMiddlewares = (): void => {
         this.app.use(cors());
         this.app.use(express.json());
+        this.app.use('/api', this.router);  
         this.app.use(passport.initialize());
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(logger(this.debugLevel, { stream: this.accessLogStream }));
 
-        this.app.use(this.ExpressErrorHandler);  
+        this.app.use(this.ExpressErrorHandler);
     };
 
     private ExpressErrorHandler(error: unknown, _req: Request, res: Response): Response {
-        console.log(error)
         if (error instanceof ValidationError) return res.sendStatus(400);
 
         return res.sendStatus(500);
