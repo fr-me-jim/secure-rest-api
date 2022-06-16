@@ -39,7 +39,7 @@ Product.init({
         unique: true,
         allowNull: false,
         validate: {
-            isAlphanumeric: true
+            is: /[a-zA-Z0-9 ]/g
         }
     },
     image: {

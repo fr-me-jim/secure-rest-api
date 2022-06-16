@@ -18,7 +18,7 @@ import RouterAPI from "./routes/index";
 
 // database
 import connection from './models/index';
-import { ValidationError } from "sequelize";
+import { ValidationErrorItem } from "sequelize";
 
 // config
 // import storage from "./config/multer.storage";
@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger(debugLevel, { stream: accessLogStream }));
 
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction): Response =>{
-    if (error instanceof ValidationError) return res.sendStatus(400);
+    if (error instanceof ValidationErrorItem) return res.sendStatus(400);
 
     return res.sendStatus(500);
 });
