@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 // User model
 import User from '../models/User.model';
@@ -10,6 +10,9 @@ import {
     // UserCreate,
     IUserRepository
 } from '../interfaces/User.interface';
+
+// utils
+import { sanitizeObject } from '../utils/helpers';
 
 /**
  * @class UserController
@@ -27,22 +30,22 @@ class UserController {
     /**
      * GetUserProfileInfo
      */
-     public readonly getUserProfileInfo = async (req: Request, res: Response): Promise<Response> => {
+     public readonly getUserProfileInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
             if (!req.user) res.sendStatus(404);
             return res.send({ ...req.user! }).status(200);
         } catch (error: any) {  
-            res.sendStatus(500);
-            throw error;
+            next(error);
         }
     };
 
     /**
      * EditProfileUser
      */
-     public readonly editProfileUser = async (req: Request, res: Response): Promise<Response> => {
+     public readonly editProfileUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
-            const newUser: UserEdit = req.body;
+            const newUser: UserEdit = req.body; 
+            sanitizeObject(newUser);
             if(!newUser) return res.sendStatus(400);
 
             const result = await this.UsersRepository.updateUser((req.user! as User).id, newUser);
@@ -51,17 +54,16 @@ class UserController {
             const { password, ...user } = result.get();
             return res.send({ ...user }).status(200);
         } catch (error: any) {
-            res.sendStatus(500);
-            throw error;
+            next(error);
         }  
     };
 
     /**
      * EditProfileUser
      */
-     public readonly editPasswordUser = async (req: Request, res: Response): Promise<Response> => {
+     public readonly editPasswordUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
-            const newPassword: string = req.body.password;
+            const newPassword: string | undefined = req.body.password; 
             if(!newPassword || newPassword.length < 8) return res.sendStatus(400);
 
             const result = await this.UsersRepository.updateUserPassword((req.user! as User).id, newPassword);
@@ -70,8 +72,7 @@ class UserController {
             const { password, ...user } = result.get();
             return res.send({ ...user }).status(200);
         } catch (error: any) {
-            res.sendStatus(500);
-            throw error;
+            next(error);
         }  
     };
     

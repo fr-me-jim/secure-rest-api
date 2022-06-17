@@ -1,5 +1,5 @@
 import jwt, { Algorithm } from "jsonwebtoken";
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 // User model
 import User from '../models/User.model';
@@ -42,7 +42,7 @@ export default class AuthController {
     /**
      * AddToBlacklist
      */
-     public readonly addToBlacklist = async (req: Request, res: Response): Promise<Response> => {
+     public readonly addToBlacklist = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
             const user_id: string = (req.user! as User).id;
             const [, token]: string[] = req.headers.authorization!.split(' ');
@@ -51,15 +51,14 @@ export default class AuthController {
 
             return res.sendStatus(200);
         } catch (error: any) {
-            res.sendStatus(500);
-            throw error;
+            next(error);
         }
     };
 
     /**
      * RegisterUser
      */
-     public readonly registerUser = async (req: Request, res: Response): Promise<Response> => {
+     public readonly registerUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
             const user: UserCreate | undefined = req.body;
             if(!user || user.password.length < 8) return res.sendStatus(400);
@@ -71,15 +70,14 @@ export default class AuthController {
 
             return res.send({ token }).status(201);
         } catch (error: unknown) {
-            res.sendStatus(500);
-            throw error;
+            next(error);
         }  
     };
 
     /**
      * Login
      */
-     public readonly login = (req: Request, res: Response): Response => {
+     public readonly login = (req: Request, res: Response, next: NextFunction): Response | void => {
         try {
             if (!req.user) return res.sendStatus(401);
 
@@ -87,14 +85,15 @@ export default class AuthController {
 
             return res.send({ token }).status(200);
         } catch (error: unknown) {  
-            res.sendStatus(500);
-            throw error;
+            next(error);
         }
     };
 
      /**
      * Logout
      */
-      public readonly logout = async (req: Request, res: Response) => await this.addToBlacklist(req, res);
+     public async logout(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+        return await this.addToBlacklist(req, res, next);
+    }
         
 };

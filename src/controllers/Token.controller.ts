@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
+import validator from "validator";
 import jwt, { Algorithm } from "jsonwebtoken";
+import { NextFunction, Request, Response } from 'express';
 
 // models
 import User from '../models/User.model';
@@ -30,18 +31,19 @@ class TokenController {
     /**
      * AddToBlacklist
      */
-    public static addToBlacklist = async (req: Request, res: Response): Promise<Response> => {
+    public static addToBlacklist = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
             const user_id = (req.user! as User).id;
+            if (!user_id || !validator.isUUID(user_id)) return res.sendStatus(400);
+
             const token: string = req.headers.authorization!.split(' ')[1];
             const result = await Token.create({ token, user_id }, { returning: true });
             
             if (!result) return res.sendStatus(500);
 
             return res.sendStatus(200);
-        } catch (error: any) {
-            res.sendStatus(500);
-            throw error;
+        } catch (error: unknown) {
+            next(error);
         }
     };
 };

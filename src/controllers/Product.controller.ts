@@ -31,7 +31,7 @@ class ProductController {
             const products = await this.ProductsRepository.getAllProducts();
             return res.status(200).send({ products });
         } catch (error: unknown) {
-            next(error)
+            next(error);
         }
     };
 
@@ -42,7 +42,7 @@ class ProductController {
             const products = await this.ProductsRepository.getProductsByCategory(category);
             return res.status(200).send({ products });
         } catch (error: unknown) {
-            next(error)
+            next(error);
         }
     };
 
@@ -55,7 +55,7 @@ class ProductController {
             const products = await this.ProductsRepository.getProductsByAttributes(productFilter);
             return res.status(200).send({ products });
         } catch (error: unknown) {
-            next(error)
+            next(error);
         }
     };
 
@@ -69,7 +69,7 @@ class ProductController {
 
             return res.status(200).send({ product });
         } catch (error: unknown) {
-            next(error)
+            next(error);
         }
     };
     
@@ -83,7 +83,7 @@ class ProductController {
 
             return res.status(201).send({ ...product.get() });
         } catch (error: unknown) {
-            next(error)
+            next(error);
         }
     };
 
@@ -98,7 +98,7 @@ class ProductController {
 
             return res.status(200).send({ ...product.get() });
         } catch (error: unknown) {
-            next(error);
+            next(error);;
         }
     };
 
@@ -112,7 +112,7 @@ class ProductController {
 
             return res.sendStatus(204);
         } catch (error: any) {
-            next(error);
+            next(error);;
         }  
     };
 };
