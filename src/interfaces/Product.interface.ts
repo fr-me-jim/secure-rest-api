@@ -18,6 +18,7 @@ export interface IProductAttributes {
   name: string;
   image: string;
   price: number;
+  stock: number;
   premium: boolean;
   category: string;
   description: string;
@@ -35,6 +36,7 @@ export type ProductCreate = {
   name: string;
   image: string;
   price: number;
+  stock: number;
   category: string;
   premium?: boolean;
   description: string;
@@ -44,6 +46,7 @@ export type ProductEdit = {
   name: string;
   image: string;
   price: number;
+  stock: number;
   category: string;
   premium?: boolean;
   description: string;

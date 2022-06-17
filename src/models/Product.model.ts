@@ -19,6 +19,7 @@ class Product extends Model<IProductAttributes, IProductInput> {
     declare name: string;
     declare image: string;
     declare price: number;
+    declare stock: number;
     declare premium: boolean;
     declare category: string;
     declare description: string;
@@ -49,6 +50,13 @@ Product.init({
         }
     },
     price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            isNumeric: true
+        }
+    },
+    stock: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
