@@ -3,13 +3,14 @@ import path from 'path';
 import dotenv from "dotenv";
 
 // load environment variables
-console.log("Loading environmental variables...");
+console.log("Loading environment variables...");
 const result = dotenv.config();
 
 if (result["error"]) {
     console.log("Error loading environmental variables!");
     throw result["error"];
 }
+console.log("Environmental variables loaded.");
 
 // routes
 import RouterAPI from "./routes/index";
