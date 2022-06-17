@@ -3,7 +3,11 @@ import path from 'path';
 import dotenv from "dotenv";
 
 // load environment variables
-dotenv.config();
+console.log("Loading environmental variables...");
+const result = dotenv.config();
+
+if (result["error"]) throw new Error("Error loading environmental variables!");
+while (!process.env.JWT_SECRET){}
 
 // routes
 import RouterAPI from "./routes/index";
