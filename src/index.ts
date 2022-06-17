@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 // load environment variables
 console.log("Loading environmental variables...");
 const result = dotenv.config();
-
+console.log(result)
 if (result["error"]) throw new Error("Error loading environmental variables!");
 while (!process.env.JWT_SECRET){}
 
