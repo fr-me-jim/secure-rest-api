@@ -90,6 +90,7 @@ export default class RouterAPI {
 
         this.router.use('/', this.AuthRouter);
         this.router.use('/users', ...this.middlewares, this.UserRouter);
+        this.router.use('/orders', ...this.middlewares, this.UserRouter);
         this.router.use('/products', ...this.middlewares, this.ProductRouter);
         this.router.use('/categories', ...this.middlewares, this.CategoryRouter);
 
