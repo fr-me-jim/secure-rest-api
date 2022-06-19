@@ -1,5 +1,5 @@
 import fs from "fs";
-import path from 'path';
+// import path from 'path';
 import dotenv from "dotenv";
 import winston from "winston";
 
@@ -26,7 +26,7 @@ import APIServer from "./server";
 const routerAPI = new RouterAPI();
 const PORT: number = (process.env.PORT && parseInt(process.env.PORT)) || 9000;
 // const debugLevel: string = process.env.NODE_ENV === "production" ? "combined" : "dev";
-const logsDir: string = `${path.resolve('.')}/logs`; 
+const logsDir: string = `/var/log/server`; 
 if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir, { recursive: true });
 }
