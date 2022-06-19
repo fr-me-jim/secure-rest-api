@@ -12,7 +12,7 @@ export interface IOrderRepository {
     deleteOrder(id: string): Promise<number | null>;
 };
 
-export type OrderStatus = "pending" | "payed" | "shipped" | "delivered";
+export type OrderStatus = 'pending' | 'payed' | 'shipped' | 'delivered';
 
 export interface IOrderAttributes {
     id: string;
@@ -34,12 +34,12 @@ export type OrderCreate = {
 };
 
 export type OrderEdit = {
-    status?: string;
+    status?: OrderStatus;
     client_id?: string;  
 };
 
 export type OrderSearch = {
     date?: Date;
-    status?: string;
+    status?: OrderStatus;
     client_id?: string;  
 };
