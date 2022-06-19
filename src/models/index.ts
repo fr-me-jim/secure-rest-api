@@ -1,5 +1,8 @@
 import sqlize from "sequelize";
 
+// logging
+import logger from '../config/logger.config';
+
 
 const { Sequelize } = sqlize;
 
@@ -9,7 +12,7 @@ const DB_PORT: number | undefined = process.env.DB_PORT ? parseInt(process.env.D
 const DB_USERNAME: string | undefined = process.env.DB_USERNAME;
 const DB_PASSWORD: string | undefined = process.env.DB_PASSWORD;
 
-const logging: boolean = process.env.NODE_ENV === 'developement';
+// const logging: boolean = process.env.NODE_ENV === 'developement';
 
 const connection = new Sequelize({
     host: DB_HOST,
@@ -18,7 +21,10 @@ const connection = new Sequelize({
     username: DB_USERNAME,
     password: DB_PASSWORD,
     dialect: 'postgres',
-    logging
+    logging: msg => logger.debug(msg),
+    // dialectOptions: {
+    //     ssl
+    // }
 });
 
 export default connection;
