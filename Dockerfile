@@ -8,7 +8,7 @@ WORKDIR /var/log
 
 # permissions for logging
 RUN mkdir server
-# RUN chown -R root:node /var/log/server
+RUN chown -R node:node server
 RUN chmod -R o+wx server
 RUN ls -l
 
