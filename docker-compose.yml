@@ -71,7 +71,7 @@ services:
       - ./scripts/postgresql.deploy:/etc/letsencrypt/renewal-hooks/deploy/postgresql.deploy:rw
 
 networks:
-  default:
+  tfm-network:
     name: tfm-network
     ipam:
       driver: default
