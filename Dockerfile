@@ -10,6 +10,7 @@ WORKDIR /var/log
 RUN mkdir server
 # RUN chown -R root:node /var/log/server
 RUN chmod -R o+wx server
+RUN ls -l
 
 # Create app directory
 WORKDIR /usr/src/app
