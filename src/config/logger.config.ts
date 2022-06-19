@@ -1,9 +1,10 @@
 import fs from 'fs';
+import path from 'path';
 import winston from 'winston';
 
-const logsDir: string = `/var/log/server`; 
-if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir, { recursive: true });
+const logDirPath: string = `${path.resolve('.')}/logs`;
+if (!fs.existsSync(logDirPath)) {
+    fs.mkdirSync(logDirPath, { recursive: true });
 }
 
 const logger = winston.createLogger({
@@ -11,8 +12,8 @@ const logger = winston.createLogger({
     format: winston.format.json(),
     defaultMeta: { service: 'user-service' },
     transports: [
-        new winston.transports.File({ filename: 'error.log', level: 'error', dirname: logsDir }),
-        new winston.transports.File({ filename: 'combined.log', dirname: logsDir }),
+        new winston.transports.File({ filename: 'error.log', level: 'error', dirname: logDirPath }),
+        new winston.transports.File({ filename: 'combined.log', dirname: logDirPath }),
     ],
 });
 
