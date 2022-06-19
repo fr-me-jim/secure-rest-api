@@ -10,6 +10,9 @@ services:
               memory: 512M
             reservations:
               memory: 128M
+      networks:
+        - tfm-network
+      
       ports: 
         - "80:80"
         - "443:443"
@@ -33,6 +36,10 @@ services:
               memory: 2G
             reservations:
               memory: 128M
+
+    networks:
+      - tfm-network
+
     volumes:
       - ./public:/usr/src/app/public
       - /var/log/server:/usr/src/app/logs/:rw
@@ -54,6 +61,8 @@ services:
               memory: 128M
     env_file:
       - .env.docker
+    networks:
+      - tfm-network
     volumes:
       - /var/lib/postgresql/data/:/var/lib/postgresql/data/:rw
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:rw
