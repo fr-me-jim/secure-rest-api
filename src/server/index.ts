@@ -6,9 +6,9 @@ import express,
     Application, 
 } from 'express';
 import cors from 'cors';
-import logger from "morgan";
+// import logger from "morgan";
 import passport from "passport";
-import { WriteStream } from "fs";
+// import { WriteStream } from "fs";
 import { Sequelize, ValidationError } from "sequelize";
 
 // router
@@ -19,17 +19,20 @@ export default class APIServer {
 
     private port: number;
     private router: Router
-    private debugLevel: string;
+    // private debugLevel: string;
     private connection: Sequelize
-    private accessLogStream: WriteStream;
+    // private accessLogStream: WriteStream;
 
-    constructor(port: number, debugLevel: string, connection: Sequelize, routerAPI: RouterAPI, logWriteStream: WriteStream) {
+    constructor(port: number, connection: Sequelize, routerAPI: RouterAPI, 
+        // debugLevel: string, 
+        // logWriteStream: WriteStream
+    ) {
         this.port = port;
         this.app = express();
-        this.debugLevel = debugLevel;
+        // this.debugLevel = debugLevel;
         this.connection = connection;
         this.router = routerAPI.InitializeRouter();
-        this.accessLogStream = logWriteStream;
+        // this.accessLogStream = logWriteStream;
 
 
         this.SetAssets();
@@ -46,7 +49,7 @@ export default class APIServer {
         this.app.use('/api', this.router);  
         this.app.use(passport.initialize());
         this.app.use(express.urlencoded({ extended: false }));
-        this.app.use(logger(this.debugLevel, { stream: this.accessLogStream }));
+        // this.app.use(logger(this.debugLevel, { stream: this.accessLogStream }));
 
         this.app.use(this.ExpressErrorHandler);
     };
