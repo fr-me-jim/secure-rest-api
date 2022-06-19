@@ -48,7 +48,9 @@ class ProductController {
 
     public readonly getFilteredProducts = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const productFilter: ProductSearch | undefined = req.body.filter; 
+        console.log("In Product Controller");
         console.log(productFilter)
+        console.log(req.body)
         if (!productFilter || !Object.keys(productFilter).length) return res.sendStatus(400);
         
         try {
