@@ -71,9 +71,10 @@ services:
       - ./scripts/postgresql.deploy:/etc/letsencrypt/renewal-hooks/deploy/postgresql.deploy:rw
 
 networks:
-  tfm-network:
+  default:
+    name: tfm-network
     ipam:
       driver: default
       config:
-        - subnet: 192.168.80.0/20
-        - gateway: 192.168.80.1
+        - subnet: 192.168.0.0/24
+        - gateway: 192.168.0.1
