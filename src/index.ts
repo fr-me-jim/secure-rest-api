@@ -24,7 +24,7 @@ import APIServer from "./server";
 
 // const app = express();
 const routerAPI = new RouterAPI();
-const logDirPath: string = `/home/node/logs`;
+const logDirPath: string = `../logs`;
 // const logDirPath: string = `${path.resolve('.')}/logs`;
 const PORT: number = (process.env.PORT && parseInt(process.env.PORT)) || 9000;
 const debugLevel: string = process.env.NODE_ENV === "production" ? "combined" : "dev";
