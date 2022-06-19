@@ -41,7 +41,10 @@ Order.init({
     },
     status: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            is: /^(pending|payed|shipped|delivered){1}$/g
+        }
     },
     client_id: {
         type: DataTypes.UUID,
