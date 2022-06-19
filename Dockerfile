@@ -3,17 +3,23 @@ FROM node:16.14.0-alpine
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 ENV PATH=$PATH:/home/node/.npm-global/bin
 
+# Create logs directory
+WORKDIR /var/log
+
+# permissions for logging
+RUN mkdir server
+# RUN chown -R root:node /var/log/server
+RUN chmod -R o+wx server
+
 # Create app directory
 WORKDIR /usr/src/app
 # RUN mkdir -R ~/logs
-RUN mkdir -p /var/log/server
+# RUN mkdir -p /var/log/server
 
 # Bundle app source
 COPY . /usr/src/app
 
-# permissions for logging
-RUN chown -R root:node /var/log/server
-RUN chmod -R g+wx /var/log/server
+
 # RUN ls -l .
 # RUN npm i -g npm@latest
 
