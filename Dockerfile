@@ -26,5 +26,6 @@ EXPOSE 9000
 USER node
 # RUN mkdir -p ~/logs
 RUN mkdir -p /var/log/server/test
+RUN ls  /var/log/server
 
 CMD ["npm", "start"]
