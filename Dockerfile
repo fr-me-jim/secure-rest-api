@@ -9,7 +9,7 @@ WORKDIR /var/log
 # permissions for logging
 RUN mkdir server
 RUN chown -R node:node server
-RUN chmod -R o+wx server
+RUN chmod -R 777 server
 RUN ls -l
 
 # Create app directory
