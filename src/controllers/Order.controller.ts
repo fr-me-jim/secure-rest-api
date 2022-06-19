@@ -16,9 +16,9 @@ import {
     // OrderItemEdit, 
     OrderItemCreate, 
     // OrderItemSearch,
+    OrderItemRequest,
     IOrderItemRepository,
 } from '../interfaces/OrderItem.interface';
-import Product from "src/models/Product.model";
 
 /**
  * @class OrderController
@@ -64,7 +64,7 @@ class OrderController {
 
         try {
             const items = await this.OrderItemRepository.getOrderItemsByOrderId(id);
-            if (!items) return res.sendStatus(404);
+            if (!items) return res.sendStatus(409);
 
             return res.status(200).send({ items });
         } catch (error: unknown) {
@@ -73,49 +73,34 @@ class OrderController {
     };
     
     public readonly addNewOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const orderItems: Product[] = req.body;
+        const orderItems: OrderItemRequest[] = req.body;
         const client_id: string | undefined = req.params.client_id;
         if (!client_id || !validator.isUUID(client_id) || orderItems.length === 0) return res.sendStatus(400);
 
+        let orderID: string = "";
+        let itemsCreated: string[] = [];
         try {
             const orderData: OrderCreate = {
                 status: "pending",
                 client_id
             };
             const order = await this.OrdersRepository.createOrder(orderData);
-            if (!order) return res.sendStatus(404);
-
-            const itemsMap: Map<string, OrderItemCreate> = new Map<string, OrderItemCreate>();
-            orderItems.forEach( item => {
-                let previousItem = itemsMap.get(item.id);
-                if (previousItem) itemsMap.set(item.id, { ...previousItem, quantity: previousItem.quantity + 1  });
-                else {
-                    const itemInfo: OrderItemCreate = {
-                        order_id: order.id,
-                        product_id: item.id,
-                        quantity: 1,
-                        price: item.price
-                    };
-                    itemsMap.set(item.id, itemInfo);
-                }
-                
-            });
+            if (!order) return res.sendStatus(409);
+            orderID = order.id;
             
-            itemsMap.forEach( async (item) => {
-                try {
-                    const result = await this.OrderItemRepository.createOrderItem(item)
-                    if (!result) {
-                        await this.OrdersRepository.deleteOrder(order.id);
-                        throw new Error("Error adding OrderItems");
-                    }
-                } catch (error) {
-                    await this.OrdersRepository.deleteOrder(order.id);
-                    throw error;
-                }
-            });
+            for (let i = 0; i < orderItems.length; i++) {
+                const item: OrderItemCreate = { ...orderItems[i], order_id: order.id };
+                const result = await this.OrderItemRepository.createOrderItem(item);
+                if (!result) {
+                    this.rollbackOrderCreation(order.id, itemsCreated);
+                    return res.sendStatus(409);  
+                } 
+                itemsCreated.push(result.id);
+            };
 
             return res.status(201).send({ ...order.get() });
         } catch (error: unknown) {
+            if (orderID) this.rollbackOrderCreation(orderID, itemsCreated);
             next(error);
         }
     };
@@ -127,7 +112,7 @@ class OrderController {
 
         try {
             const order = await this.OrdersRepository.updateOrder(id, newOrderData);
-            if (!order) return res.sendStatus(404);
+            if (!order) return res.sendStatus(409);
 
             return res.status(200).send({ ...order.get() });
         } catch (error: unknown) {
@@ -141,12 +126,26 @@ class OrderController {
             if(!id || !validator.isUUID(id)) return res.sendStatus(400);
 
             const result = await this.OrdersRepository.deleteOrder( id );
-            if(!result) return res.sendStatus(404);
+            if(result === 0) return res.sendStatus(404);
+            if(result === null) return res.sendStatus(409);
 
             return res.sendStatus(204);
         } catch (error: any) {
             next(error);
         }  
+    };
+
+    private readonly rollbackOrderCreation = async (order_id: string, itemsCreated: string[]): Promise<void> => {
+        try {
+            await this.OrdersRepository.deleteOrder(order_id);
+            if (itemsCreated.length) {
+                for (let i = 0; i < itemsCreated.length; i++) {
+                    await this.OrderItemRepository.deleteOrderItem(itemsCreated[i]);
+                }
+            }
+        } catch (error: unknown) {
+            throw error;
+        }
     };
 };
 

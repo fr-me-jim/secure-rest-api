@@ -26,6 +26,12 @@ export interface IOrderItemAttributes {
 export interface IOrderItemInput extends Optional<IOrderItemAttributes, 'id'> {};
 export interface IOrderItemOuput extends Required<IOrderItemAttributes> {};
 
+export type OrderItemRequest = {
+    product_id: string;
+    quantity: number;
+    price: number;  
+};
+
 export type OrderItemCreate = {
     order_id: string;
     product_id: string;
