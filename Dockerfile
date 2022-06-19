@@ -5,8 +5,9 @@ ENV PATH=$PATH:/home/node/.npm-global/bin
 
 # Create app directory
 WORKDIR /usr/src/app
-RUN chown -R node:node /usr/src/app
 RUN mkdir logs
+RUN chown -R node:node ./*
+RUN ls -l
 # RUN mkdir -p /var/log/server
 
 # Bundle app source
