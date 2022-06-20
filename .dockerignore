@@ -11,4 +11,3 @@ logs
 pg_hba.conf
 postgresql.conf
 nginx.conf
-scripts
