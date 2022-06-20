@@ -7,7 +7,7 @@ services:
     networks:
       - tfm-network
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt:rw
 
   nginx: 
       image: nginx:alpine
