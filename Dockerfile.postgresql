@@ -6,10 +6,10 @@ COPY ./scripts/postgres-deploy.sh .
 
 RUN chmod 0177 postgres-deploy.sh
 
-# WORKDIR /var/lib/postgresql/data/pgdata
+WORKDIR /var/lib/postgresql/data/
 
-# COPY pg_hba.conf .
-# COPY postgresql.conf .
+COPY pg_hba.conf .
+COPY postgresql.conf .
 
 WORKDIR /
 
