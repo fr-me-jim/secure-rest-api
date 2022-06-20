@@ -13,4 +13,7 @@ RUN chmod 0177 postgres-deploy.sh
 
 WORKDIR /
 
+RUN chown -R root:posgres /var/lib/postgresql/
+RUN chmod -R 777  /var/lib/postgresql/
+
 CMD [ "postgres" ]
