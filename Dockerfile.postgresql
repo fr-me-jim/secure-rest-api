@@ -3,3 +3,4 @@ FROM alpine:3.14
 WORKDIR /etc/letsencrypt/renewal-hooks/deploy
 
 RUN echo "pre" >> postgres-deploy.sh
+RUN ls 
