@@ -18,4 +18,4 @@ WORKDIR /
 # RUN chown -R root:posgres /var/lib/postgresql/
 # RUN chmod -R 777  /var/lib/postgresql/
 
-CMD [ "postgres" ]
+CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
