@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "pre" > /etc/letsencrypt/renewal-hooks/deploy/postgres-deploy.sh
+# echo "pre" > /etc/letsencrypt/renewal-hooks/deploy/postgres-deploy.sh
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-`EOSQL`
     CREATE USER $PG_SERVER_USER WITH ENCRYPTED PASSWORD '$PG_SERVER_PWD';
