@@ -65,11 +65,11 @@ services:
       - tfm-network
     volumes:
       - /etc/letsencrypt/:/etc/letsencrypt/
-      - /var/lib/postgresql/data/:/var/lib/postgresql/data/:rw
-      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+      - /var/lib/postgresql/data/:/var/lib/postgresql/data/
+      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:rw
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf:rw
       - ./scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-      - ./scripts/postgresql-deploy.sh:/etc/letsencrypt/renewal-hooks/deploy/postgresql-deploy.sh:rw
+      - ./scripts/postgres-deploy.sh:/etc/letsencrypt/renewal-hooks/deploy/postgres-deploy.sh:rw
 
 networks:
   tfm-network:
