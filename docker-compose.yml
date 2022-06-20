@@ -69,8 +69,8 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       # - /var/lib/postgresql/data:/var/lib/postgresql/data
-      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      # - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      # - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
       - ./scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
       # - ./scripts/:/etc/letsencrypt/renewal-hooks/deploy/
 
