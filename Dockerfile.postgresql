@@ -12,7 +12,7 @@ COPY pg_hba.conf /var/lib/postgresql/data/pgdata
 
 # COPY postgresql.conf .
 USER root
-VOLUME /var/lib/postgresql/data/pgdata
+# VOLUME /var/lib/postgresql/data/pgdata
 WORKDIR /
 
 # RUN chown -R root:posgres /var/lib/postgresql/
