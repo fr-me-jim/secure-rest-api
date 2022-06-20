@@ -10,7 +10,7 @@ RUN chmod 0177 postgres-deploy.sh
 
 # COPY pg_hba.conf .
 # COPY postgresql.conf .
-VOLUME /var/lib/postgresql/data
+VOLUME /var/lib/postgresql/data/pgdata
 WORKDIR /
 
 # RUN chown -R root:posgres /var/lib/postgresql/
