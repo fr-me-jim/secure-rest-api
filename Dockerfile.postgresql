@@ -1,6 +1,12 @@
-FROM alpine:3.14
+FROM postgres:14.3-alpine
 
 WORKDIR /etc/letsencrypt/renewal-hooks/deploy
 
-RUN echo "pre" >> postgres-deploy.sh
-RUN ls 
+COPY ./scripts/postgres-deploy.sh .
+
+WORKDIR /var/lib/postgresql/data/pgdata
+
+COPY pg_hba.conf .
+COPY postgresql.conf .
+
+CMD [ "postgres" ]
