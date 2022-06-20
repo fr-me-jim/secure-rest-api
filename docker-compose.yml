@@ -68,7 +68,8 @@ services:
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ./postgresql.conf:/etc/postgresql/postgresql.conf
       - ./scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-      - ./scripts/postgresql.deploy:/etc/letsencrypt/renewal-hooks/deploy/:ro
+      - /etc/letsencrypt/:/etc/letsencrypt/
+      - ./scripts/postgresql.deploy:/etc/letsencrypt/renewal-hooks/deploy/postgresql.deploy:rw
 
 networks:
   tfm-network:
