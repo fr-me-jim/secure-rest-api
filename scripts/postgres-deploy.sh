@@ -1,5 +1,5 @@
 #!/bin/bash
-umask 0177
+# umask 0177
 DOMAIN=tfm.jediupc.com
 DATA_DIR=/var/lib/postgresql/data
 cp /etc/letsencrypt/live/$DOMAIN/fullchain.pem $DATA_DIR/server.crt

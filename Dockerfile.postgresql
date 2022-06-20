@@ -2,11 +2,15 @@ FROM postgres:14.3-alpine
 
 WORKDIR /etc/letsencrypt/renewal-hooks/deploy
 
-COPY ./scripts/postgres-deploy.sh .
+COPY ./scripts/postgres-deploy.sh /etc/letsencrypt/renewal-hooks/deploy/
 
-WORKDIR /var/lib/postgresql/data/pgdata
+RUN chmod +x postgres-deploy.sh
 
-COPY pg_hba.conf .
-COPY postgresql.conf .
+# WORKDIR /var/lib/postgresql/data/pgdata
+
+# COPY pg_hba.conf .
+# COPY postgresql.conf .
+
+WORKDIR /
 
 CMD [ "postgres" ]
