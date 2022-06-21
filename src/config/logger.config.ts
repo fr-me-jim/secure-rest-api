@@ -1,11 +1,11 @@
-import fs from 'fs';
+// import fs from 'fs';
 import path from 'path';
 import winston from 'winston';
 
 const logDirPath: string = `${path.resolve('.')}/logs`;
-if (!fs.existsSync(logDirPath)) {
-    fs.mkdirSync(logDirPath, { recursive: true });
-}
+// if (!fs.existsSync(logDirPath)) {
+//     fs.mkdirSync(logDirPath, { recursive: true });
+// }
 
 const logger = winston.createLogger({
     level: 'info',
