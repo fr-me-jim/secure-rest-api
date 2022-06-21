@@ -1,10 +1,10 @@
 FROM postgres:14.3-alpine
 
-WORKDIR /var/lib/postgresql/data
-RUN ls -l
-RUN chown postgres:postgres server.crt
-RUN chown postgres:postgres server.crt
-RUN ls -l
+# WORKDIR /var/lib/postgresql/data
+# RUN ls -l
+# RUN chown postgres:postgres server.crt
+# RUN chown postgres:postgres server.crt
+# RUN ls -l
 
 USER postgres
 
