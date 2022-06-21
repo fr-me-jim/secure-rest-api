@@ -1,7 +1,6 @@
 # storage
 /public
 /logs
-/.certs
 
 # dependencies
 /node_modules
