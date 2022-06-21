@@ -3,7 +3,7 @@ FROM postgres:14.3-alpine
 ARG DOMAIN
 ARG DATA_DIR
 
-RUN echo /etc/letsencrypt/live/${DOMAIN}/
+RUN ls /etc/letsencrypt/live/${DOMAIN}/
 WORKDIR /etc/letsencrypt/live/${DOMAIN}/
 
 RUN echo ${DATA_DIR}
