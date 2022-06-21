@@ -2,9 +2,13 @@ FROM postgres:14.3-alpine
 
 WORKDIR /etc/letsencrypt/renewal-hooks/post
 
+RUN pwd
+
 COPY ./scripts/postgres-deploy.sh .
 
 RUN chmod 755 postgres-deploy.sh
+
+RUN ls
 
 WORKDIR /
 
