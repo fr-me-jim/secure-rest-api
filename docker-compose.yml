@@ -56,8 +56,8 @@ services:
       context: .
       dockerfile: Dockerfile.postgresql
       args:
-        - DOMAIN="tfm.jediupc.com"
-        - DATA_DIR="/var/lib/postgresql/data"
+        - DOMAIN=tfm.jediupc.com
+        - DATA_DIR=/var/lib/postgresql/data
     container_name: tfm-database
     deploy:
         resources:
