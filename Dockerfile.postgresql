@@ -1,19 +1,17 @@
 FROM postgres:14.3-alpine
 
-# RUN echo /etc/letsencrypt/live/$DOMAIN/
-# WORKDIR /etc/letsencrypt/live/$DOMAIN/
+RUN echo /etc/letsencrypt/live/$DOMAIN/
+WORKDIR /etc/letsencrypt/live/$DOMAIN/
 
-# RUN echo $DATA_DIR
-# RUN cp /etc/letsencrypt/live/$DOMAIN/privkey.pem $DATA_DIR/server.crt
-# RUN cp /etc/letsencrypt/live/$DOMAIN/privkey.pem $DATA_DIR/server.key
+RUN echo $DATA_DIR
+RUN cp /etc/letsencrypt/live/$DOMAIN/privkey.pem $DATA_DIR/server.crt
+RUN cp /etc/letsencrypt/live/$DOMAIN/privkey.pem $DATA_DIR/server.key
 
-# COPY ./scripts/postgres-deploy.sh .
-
-# RUN chmod 755 postgres-deploy.sh
-
-# RUN ls
+RUN chown postgres:postgres $DATA_DIR/server.crt
+RUN chown postgres:postgres $DATA_DIR/server.key
 
 WORKDIR /
 
-# USER postgres
+USER postgres
+
 CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
