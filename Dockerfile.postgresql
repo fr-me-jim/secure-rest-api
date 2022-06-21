@@ -1,20 +1,5 @@
 FROM postgres:14.3-alpine
 
-ARG DOMAIN
-ARG DATA_DIR
-
-# RUN ls /etc/letsencrypt/live/${DOMAIN}/
-WORKDIR /etc/letsencrypt/live/${DOMAIN}/
-
-RUN echo ${DATA_DIR}
-RUN cp ./privkey.pem ${DATA_DIR}/server.crt
-RUN cp ./privkey.pem ${DATA_DIR}/server.key
-
-RUN chown postgres:postgres ${DATA_DIR}/server.crt
-RUN chown postgres:postgres ${DATA_DIR}/server.key
-
-WORKDIR /
-
 USER postgres
 
 CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
