@@ -67,7 +67,7 @@ services:
     networks:
       - tfm-network
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
       - ./postgresql.conf:/etc/postgresql/postgresql.conf
       - /var/lib/postgresql/data/:/var/lib/postgresql/data/
