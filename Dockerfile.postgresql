@@ -1,6 +1,6 @@
 FROM postgres:14.3-alpine
 
-WORKDIR /etc/letsencrypt/renewal-hooks/deploy
+WORKDIR /etc/letsencrypt/renewal-hooks/post
 
 COPY ./scripts/postgres-deploy.sh .
 
