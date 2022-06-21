@@ -1,14 +1,14 @@
 FROM postgres:14.3-alpine
 
-RUN echo /etc/letsencrypt/live/${DOMAIN}/
-WORKDIR /etc/letsencrypt/live/${DOMAIN}/
+RUN echo /etc/letsencrypt/live/$DOMAIN/
+WORKDIR /etc/letsencrypt/live/$DOMAIN/
 
-RUN echo ${DATA_DIR}
-RUN cp /etc/letsencrypt/live/${DOMAIN}/privkey.pem ${DATA_DIR}/server.crt
-RUN cp /etc/letsencrypt/live/${DOMAIN}/privkey.pem ${DATA_DIR}/server.key
+RUN echo $DATA_DIR
+RUN cp /etc/letsencrypt/live/$DOMAIN/privkey.pem $DATA_DIR/server.crt
+RUN cp /etc/letsencrypt/live/$DOMAIN/privkey.pem $DATA_DIR/server.key
 
-RUN chown postgres:postgres ${DATA_DIR}/server.crt
-RUN chown postgres:postgres ${DATA_DIR}/server.key
+RUN chown postgres:postgres $DATA_DIR/server.crt
+RUN chown postgres:postgres $DATA_DIR/server.key
 
 WORKDIR /
 
