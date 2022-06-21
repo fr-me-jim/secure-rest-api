@@ -42,8 +42,8 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./public:/usr/src/app/public
-      - /var/log/server:/usr/src/app/logs/:rw
-      - /var/log/server:/home/node/logs/:rw
+      - /var/log/server:/usr/src/app/logs:rw
+      - /var/log/server:/home/node/logs:rw
       # - /var/log/server:/var/log/server:rw
       
     depends_on: [ tfm-database ]
