@@ -4,18 +4,8 @@ WORKDIR /etc/letsencrypt/renewal-hooks/deploy
 
 COPY ./scripts/postgres-deploy.sh .
 
-RUN chmod 0177 postgres-deploy.sh
+RUN chmod 755 postgres-deploy.sh
 
-# WORKDIR /var/lib/postgresql/data
-# USER postgres
-# COPY pg_hba.conf /var/lib/postgresql/data/pgdata
-
-# COPY postgresql.conf .
-# USER root
-# VOLUME /var/lib/postgresql/data/pgdata
 WORKDIR /
-
-# RUN chown -R root:posgres /var/lib/postgresql/
-# RUN chmod -R 777  /var/lib/postgresql/
 
 CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
