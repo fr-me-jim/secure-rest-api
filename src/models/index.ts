@@ -15,8 +15,8 @@ const DB_PASSWORD: string | undefined = process.env.DB_PASSWORD;
 
 // const logging: boolean = process.env.NODE_ENV === 'developement';
 
-const serverCert  = fs.readFileSync("/etc/letsencrypt/live/tfm.jediupc.com/fullchain.pem");
-const serverCertKey  = fs.readFileSync("/etc/letsencrypt/live/tfm.jediupc.com/privkey.pem");
+const serverCert  = fs.readFileSync("./.certs/server.crt");
+const serverCertKey  = fs.readFileSync("./.certs/server.key");
 console.log(serverCert)
 console.log(serverCertKey)
 
