@@ -13,10 +13,11 @@ COPY . /usr/src/app
 # Install app dependencies & Build
 RUN npm i
 RUN npm run build
+ENV NODE_ENV=production
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
 
 EXPOSE 9000
 USER node
 RUN mkdir -p ~/logs
 
-CMD ["npm", "start"]
+CMD ["node", "dist/src/index.js"]
