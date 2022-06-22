@@ -36,7 +36,6 @@ OrderItem.init({
     order_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        unique: true,
         references: {
             model: Order,
             key: 'id'
@@ -60,7 +59,6 @@ OrderItem.init({
     product_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        unique: true,
         references: {
             model: Product,
             key: 'id'
