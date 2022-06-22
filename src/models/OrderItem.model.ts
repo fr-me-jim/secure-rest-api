@@ -67,6 +67,12 @@ OrderItem.init({
         }
     }
 }, { 
+    indexes: [
+        {
+            unique: true,
+            fields: ["order_id", "product_id"]
+        }
+    ],
     sequelize: connection, 
     modelName: 'OrderItem', 
     tableName: 'order_items', 
