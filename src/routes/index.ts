@@ -76,9 +76,9 @@ export default class RouterAPI {
         this.upload = multer({ storage, fileFilter: checkAllowedFiles });
         
         this.UserRepository = new UserRepositories();
-        this.OrderRepository = new OrderRepositories();
         this.TokenRepository = new TokenRepositories();
         this.ProductRepository = new ProductRepositories();
+        this.OrderRepository = new OrderRepositories();
         this.CategoryRepository = new CategoryRepositories();
         this.OrderItemRepository = new OrderItemRepositories();
 
