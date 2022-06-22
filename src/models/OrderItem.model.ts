@@ -31,7 +31,7 @@ OrderItem.init({
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
-        // primaryKey: true
+        primaryKey: true
     },
     order_id: {
         type: DataTypes.UUID,
@@ -40,8 +40,7 @@ OrderItem.init({
             model: Order,
             key: 'id'
         },
-        primaryKey: true
-        // unique: "uniqueOrderProduct"
+        unique: "uniqueOrderProduct"
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -65,8 +64,7 @@ OrderItem.init({
             model: Product,
             key: 'id'
         },
-        primaryKey: true
-        // unique: "uniqueOrderProduct"
+        unique: "uniqueOrderProduct"
     }
 }, { 
     sequelize: connection, 
