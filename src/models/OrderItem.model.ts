@@ -39,7 +39,8 @@ OrderItem.init({
         references: {
             model: Order,
             key: 'id'
-        }
+        },
+        unique: "uniqueOrderProduct"
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -62,15 +63,10 @@ OrderItem.init({
         references: {
             model: Product,
             key: 'id'
-        }
+        },
+        unique: "uniqueOrderProduct"
     }
 }, { 
-    indexes: [
-        {
-            unique: true,
-            fields: ["order_id", "product_id"]
-        }
-    ],
     sequelize: connection, 
     modelName: 'OrderItem', 
     tableName: 'order_items', 
