@@ -43,8 +43,8 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./public:/usr/src/app/public
       - .certs:/usr/src/app/.certs
-      - /var/log/server:/usr/src/app/logs:rw
-      - /var/log/server:/home/node/logs:rw
+      - /var/log/server:/usr/src/app/logs
+      - /var/log/server:/home/node/logs
       # - /var/log/server:/var/log/server:rw
       
     depends_on: [ tfm-database ]
