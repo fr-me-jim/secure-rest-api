@@ -43,14 +43,14 @@ OrderItem.init({
         }
     },
     quantity: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             min: 1
         }
     },
     price: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Product,
