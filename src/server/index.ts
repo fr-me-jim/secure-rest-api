@@ -79,7 +79,7 @@ export default class APIServer {
             try {
                 await this.connection.authenticate();
                 console.log('Database connected.');
-                
+
                 await this.connection.sync({ force: true, });
                 console.log('Tables synced in Database.');
             } catch (error: unknown) {

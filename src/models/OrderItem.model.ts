@@ -40,7 +40,7 @@ OrderItem.init({
             model: Order,
             key: 'id'
         },
-        unique: "uniqueOrderProduct"
+        // unique: "uniqueOrderProduct"
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -60,11 +60,11 @@ OrderItem.init({
     product_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-            model: Product,
-            key: 'id'
-        },
-        unique: "uniqueOrderProduct"
+        // references: {
+        //     model: Product,
+        //     key: 'id'
+        // },
+        // unique: "uniqueOrderProduct"
     }
 }, { 
     sequelize: connection, 
