@@ -5,14 +5,14 @@ import Order from "../models/Order.model";
 
 export interface IOrderRepository {
     getAllOrders(): Promise<Order[]>;
-    getOrderById(id: string): Promise<Order | null>;
+    getOrderById(id: string, client_id?: string): Promise<Order | null>;
     getOrdersByClientId(client_id: string): Promise<Order[]>;
     createOrder(newOrder: OrderCreate): Promise<Order | null>;
-    updateOrder(id: string, newOrderData: OrderEdit): Promise<Order | null>;
+    updateOrder(id: string, newOrderData: OrderEdit, client_id?: string): Promise<Order | null>;
     deleteOrder(id: string): Promise<number | null>;
 };
 
-export type OrderStatus = 'pending' | 'payed' | 'shipped' | 'delivered';
+export type OrderStatus = 'pending' | 'payed' | 'shipped' | 'delivered' | 'cancelled';
 
 export interface IOrderAttributes {
     id: string;
@@ -34,8 +34,14 @@ export type OrderCreate = {
 };
 
 export type OrderEdit = {
+    date?: Date;
     status?: OrderStatus;
     client_id?: string;  
+};
+
+export type OrderEditClient = {
+    date?: Date;
+    status?: OrderStatus;
 };
 
 export type OrderSearch = {

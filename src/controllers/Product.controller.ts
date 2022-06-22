@@ -37,6 +37,7 @@ class ProductController {
 
     public readonly getProductsByCategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const category: string | undefined = req.params.category_name && sanitizeString(req.params.category_name); 
+        console.log("In Product Controller Category");
         if (!category || !validator.isAlpha(category)) return res.sendStatus(400);
         try {
             const products = await this.ProductsRepository.getProductsByCategory(category);

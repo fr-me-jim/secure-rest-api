@@ -3,6 +3,14 @@ import { Optional } from 'sequelize';
 // model
 import User from '../models/User.model';
 
+declare global {
+  namespace Express {
+    interface User {
+      id?: string;
+    }
+  }
+}
+
 export interface IUserRepository {
   getAllUsers(exclusions?: string[]): Promise<User[]>;
   getUserById(id: string, exclusions?: string[]): Promise<User | null>;

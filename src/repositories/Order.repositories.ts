@@ -8,6 +8,7 @@ import {
     OrderEdit,
     OrderCreate,
     IOrderRepository,
+    OrderEditClient,
 } from '../interfaces/Order.interface';
 
 export default class OrderRepositories implements IOrderRepository {
@@ -24,12 +25,12 @@ export default class OrderRepositories implements IOrderRepository {
         }
     };
 
-    public readonly getOrderById = async (id: string): Promise<Order | null> => { 
+    public readonly getOrderById = async (id: string, client_id?: string): Promise<Order | null> => { 
         if (!id || !validator.isUUID(id)) throw new Error("Required Id must be a non-empty string");
 
         try {
             const order = await this._model.findOne({ 
-                where: { id }, 
+                where: { id, client_id }, 
                 raw: true 
             });
 
@@ -70,12 +71,12 @@ export default class OrderRepositories implements IOrderRepository {
         }
     };
 
-    public readonly updateOrder = async (id: string, newOrderData: OrderEdit): Promise<Order | null> => { 
+    public readonly updateOrder = async (id: string, newOrderData: OrderEdit | OrderEditClient, client_id?: string): Promise<Order | null> => { 
         if (!id || !validator.isUUID(id) || !newOrderData) throw new Error("Required Object with attributes to search");
 
         try {
             const [affectedRows, [orden]] = await this._model.update({ ...newOrderData }, {
-                where: { id },
+                where: { id, client_id },
                 returning: true
             });
             if (!affectedRows) return null;

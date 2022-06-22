@@ -11,6 +11,7 @@ import {
     OrderCreate, 
     // OrderSearch,
     IOrderRepository,
+    OrderEditClient,
 } from '../interfaces/Order.interface';
 import {
     // OrderItemEdit, 
@@ -53,6 +54,32 @@ class OrderController {
             if (!order) return res.sendStatus(404);
 
             return res.status(200).send({ order });
+        } catch (error: unknown) {
+            next(error);
+        }
+    };
+
+    public readonly getClientOrderInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        const id: string | undefined = req.params?.id;
+        if (!id || !validator.isUUID(id)) return res.sendStatus(400);
+
+        try {
+            const order = await this.OrdersRepository.getOrderById(id, req.user!.id);
+            if (!order) return res.sendStatus(404);
+
+            return res.status(200).send({ order });
+        } catch (error: unknown) {
+            next(error);
+        }
+    };
+
+
+    public readonly getAllClientOrders = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        const client_id: string | undefined = req.params.client_id;
+        if (!client_id || !validator.isUUID(client_id)) return res.sendStatus(400);
+        try {
+            const orders = await this.OrdersRepository.getOrdersByClientId(client_id);
+            return res.status(200).send({ orders });
         } catch (error: unknown) {
             next(error);
         }
@@ -105,6 +132,22 @@ class OrderController {
         }
     };
 
+    public readonly editClientOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        const id: string | undefined = req.params?.id;
+        const newOrderData: OrderEditClient | undefined = req.body;
+        console.log('[New Order]', newOrderData)
+        if ( !id || !validator.isUUID(id) || !newOrderData) return res.sendStatus(400);
+
+        try {
+            const order = await this.OrdersRepository.updateOrder(id, newOrderData, req.user!.id);
+            if (!order) return res.sendStatus(409);
+
+            return res.status(200).send({ ...order.get() });
+        } catch (error: unknown) {
+            next(error);
+        }
+    };
+
     public readonly editOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const id: string | undefined = req.params?.id;
         const newOrderData: OrderEdit | undefined = req.body;
@@ -118,6 +161,20 @@ class OrderController {
         } catch (error: unknown) {
             next(error);
         }
+    };
+
+    public readonly cancelOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        try {
+            const id: string | undefined = req.params?.id;
+            if(!id || !validator.isUUID(id)) return res.sendStatus(400);
+
+            const order = await this.OrdersRepository.updateOrder(id, { status: "cancelled" }, req.user!.id);
+            if (!order) return res.sendStatus(409);
+
+            return res.sendStatus(204);
+        } catch (error: any) {
+            next(error);
+        }  
     };
 
     public readonly deleteOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
