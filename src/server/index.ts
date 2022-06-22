@@ -79,8 +79,9 @@ export default class APIServer {
             try {
                 await this.connection.authenticate();
                 console.log('Database connected.');
-        
+                await this.connection.query('SET FOREIGN_KEY_CHECKS = 0');
                 await this.connection.sync({ force: true, });
+                await this.connection.query('SET FOREIGN_KEY_CHECKS = 1');
                 console.log('Tables synced in Database.');
             } catch (error: unknown) {
                 throw error;

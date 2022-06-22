@@ -33,8 +33,7 @@ Product.init({
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
-        primaryKey: true,
-        unique: true
+        primaryKey: true
     },
     name: {
         type: DataTypes.STRING,
