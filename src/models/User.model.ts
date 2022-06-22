@@ -92,12 +92,15 @@ User.beforeSave( async (user: User) => {
 
 User.afterSync( async () =>{
     try {
-        await User.create({  
-            email: "admin@gmail.com",
-            password: "128128128",
-            firstName: "admin",
-            secondName: "admin",
-            privileges: 2
+        await User.findOrCreate({  
+            where: { email: "admin@gmail.com" },
+            defaults: {
+                email: "admin@gmail.com",
+                password: "128128128",
+                firstName: "admin",
+                secondName: "admin",
+                privileges: 2
+            }
         });
     } catch (error: unknown) {
         throw error;
