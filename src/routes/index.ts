@@ -77,8 +77,8 @@ export default class RouterAPI {
         
         this.UserRepository = new UserRepositories();
         this.TokenRepository = new TokenRepositories();
-        this.ProductRepository = new ProductRepositories();
         this.OrderRepository = new OrderRepositories();
+        this.ProductRepository = new ProductRepositories();
         this.CategoryRepository = new CategoryRepositories();
         this.OrderItemRepository = new OrderItemRepositories();
 
