@@ -43,7 +43,7 @@ Order.init({
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            is: /^(pending|payed|shipped|delivered){1}$/g
+            is: /^(pending|payed|shipped|delivered|cancelled){1}$/g
         }
     },
     client_id: {
