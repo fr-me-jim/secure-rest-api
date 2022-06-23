@@ -76,6 +76,7 @@ export default class APIServer {
      */
     public readonly listen = (): void => {
         this.app.listen(this.port, async () => {
+            console.log(`== NODE_ENV: ${process.env.NODE_ENV} ==`);
             try {
                 await this.connection.authenticate();
                 console.log('Database connected.');
