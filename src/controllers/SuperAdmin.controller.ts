@@ -18,11 +18,11 @@ class SuperAdminController extends UserController {
     /**
      * GetAllUserInfo
      */
-    public readonly getAllUserInfo = async (_req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    public readonly getAllUsersInfo = async (_req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
-            const result = await this.UsersRepository.getAllUsers();
+            const users = await this.UsersRepository.getAllUsers();
 
-            return res.send({ users: result }).status(200);
+            return res.send({ users }).status(200);
         } catch (error: unknown) {  
             next(error);
         }

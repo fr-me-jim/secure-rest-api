@@ -21,9 +21,10 @@ export default class SuperAdminRouter {
 
 
     public readonly SetRoutes = (): Router => {
-        this.router.get("/", this.adminController.getAllUserInfo);
+        this.router.get("/", this.adminController.getAllUsersInfo);
         this.router.get("/:id", this.adminController.getUserInfo);
-        this.router.put("/:id/edit", this.adminController.editProfileUser);
+        this.router.put("/:id", this.adminController.editProfileUser);
+        this.router.delete("/:id", this.adminController.deleteUser);
 
         return this.router;
     };
