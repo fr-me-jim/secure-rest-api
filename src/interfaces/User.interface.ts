@@ -48,7 +48,7 @@ export type UserLogin = {
   password: string
 };
 
-export type UserCreate = {
+export interface UserCreate {
   email: string,
   password: string,
   firstName: string,

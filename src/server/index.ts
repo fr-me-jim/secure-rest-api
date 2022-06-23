@@ -62,7 +62,7 @@ export default class APIServer {
         this.app.use(this.ExpressErrorHandler);
     };
 
-    private ExpressErrorHandler(error: Error, _req: Request, res: Response): Response {
+    private ExpressErrorHandler(error: any, _req: Request, res: Response): Response {
         logger.error(error.message);
         if (error instanceof ValidationError) return res.sendStatus(400);
         if (error instanceof ValidationErrorItem) return res.sendStatus(400);

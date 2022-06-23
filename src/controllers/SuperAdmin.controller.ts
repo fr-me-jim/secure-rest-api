@@ -51,13 +51,13 @@ class SuperAdminController extends UserController {
      */
     public readonly addNewUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
-            const user: UserCreate | undefined = req.body;
-            if(!user) return res.sendStatus(400);
+            const userData: UserCreate = req.body;
+            if(!userData) return res.sendStatus(400);
 
-            const result = await this.UsersRepository.createNewUser( user );
-            if(!result) return res.sendStatus(500);
+            const user = await this.UsersRepository.createNewUser( userData );
+            if(!user) return res.sendStatus(500);
 
-            return res.send({ user: result }).status(201);
+            return res.send( user ).status(201);
         } catch (error: unknown) {
             next(error);
         }  
