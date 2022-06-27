@@ -1,0 +1,87 @@
+name: ci-cd
+on: 
+  push:
+    branches:
+      - 'main'
+jobs:
+  create-env-files:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - 
+        name: Make .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_PORT: ${{ secrets.SERVER_LISTEN_PORT }}
+          envkey_DB_PORT: ${{ secrets.PG_DB_PORT }}
+          envkey_DB_USERNAME: ${{ secrets.PG_DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ secrets.PG_DB_PASSWORD }}
+          envkey_DB_HOST: ${{ secrets.PG_DB_HOST }}
+          envkey_DB_NAME: ${{ secrets.PG_DB_NAME }}
+          envkey_JWT_ALG: ${{ secrets.JWT_ALORITHM }}
+          envkey_JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
+          envkey_JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
+          envkey_JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          directory: .
+          file_name: .env
+          fail_on_empty: true
+      - 
+        name: Make .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_POSTGRES_USER: ${{ secrets.PG_DB_ADMIN_USERNAME }}
+          envkey_POSTGRES_PASSWORD: ${{ secrets.PG_DB_ADMIN_PASSWORD }}
+          envkey_PG_SERVER_USER: ${{ secrets.PG_DB_USERNAME }}
+          envkey_PG_SERVER_PWD: ${{ secrets.PG_DB_PASSWORD }}
+          envkey_PG_SERVER_DB: ${{ secrets.PG_DB_NAME }}
+          envkey_PG_SERVER_DB_SCHEMA: ${{ secrets.PG_DB_SCHEMA }}
+          directory: .
+          file_name: .env.docker
+          fail_on_empty: true
+
+      - run: mkdir env_files && mv .env* env_files/
+
+      - 
+        name: Cache env file
+        id: cache-app-env
+        uses: actions/cache@v2
+        with:
+          path: .env
+          key: ${{ runner.os }}-${{ hashFiles('.env') }}
+
+      - 
+        name: Cache env docker file
+        id: cache-docker-compose-env
+        uses: actions/cache@v2
+        with:
+          path: .env.docker
+          key: ${{ runner.os }}-${{ hashFiles('.env.docker') }}
+
+
+  build-push-docker-image:
+    runs-on: ubuntu-latest
+    environment: Production
+    needs: create-env-files
+    steps:
+      # -
+      #   name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v2
+      # -
+      #   name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v2
+      # -
+      #   name: Login to DockerHub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_LOGIN_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_LOGIN_PASSWORD }}
+      # -
+      #   name: Build and push
+      #   if: steps.cache-app-env.outputs.cache-hit == 'true'
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_LOGIN_USERNAME }}/tfm-backend
+      - run: ls -la
