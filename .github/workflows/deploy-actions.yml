@@ -135,4 +135,4 @@ jobs:
           path: deploy/**
           key: ${{ runner.os }}-deploy-files
       - 
-        run: ls -la
+        run: ls -la deploy
