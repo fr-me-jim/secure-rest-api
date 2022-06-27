@@ -67,6 +67,16 @@ jobs:
     needs: create-env-files
     steps:
       - uses: actions/checkout@v3
+
+      - 
+        name: Cache env file
+        id: cache-app-env
+        uses: actions/cache@v2
+        with:
+          path: .env
+          key: ${{ runner.os }}-${{ hashFiles('.env') }}
+
+      - run: rm pg_hba.conf postgresql.conf nginx.conf
       # -
       #   name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
@@ -87,12 +97,15 @@ jobs:
       #     context: .
       #     push: true
       #     tags: ${{ secrets.DOCKERHUB_LOGIN_USERNAME }}/tfm-backend
+      
       - 
-        name: Cache env file
-        id: cache-app-env
-        uses: actions/cache@v2
-        with:
-          path: .env
-          key: ${{ runner.os }}-${{ hashFiles('.env') }}
+        run: ls -la
+
+  deploy-app:
+    runs-on: ubuntu-latest
+    environment: Production
+    needs: build-push-docker-image
+    steps:
+      - uses: actions/checkout@v3
       - 
         run: ls -la
