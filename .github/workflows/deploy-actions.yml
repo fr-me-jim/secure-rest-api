@@ -33,7 +33,7 @@ jobs:
           file_name: .env
           fail_on_empty: true
       - 
-        name: Make .env file
+        name: Make .env.docker file
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_POSTGRES_USER: ${{ secrets.PG_DB_ADMIN_USERNAME }}
@@ -88,5 +88,4 @@ jobs:
       #     push: true
       #     tags: ${{ secrets.DOCKERHUB_LOGIN_USERNAME }}/tfm-backend
       - 
-        if: steps.cache-app-env.outputs.cache-hit == 'true'
         run: ls -la
