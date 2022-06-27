@@ -77,7 +77,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.env') }}
       - 
         name: Cache env docker file
-        id: cache-docker-compose-env
+        id: cache-config-files
         uses: actions/cache@v2
         with:
           path: |
@@ -126,7 +126,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.env.docker') }}
       - 
         name: Cache env docker file
-        id: cache-docker-compose-env
+        id: cache-config-files
         uses: actions/cache@v2
         with:
           path: |
