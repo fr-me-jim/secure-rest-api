@@ -119,6 +119,8 @@ jobs:
     steps:
       # - uses: actions/checkout@v3
       - 
+        run: mkdir deploy
+      - 
         name: Download - Cache env docker file
         id: cache-docker-compose-env
         uses: actions/cache@v2
