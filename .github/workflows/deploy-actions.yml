@@ -88,4 +88,11 @@ jobs:
       #     push: true
       #     tags: ${{ secrets.DOCKERHUB_LOGIN_USERNAME }}/tfm-backend
       - 
+        name: Cache env file
+        id: cache-app-env
+        uses: actions/cache@v2
+        with:
+          path: .env
+          key: ${{ runner.os }}-${{ hashFiles('.env') }}
+      - 
         run: ls -la
