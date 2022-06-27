@@ -66,6 +66,7 @@ jobs:
     environment: Production
     needs: create-env-files
     steps:
+      - uses: actions/checkout@v3
       # -
       #   name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
@@ -86,4 +87,6 @@ jobs:
       #     context: .
       #     push: true
       #     tags: ${{ secrets.DOCKERHUB_LOGIN_USERNAME }}/tfm-backend
-      - run: ls -la
+      - 
+        if: steps.cache-app-env.outputs.cache-hit == 'true'
+        run: ls -la
