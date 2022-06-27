@@ -80,13 +80,14 @@ jobs:
           mkdir deploy
           mv *.conf deploy/
           mv docker-compose.yml deploy/
+          ls deploy
       - 
         name: Cache config file
         id: cache-config-files
         uses: actions/cache@v2
         with:
           path: deploy
-          key: ${{ runner.os }}-deploy-files
+          key: ${{ runner.os }}-${{ hashFiles('deploy/**') }}
       - run: rm -rf deploy
       # -
       #   name: Set up QEMU
@@ -130,7 +131,7 @@ jobs:
         id: cache-config-files
         uses: actions/cache@v2
         with:
-          path: .
-          key: ${{ runner.os }}-deploy-files
+          path: ./
+          key: ${{ runner.os }}-${{ hashFiles('deploy/**') }}
       - 
         run: ls -la
