@@ -57,14 +57,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .env
-          key: ${{ runner.os }}-${{ hashFiles('.env') }}
+          key: ${{ runner.os }}-env-cache
       - 
         name: Cache env docker file
         id: cache-docker-compose-env
         uses: actions/cache@v2
         with:
           path: .env.docker
-          key: ${{ runner.os }}-${{ hashFiles('.env.docker') }}
+          key: ${{ runner.os }}-env-docker-cache
 
 
   build-push-docker-image:
@@ -79,7 +79,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .env
-          key: ${{ runner.os }}-${{ hashFiles('.env') }}
+          key: ${{ runner.os }}-env-cache
       - 
         name: Cache config file
         id: cache-config-files
@@ -125,7 +125,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .env.docker
-          key: ${{ runner.os }}-${{ hashFiles('.env.docker') }}
+          key: ${{ runner.os }}-env-docker-cache
       - run: ls
       - 
         name: Download - Cache config file

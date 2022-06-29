@@ -64,7 +64,7 @@ class OrderController {
         if (!id || !validator.isUUID(id)) return res.sendStatus(400);
 
         try {
-            const order = await this.OrdersRepository.getOrderById(id, req.user!.id);
+            const order = await this.OrdersRepository.getOrderById(id, req.user!.id!);
             if (!order) return res.sendStatus(404);
 
             return res.status(200).send({ order });
@@ -75,10 +75,8 @@ class OrderController {
 
 
     public readonly getAllClientOrders = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const client_id: string | undefined = req.params.client_id;
-        if (!client_id || !validator.isUUID(client_id)) return res.sendStatus(400);
         try {
-            const orders = await this.OrdersRepository.getOrdersByClientId(client_id);
+            const orders = await this.OrdersRepository.getOrdersByClientId(req.user!.id!);
             return res.status(200).send({ orders });
         } catch (error: unknown) {
             next(error);
@@ -139,7 +137,7 @@ class OrderController {
         if ( !id || !validator.isUUID(id) || !newOrderData) return res.sendStatus(400);
 
         try {
-            const order = await this.OrdersRepository.updateOrder(id, newOrderData, req.user!.id);
+            const order = await this.OrdersRepository.updateOrder(id, newOrderData, req.user!.id!);
             if (!order) return res.sendStatus(409);
 
             return res.status(200).send({ ...order.get() });
