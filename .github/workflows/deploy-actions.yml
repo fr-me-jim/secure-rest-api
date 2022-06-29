@@ -80,8 +80,6 @@ jobs:
         with:
           path: .env
           key: ${{ runner.os }}-${{ hashFiles('.env') }}
-          restore-keys: Linux-
-      - run: ls
       - 
         name: Cache config file
         id: cache-config-files
@@ -128,6 +126,7 @@ jobs:
         with:
           path: .env.docker
           key: ${{ runner.os }}-${{ hashFiles('.env.docker') }}
+      - run: ls
       - 
         name: Download - Cache config file
         id: cache-config-files
@@ -137,5 +136,6 @@ jobs:
             *.conf
             *.yml
           key: deploy-files-${{ runner.os }}
+          restore-keys: Linux-
       - 
-        run: ls
+        run: ls -la
