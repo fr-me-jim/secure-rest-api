@@ -86,8 +86,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            deploy/*.conf
-            deploy/*.yml
+            ./deploy/*.conf
+            ./deploy/*.yml
           key: ${{ runner.os }}-deploy-files
       - run: rm -rf deploy
       # -
@@ -135,8 +135,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            deploy/*.conf
-            deploy/*.yml
+            ./deploy/*.conf
+            ./deploy/*.yml
           key: ${{ runner.os }}-deploy-files
       - 
         run: ls -la deploy
