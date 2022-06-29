@@ -8,7 +8,5 @@ data
 logs
 postgres-data
 logs
-pg_hba.conf
-postgresql.conf
-nginx.conf
+*.conf
 scripts

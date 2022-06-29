@@ -76,21 +76,21 @@ jobs:
           path: .env
           key: ${{ runner.os }}-${{ hashFiles('.env') }}
       
-      - run: |
-          mkdir deploy
-          mv *.conf deploy/
-          mv docker-compose.yml deploy/
-          ls deploy
+      # - run: |
+      #     mkdir deploy
+      #     mv *.conf deploy/
+      #     mv docker-compose.yml deploy/
+      #     ls deploy
       - 
         name: Cache config file
         id: cache-config-files
         uses: actions/cache@v2
         with:
           path: |
-            deploy/*.conf
-            deploy/*.yml
+            *.conf
+            *.yml
           key: deploy-files-${{ runner.os }}
-      - run: rm -rf deploy
+      # - run: rm -rf deploy
       # -
       #   name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
@@ -138,8 +138,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            deploy/*.conf
-            deploy/*.yml
+            *.conf
+            *.yml
           key: deploy-files-${{ runner.os }}
       - 
         run: ls
