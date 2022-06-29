@@ -80,6 +80,7 @@ jobs:
           mkdir deploy
           mv *.conf deploy/
           mv docker-compose.yml deploy/
+          ls deploy
       - 
         name: Cache config file
         id: cache-config-files
@@ -120,8 +121,8 @@ jobs:
     needs: build-push-docker-image
     steps:
       # - uses: actions/checkout@v3
-      - 
-        run: mkdir deploy
+      # - 
+      #   run: mkdir deploy
       - 
         name: Download - Cache env docker file
         id: cache-docker-compose-env
@@ -139,4 +140,4 @@ jobs:
             ./deploy/*.yml
           key: ${{ runner.os }}-deploy-files
       - 
-        run: ls -la deploy
+        run: ls -l deploy
