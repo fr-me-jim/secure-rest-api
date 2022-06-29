@@ -84,7 +84,7 @@ jobs:
           path: |
             *.conf
             *.yml
-          key: ${{ runner.os }}-deploy-files
+          key: deploy-files-${{ runner.os }}
       # -
       #   name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
@@ -130,5 +130,6 @@ jobs:
           path: |
             *.conf
             *.yml
-          key: ${{ runner.os }}-deploy-files
-      - run: ls -l
+          key: deploy-files-${{ runner.os }}
+      - 
+        run: ls -la
