@@ -103,7 +103,7 @@ export default class RouterAPI {
 
     public readonly InitializeRouter = (): Router => {
 
-        this.router.use('/', this.AuthRouter);
+        this.router.use('/auth', this.AuthRouter);
         this.router.use('/users', ...this.middlewares, this.UserRouter);
         this.router.use('/orders', ...this.middlewares, this.OrderRouter);
         this.router.use('/products', ...this.middlewares, this.ProductRouter);

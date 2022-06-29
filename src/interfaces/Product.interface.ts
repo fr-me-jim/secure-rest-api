@@ -55,6 +55,7 @@ export type ProductEdit = {
 export type ProductSearch = {
   name?: string;
   price?: number;
+  stock?: number;
   category?: string;
   premium?: boolean;
   description?: string;
