@@ -89,7 +89,7 @@ jobs:
           path: |
             deploy/*.conf
             deploy/*.yml
-          key: ${{ runner.os }}-deploy-files
+          key: deploy-files-${{ runner.os }}
       - run: rm -rf deploy
       # -
       #   name: Set up QEMU
@@ -130,6 +130,8 @@ jobs:
         with:
           path: .env.docker
           key: ${{ runner.os }}-${{ hashFiles('.env.docker') }}
+      
+      - run: ls
       - 
         name: Download - Cache config file
         id: cache-config-files
@@ -138,6 +140,6 @@ jobs:
           path: |
             deploy/*.conf
             deploy/*.yml
-          key: ${{ runner.os }}-deploy-files
+          key: deploy-files-${{ runner.os }}
       - 
-        run: ls -l
+        run: ls
