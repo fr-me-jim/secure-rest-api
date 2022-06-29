@@ -24,6 +24,8 @@ jobs:
           envkey_DB_PASSWORD: ${{ secrets.PG_DB_PASSWORD }}
           envkey_DB_HOST: ${{ secrets.PG_DB_HOST }}
           envkey_DB_NAME: ${{ secrets.PG_DB_NAME }}
+          envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           envkey_JWT_ALG: ${{ secrets.JWT_ALORITHM }}
           envkey_JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
           envkey_JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
@@ -45,6 +47,10 @@ jobs:
           # directory: .
           file_name: .env.docker
           fail_on_empty: true
+
+      - run: |
+          cat .env
+          cat .env.docker
       - 
         name: Cache env file
         id: cache-app-env
