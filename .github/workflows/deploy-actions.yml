@@ -85,7 +85,9 @@ jobs:
         id: cache-config-files
         uses: actions/cache@v2
         with:
-          path: deploy/**
+          path: |
+            deploy/*.conf
+            deploy/*.yml
           key: ${{ runner.os }}-deploy-files
       - run: rm -rf deploy
       # -
@@ -132,7 +134,9 @@ jobs:
         id: cache-config-files
         uses: actions/cache@v2
         with:
-          path: deploy/**
+          path: |
+            deploy/*.conf
+            deploy/*.yml
           key: ${{ runner.os }}-deploy-files
       - 
         run: ls -la deploy
