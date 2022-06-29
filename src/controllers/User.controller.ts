@@ -5,7 +5,7 @@ import User from '../models/User.model';
 
 // User interfaces
 import {
-    UserEdit,
+    UserEditProfile,
     // UserLogin,
     // UserCreate,
     IUserRepository
@@ -44,7 +44,7 @@ class UserController {
      */
      public readonly editProfileUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
-            const newUser: UserEdit = req.body; 
+            const newUser: UserEditProfile = req.body; 
             sanitizeObject(newUser);
             if(!newUser) return res.sendStatus(400);
 

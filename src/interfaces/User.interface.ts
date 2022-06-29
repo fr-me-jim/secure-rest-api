@@ -63,6 +63,12 @@ export type UserEdit = {
   privileges?: number
 };
 
+export type UserEditProfile = {
+  email?: string,
+  firstName?: string,
+  secondName?: string
+};
+
 export type UserSearchId = { id: number };
 export type UserSearchEmail = { email: string };
 
