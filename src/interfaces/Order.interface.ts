@@ -3,6 +3,9 @@ import { Optional } from "sequelize/types";
 // models
 import Order from "../models/Order.model";
 
+// interface
+import { OrderItemRequest } from "./OrderItem.interface";
+
 export interface IOrderRepository {
     getAllOrders(): Promise<Order[]>;
     getOrderById(id: string, client_id?: string): Promise<Order | null>;
@@ -42,6 +45,7 @@ export type OrderEdit = {
 export type OrderEditClient = {
     date?: Date;
     status?: OrderStatus;
+    orderItems?: OrderItemRequest[]
 };
 
 export type OrderSearch = {

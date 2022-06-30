@@ -28,8 +28,8 @@ export default class OrderRouter {
         this.router.get("/own/:id", this.orderController.getClientOrderInfo);
 
         this.router.put("/own/:id", this.orderController.editClientOrder);
-        this.router.put("/:id/cancelation", this.orderController.cancelOrder);
-        this.router.post("/:client_id/place-order", this.orderController.addNewOrder); 
+        this.router.put("/own/:id/cancellation", this.orderController.cancelOrder);
+        this.router.post("/own/place-order", this.orderController.addNewOrder); 
 
         return this.router;
     };

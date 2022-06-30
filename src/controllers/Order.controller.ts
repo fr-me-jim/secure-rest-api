@@ -98,8 +98,8 @@ class OrderController {
     };
     
     public readonly addNewOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        const client_id: string = req.user!.id!;
         const orderItems: OrderItemRequest[] = req.body;
-        const client_id: string | undefined = req.params.client_id;
         if (!client_id || !validator.isUUID(client_id) || orderItems.length === 0) return res.sendStatus(400);
 
         let orderID: string = "";

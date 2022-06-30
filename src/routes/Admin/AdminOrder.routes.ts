@@ -27,7 +27,7 @@ export default class AdminOrderRouter {
         this.router.get("/", this.orderController.getAllOrders);
         this.router.get("/:id", this.orderController.getOrderInfo);
 
-        this.router.put("/:id/edit", this.orderController.editOrder);
+        this.router.put("/:id", this.orderController.editOrder);
         this.router.delete("/:id", this.orderController.deleteOrder);
 
         return this.router;
