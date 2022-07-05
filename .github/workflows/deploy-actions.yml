@@ -142,7 +142,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_SERVER }}
           passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
           overwrite: true
-          source: ".env.docker,docker-compose.yml,*.conf"
+          source: ".env.docker,docker-compose.yml,Dockerfile.postgresql,*.conf"
           target: "secure-rest-api"
 
       - 
