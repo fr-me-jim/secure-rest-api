@@ -76,12 +76,14 @@ jobs:
         with:
           path: .env
           key: ${{ runner.os }}-env-cache
+
       - 
         name: Cache config file
         id: cache-config-files
         uses: actions/cache@v2
         with:
           path: |
+            scripts/**
             Dockerfile.postgresql
             *.conf
             *.yml
@@ -115,7 +117,6 @@ jobs:
     environment: Production
     needs: build-push-docker-image
     steps:
-      # - uses: actions/checkout@v3
       - 
         name: Download - Cache env docker file
         id: cache-docker-compose-env
@@ -129,6 +130,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
+            scripts/**
             Dockerfile.postgresql
             *.conf
             *.yml
@@ -144,7 +146,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_SERVER }}
           passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
           overwrite: true
-          source: ".env.docker,docker-compose.yml,Dockerfile.postgresql,*.conf"
+          source: ".env.docker,docker-compose.yml,Dockerfile.postgresql,*.conf,scripts"
           target: "secure-rest-api"
 
       - 
