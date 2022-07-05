@@ -132,7 +132,8 @@ jobs:
             *.yml
           key: deploy-files-${{ runner.os }}
 
-      - name: Copy files to server 
+      - 
+        name: Copy files to server 
         uses: appleboy/scp-action@master
         with:
           port: ${{ secrets.SSH_SERVER_PORT }}
@@ -143,5 +144,20 @@ jobs:
           overwrite: true
           source: ".env.docker,docker-compose.yml,*.conf"
           target: "secure-rest-api"
+
       - 
-        run: ls -la
+        name: Start Application
+        uses: appleboy/ssh-action@master
+        with:
+          port: ${{ secrets.SSH_SERVER_PORT }}
+          host: ${{ secrets.SSH_SERVER_HOST }}
+          username: ${{ secrets.SSH_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_KEY_SERVER }}
+          passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
+          script: |
+            cd secure-rest-api
+            docker-compose pull
+            docker-compose build
+            docker-compose down
+            docker rmi $(docker images -f"dangling=true" -q )
+            docker-compose -d up
