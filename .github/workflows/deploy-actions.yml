@@ -158,10 +158,8 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
           script: |
             cd secure-rest-api
-            pwd
             docker-compose pull
             docker-compose build
             docker-compose down
             docker rmi $(docker images -f"dangling=true" -q )
-            pwd
-            docker-compose -d up
+            docker-compose up -d
