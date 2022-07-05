@@ -82,6 +82,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
+            Dockerfile.postgresql
             *.conf
             *.yml
           key: deploy-files-${{ runner.os }}
@@ -128,6 +129,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
+            Dockerfile.postgresql
             *.conf
             *.yml
           key: deploy-files-${{ runner.os }}
