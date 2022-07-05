@@ -136,6 +136,8 @@ jobs:
             *.yml
           key: deploy-files-${{ runner.os }}
 
+      - run: ls
+
       - 
         name: Copy files to server 
         uses: appleboy/scp-action@master
