@@ -1,5 +1,9 @@
 FROM postgres:14.3-alpine
 
+# WORKDIR /var/lib
+
+RUN chown -R postgres:postgres /var/lib
+
 USER postgres
 
 CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
