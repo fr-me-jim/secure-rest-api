@@ -10,63 +10,9 @@ on:
     branches:
       - 'main'
 jobs:
-  # create-env-files:
-  #   runs-on: ubuntu-latest
-  #   environment: Production
-  #   steps:
-  #     - 
-  #       name: Make .env file
-  #       uses: SpicyPizza/create-envfile@v1.3
-  #       with:
-  #         envkey_PORT: ${{ secrets.SERVER_LISTEN_PORT }}
-  #         envkey_DB_PORT: ${{ secrets.PG_DB_PORT }}
-  #         envkey_DB_USERNAME: ${{ secrets.PG_DB_USERNAME }}
-  #         envkey_DB_PASSWORD: ${{ secrets.PG_DB_PASSWORD }}
-  #         envkey_DB_HOST: ${{ secrets.PG_DB_HOST }}
-  #         envkey_DB_NAME: ${{ secrets.PG_DB_NAME }}
-  #         envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-  #         envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-  #         envkey_JWT_ALG: ${{ secrets.JWT_ALORITHM }}
-  #         envkey_JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
-  #         envkey_JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
-  #         envkey_JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
-  #         envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  #         # directory: .
-  #         file_name: .env
-  #         fail_on_empty: true
-  #     - 
-  #       name: Make .env.docker file
-  #       uses: SpicyPizza/create-envfile@v1.3
-  #       with:
-  #         envkey_POSTGRES_USER: ${{ secrets.PG_DB_ADMIN_USERNAME }}
-  #         envkey_POSTGRES_PASSWORD: ${{ secrets.PG_DB_ADMIN_PASSWORD }}
-  #         envkey_PG_SERVER_USER: ${{ secrets.PG_DB_USERNAME }}
-  #         envkey_PG_SERVER_PWD: ${{ secrets.PG_DB_PASSWORD }}
-  #         envkey_PG_SERVER_DB: ${{ secrets.PG_DB_NAME }}
-  #         envkey_PG_SERVER_DB_SCHEMA: ${{ secrets.PG_DB_SCHEMA }}
-  #         # directory: .
-  #         file_name: .env.docker
-  #         fail_on_empty: true
-  #     - 
-  #       name: Cache env file
-  #       id: cache-app-env
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: .env
-  #         key: ${{ runner.os }}-env-${{ hashFiles('.env') }}
-  #     - 
-  #       name: Cache env docker file
-  #       id: cache-docker-compose-env
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: .env.docker
-  #         key: ${{ runner.os }}-env-docker-${{ hashFiles('.env.docker') }}
-
-
   build-push-docker-image:
     runs-on: ubuntu-latest
     environment: Production
-    # needs: create-env-files
     steps:
       - uses: actions/checkout@v3
       - 
@@ -86,29 +32,9 @@ jobs:
           envkey_JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
           envkey_JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          # directory: .
           file_name: .env
           fail_on_empty: true
-      # - 
-      #   name: Download - Cache env file
-      #   id: cache-app-env
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: .env
-      #     key: ${{ runner.os }}-env-${{ hashFiles('.env') }}
-
-      # - 
-      #   name: Cache config file
-      #   id: cache-config-files
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: |
-      #       scripts/**
-      #       Dockerfile.postgresql
-      #       *.conf
-      #       *.yml
-      #     key: ${{ runner.os }}-deploy-files-${{ hashFiles('**/*.conf','**/*.yml','**/scripts/**','**/Dockerfile.postgresql') }}
-      - run: cat Dockerfile.postgresql
+      
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -133,7 +59,6 @@ jobs:
   deploy-app-files:
     runs-on: ubuntu-latest
     environment: Production
-    # needs: build-push-docker-image
     steps:
       - uses: actions/checkout@v3
       - 
@@ -146,29 +71,9 @@ jobs:
           envkey_PG_SERVER_PWD: ${{ secrets.PG_DB_PASSWORD }}
           envkey_PG_SERVER_DB: ${{ secrets.PG_DB_NAME }}
           envkey_PG_SERVER_DB_SCHEMA: ${{ secrets.PG_DB_SCHEMA }}
-          # directory: .
+          envkey_PGDATA: /var/lib/postgresql/data/pgdata
           file_name: .env.docker
           fail_on_empty: true
-      # - 
-      #   name: Download - Cache env docker file
-      #   id: cache-docker-compose-env
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: .env.docker
-      #     key: ${{ runner.os }}-env-docker-${{ hashFiles('.env.docker') }}
-      # - 
-      #   name: Download - Cache config file
-      #   id: cache-config-files
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: |
-      #       scripts/**
-      #       Dockerfile.postgresql
-      #       *.conf
-      #       *.yml
-      #     key: ${{ runner.os }}-deploy-files-${{ hashFiles('**/*.conf','**/*.yml','**/scripts/**','**/Dockerfile.postgresql') }}
-      - run: cat Dockerfile.postgresql
-
       - 
         name: Copy files to server 
         uses: appleboy/scp-action@master
@@ -181,19 +86,6 @@ jobs:
           overwrite: true
           source: ".env.docker,docker-compose.yml,Dockerfile.postgresql,*.conf,scripts/**"
           target: "secure-rest-api"
-
-      # - 
-      #   name: Copy Postgres init scripts to server 
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     port: ${{ secrets.SSH_SERVER_PORT }}
-      #     host: ${{ secrets.SSH_SERVER_HOST }}
-      #     username: ${{ secrets.SSH_SERVER_USERNAME }}
-      #     key: ${{ secrets.SSH_KEY_SERVER }}
-      #     passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
-      #     overwrite: true
-      #     source: "scripts/**"
-      #     target: "secure-rest-api"
 
   start-app:
     runs-on: ubuntu-latest
@@ -211,10 +103,9 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
           script: |
             cd secure-rest-api
-            mkdir postgres-data
             chmod +x scripts/init-user-db.sh
+            docker-compose down
             docker-compose pull
             docker-compose build
-            docker-compose down
-            docker rmi $(docker images -f"dangling=true" -q )
+            docker rmi $(docker images -f"dangling=true" -q)
             docker-compose up -d
