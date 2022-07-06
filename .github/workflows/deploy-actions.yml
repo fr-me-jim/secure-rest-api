@@ -162,7 +162,7 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
           overwrite: true
           source: "scripts/**"
-          target: "secure-rest-api/scripts"
+          target: "secure-rest-api"
 
       - 
         name: Start Application
