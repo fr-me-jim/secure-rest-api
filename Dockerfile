@@ -18,6 +18,7 @@ ENV NODE_ENV=production
 
 EXPOSE 9000
 
+RUN mkdir public
 RUN chown node:node public
 
 USER node
