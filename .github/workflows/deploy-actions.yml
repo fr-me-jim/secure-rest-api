@@ -71,7 +71,7 @@ jobs:
           envkey_PG_SERVER_PWD: ${{ secrets.PG_DB_PASSWORD }}
           envkey_PG_SERVER_DB: ${{ secrets.PG_DB_NAME }}
           envkey_PG_SERVER_DB_SCHEMA: ${{ secrets.PG_DB_SCHEMA }}
-          envkey_PGDATA: /var/lib/postgresql/data/pgdata
+          envkey_PGDATA: /home/postgres/pgdata
           file_name: .env.docker
           fail_on_empty: true
       - 
