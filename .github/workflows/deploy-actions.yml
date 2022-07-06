@@ -147,6 +147,7 @@ jobs:
           username: ${{ secrets.SSH_SERVER_USERNAME }}
           key: ${{ secrets.SSH_KEY_SERVER }}
           passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
+          rm: true
           overwrite: true
           source: ".env.docker,docker-compose.yml,Dockerfile.postgresql,*.conf"
           target: "secure-rest-api"
