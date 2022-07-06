@@ -2,6 +2,8 @@ FROM postgres:14.3-alpine
 
 RUN chown postgres:postgres /var/lib/postgresql/data
 
+RUN ls -l /var/lib/postgresql
+
 USER postgres
 
 CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
