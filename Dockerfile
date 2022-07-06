@@ -17,6 +17,9 @@ ENV NODE_ENV=production
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
 
 EXPOSE 9000
+
+RUN chown node:node public
+
 USER node
 RUN mkdir -p ~/logs
 
