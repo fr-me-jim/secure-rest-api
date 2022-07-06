@@ -89,6 +89,7 @@ jobs:
             *.conf
             *.yml
           key: deploy-files-${{ runner.os }}
+      - run: cat Dockerfile.postgresql
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -133,6 +134,7 @@ jobs:
             *.conf
             *.yml
           key: deploy-files-${{ runner.os }}
+      - run: cat Dockerfile.postgresql
 
       - 
         name: Copy files to server 
