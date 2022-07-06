@@ -103,6 +103,7 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_SERVER_PASSPHRASE }}
           script: |
             cd secure-rest-api
+            mkdir postgres-data
             chmod +x scripts/init-user-db.sh
             docker-compose down --volumes
             docker-compose pull
