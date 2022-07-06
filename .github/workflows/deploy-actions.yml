@@ -136,7 +136,7 @@ jobs:
             *.yml
           key: deploy-files-${{ runner.os }}
 
-      - run: ls
+      - run: cat Dockerfile.postgresql
 
       - 
         name: Copy files to server 
