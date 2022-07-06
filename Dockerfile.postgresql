@@ -1,8 +1,5 @@
 FROM postgres:14.3-alpine
 
-
 USER postgres
-
-RUN mkdir ~/pgdata
 
 CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
