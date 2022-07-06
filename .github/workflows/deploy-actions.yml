@@ -69,6 +69,7 @@ jobs:
     needs: create-env-files
     steps:
       - uses: actions/checkout@v3
+      - run: cat Dockerfile.postgresql
       - 
         name: Download - Cache env file
         id: cache-app-env
@@ -108,9 +109,6 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_LOGIN_USERNAME }}/tfm-backend
-      
-      - 
-        run: ls -la
 
   deploy-app:
     runs-on: ubuntu-latest
@@ -135,8 +133,6 @@ jobs:
             *.conf
             *.yml
           key: deploy-files-${{ runner.os }}
-
-      - run: cat Dockerfile.postgresql
 
       - 
         name: Copy files to server 
