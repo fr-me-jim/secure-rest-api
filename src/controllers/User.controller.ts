@@ -3,6 +3,9 @@ import { NextFunction, Request, Response } from 'express';
 // User model
 import User from '../models/User.model';
 
+// error
+import TypeGuardError from '../errors/TypeGuardError.error';
+
 // User interfaces
 import {
     UserEditProfile,
@@ -13,6 +16,9 @@ import {
 
 // utils
 import { sanitizeObject } from '../utils/helpers';
+import { 
+    isUserEditProfile
+} from "../validators/User.typeguards";
 
 /**
  * @class UserController
@@ -34,7 +40,7 @@ class UserController {
         try {
             if (!req.user) res.sendStatus(404);
             return res.send({ ...req.user! }).status(200);
-        } catch (error: any) {  
+        } catch (error: unknown) {  
             next(error);
         }
     };
@@ -45,6 +51,7 @@ class UserController {
      public readonly editProfileUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
             const newUser: UserEditProfile = req.body; 
+            if (!newUser || !isUserEditProfile(newUser)) throw new TypeGuardError("Edit Profile - Request body payload wrong parameters!");
             sanitizeObject(newUser);
             if(!newUser) return res.sendStatus(400);
 
@@ -53,7 +60,7 @@ class UserController {
 
             const { password, ...user } = result.get();
             return res.send({ ...user }).status(200);
-        } catch (error: any) {
+        } catch (error: unknown) {
             next(error);
         }  
     };
@@ -71,7 +78,7 @@ class UserController {
 
             const { password, ...user } = result.get();
             return res.send({ ...user }).status(200);
-        } catch (error: any) {
+        } catch (error: unknown) {
             next(error);
         }  
     };

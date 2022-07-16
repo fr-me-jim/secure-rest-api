@@ -9,12 +9,15 @@ import cors from 'cors';
 // import morgan from "morgan";
 import passport from "passport";
 // import { WriteStream } from "fs";
+
+// errors
 import { 
     Sequelize, 
     ValidationError, 
     ValidationErrorItem, 
     SequelizeScopeError
 } from "sequelize";
+import TypeGuardError from '../errors/TypeGuardError.error';
 
 // router
 import RouterAPI from '../routes';
@@ -54,16 +57,17 @@ export default class APIServer {
     private readonly SetMiddlewares = (): void => {
         this.app.use(cors());
         this.app.use(express.json());
-        this.app.use('/api', this.router);  
         this.app.use(passport.initialize());
         this.app.use(express.urlencoded({ extended: false }));
         // this.app.use(morgan(this.debugLevel, { stream: this.accessLogStream }));
 
+        this.app.use('/api', this.router);  
         this.app.use(this.ExpressErrorHandler);
     };
 
     private ExpressErrorHandler(error: any, _req: Request, res: Response): Response {
         logger.error(error.message);
+        if (error instanceof TypeGuardError) return res.sendStatus(400);
         if (error instanceof ValidationError) return res.sendStatus(400);
         if (error instanceof ValidationErrorItem) return res.sendStatus(400);
         if (error instanceof SequelizeScopeError) return res.sendStatus(400);
