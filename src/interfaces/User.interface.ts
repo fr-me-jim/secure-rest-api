@@ -42,8 +42,9 @@ export interface IUserInput extends Optional<IUserAttributes, 'id' | 'privileges
 export interface IUserOuput extends Required<IUserAttributes> {};
 
 export type UserType = IUserAttributes;
+export type UserPrivileges = 0 | 1 | 2;
 
-export type UserLogin = {
+export interface UserLogin {
   email: string,
   password: string
 };
@@ -53,23 +54,27 @@ export interface UserCreate {
   password: string,
   firstName: string,
   secondName: string,
-  privileges?: number
+  privileges?: UserPrivileges
 };
 
-export type UserEdit = {
+export interface UserCreateOptionals {
+  privileges?: UserPrivileges
+};
+
+export interface UserEdit {
   email?: string,
   firstName?: string,
   secondName?: string,
-  privileges?: number
+  privileges?: UserPrivileges
 };
 
-export type UserEditProfile = {
+export interface UserEditProfile {
   email?: string,
   firstName?: string,
   secondName?: string
 };
 
-export type UserSearchId = { id: number };
-export type UserSearchEmail = { email: string };
+export interface UserSearchId { id: number };
+export interface UserSearchEmail { email: string };
 
 export type UserSearchInfo = UserSearchId | UserSearchEmail;
