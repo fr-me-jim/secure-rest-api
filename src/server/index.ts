@@ -8,6 +8,7 @@ import express,
 import cors from 'cors';
 // import morgan from "morgan";
 import passport from "passport";
+// import cookieParser from "cookie-parser";
 // import { WriteStream } from "fs";
 
 // errors
@@ -57,6 +58,7 @@ export default class APIServer {
     private readonly SetMiddlewares = (): void => {
         this.app.use(cors());
         this.app.use(express.json());
+        // this.app.use(cookieParser());
         this.app.use(passport.initialize());
         this.app.use(express.urlencoded({ extended: false }));
         // this.app.use(morgan(this.debugLevel, { stream: this.accessLogStream }));

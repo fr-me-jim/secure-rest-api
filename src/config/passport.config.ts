@@ -1,5 +1,6 @@
 import { PassportStatic } from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
+// import { Strategy as GoogleStrategy } from 'passport-google-oidc';
 import { Strategy as JWTStrategy, ExtractJwt, VerifiedCallback } from "passport-jwt";
 // import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
@@ -18,7 +19,12 @@ export default class PassportConfig {
     constructor(passport: PassportStatic, repository: IUserRepository) {
         this.passport = passport;
         this.UsersRepository = repository;
-    }
+    };
+
+    // private readonly cookieExtractor = (req: Request): string => {
+    //     const token = req.cookies['access_token'];
+    //     return token;
+    // };
 
     public readonly SetStrategy = (): PassportStatic => {
         this.passport.serializeUser( (user, done: VerifiedCallback) => {
@@ -39,6 +45,27 @@ export default class PassportConfig {
             passwordField: 'password',
             session: false
         }, this.checkUserLocal));
+
+        // this.passport.use(new GoogleStrategy({
+        //     clientID: process.env.GOOGLE_CLIENT_ID,
+        //     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        //     callbackURL: "https://tfm.jediupc.com/api/auth/google/callback"
+        // }, async (issuer, profile, done: VerifiedCallback) => {
+        //     try {
+        //         // const [ user ] = await User.findOrCreate({ 
+        //         //     where: { id: profile.id },
+        //         //     defaults: { 
+        //         //         username: profile.displayName
+        //         //     },
+        //         //     returning: true, raw: true
+        //         // });
+        //         // if (!profile || !user) return done(null, false);
+
+        //         return done(null, false);
+        //     } catch (error) {
+        //         throw error;
+        //     }
+        // }));
 
     
         return this.passport;

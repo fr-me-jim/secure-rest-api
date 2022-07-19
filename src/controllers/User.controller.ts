@@ -51,9 +51,11 @@ class UserController {
      public readonly editProfileUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
             const newUser: UserEditProfile = req.body; 
-            if (!newUser || !isUserEditProfile(newUser)) throw new TypeGuardError("Edit Profile - Request body payload wrong parameters!");
+            if (!newUser || !isUserEditProfile(newUser)) {
+                throw new TypeGuardError("Edit Profile - Request body payload wrong parameters!");
+            }
             sanitizeObject(newUser);
-            if(!newUser) return res.sendStatus(400);
+            // if(!newUser) return res.sendStatus(400);
 
             const result = await this.UsersRepository.updateUser((req.user! as User).id, newUser);
             if(!result) return res.sendStatus(404);
@@ -71,7 +73,7 @@ class UserController {
      public readonly editPasswordUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
             const newPassword: string | undefined = req.body.password; 
-            if(!newPassword || newPassword.length < 8) return res.sendStatus(400);
+            if(!newPassword?.trim() || newPassword.trim().length < 20) return res.sendStatus(400);
 
             const result = await this.UsersRepository.updateUserPassword((req.user! as User).id, newPassword);
             if(!result) return res.sendStatus(404);
