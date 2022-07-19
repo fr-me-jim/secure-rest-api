@@ -54,7 +54,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.postgresql
-    image: tfm-backend
+    image: tfm-database
     container_name: tfm-database
     deploy:
         resources:
