@@ -70,7 +70,7 @@ services:
     networks:
       - tfm-network
     volumes:
-      - ./pgdata:/home/postgres/pgdata
+      # - ./pgdata:/home/postgres/pgdata
       # - ./pgdata:/var/lib/postgresql/data
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
       - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
