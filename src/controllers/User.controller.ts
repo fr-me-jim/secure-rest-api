@@ -52,7 +52,7 @@ class UserController {
         try {
             const newUser: UserEditProfile = req.body; 
             if (!newUser || !isUserEditProfile(newUser)) {
-                throw new TypeGuardError("Edit Profile - Request body payload wrong parameters!");
+                throw new TypeGuardError("Edit Profile - Request body payload wrong type!");
             }
             sanitizeObject(newUser);
             // if(!newUser) return res.sendStatus(400);
