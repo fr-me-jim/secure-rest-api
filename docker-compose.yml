@@ -71,10 +71,10 @@ services:
       - tfm-network
     volumes:
       # - ./pgdata:/home/postgres/pgdata
-      # - ./pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data/pgdata
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
       - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
-      - ./scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - ./scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh:ro
 
 networks:
   tfm-network:
