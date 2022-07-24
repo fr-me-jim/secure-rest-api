@@ -1,13 +1,24 @@
+import validator from 'validator';
 import jwt, { Algorithm } from "jsonwebtoken";
 import { NextFunction, Request, Response } from 'express';
 
 // User model
 import User from '../models/User.model';
 
+// error
+import TypeGuardError from '../errors/TypeGuardError.error';
+
 // interfaces
 // import { IAuthController } from "../interfaces/Auth.interface";
 import { IUserRepository, UserCreate } from "../interfaces/User.interface";
 import { ITokenRepositories, JWTAccessSignInfo } from '../interfaces/Token.interface';
+
+// utils
+import logger from '../config/logger.config';
+import { sanitizeObject } from '../utils/helpers';
+import { 
+    isUserCreate
+} from "../validators/User.typeguards";
 
 export default class AuthController {
     private jwtSecret: jwt.Secret;
@@ -44,9 +55,14 @@ export default class AuthController {
      */
      public readonly addToBlacklist = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
-            const user_id: string = (req.user! as User).id;
+            const userID: string = (req.user! as User).id;
             const [, token]: string[] = req.headers.authorization!.split(' ');
-            const result = await this.TokenRepository.createNewBlacklistedToken(token, user_id);
+            if (!token || !userID || !validator.isJWT(token) || !validator.isUUID(userID) ) {
+                logger.error('GET /logout - Request ID or Token wrong type!');
+                throw new TypeGuardError("Logout User - Request ID or Token wrong type!");
+            };
+
+            const result = await this.TokenRepository.createNewBlacklistedToken(token, userID);
             if (!result) return res.sendStatus(500);
 
             return res.sendStatus(200);
@@ -59,9 +75,14 @@ export default class AuthController {
      * RegisterUser
      */
      public readonly registerUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [POST] - /signin");
         try {
-            const user: UserCreate | undefined = req.body;
-            if(!user || user.password.length < 8) return res.sendStatus(400);
+            const user: UserCreate = req.body;
+            if(!user || !isUserCreate(user) || user.password.length < 20) {
+                logger.error('POST /signin - Request body payload wrong type!');
+                throw new TypeGuardError("Register User - Request body payload wrong type!");
+            };
+            sanitizeObject(user);
 
             const result = await this.UsersRepository.createNewUser(user);
             if(!result) return res.sendStatus(500);
@@ -78,8 +99,13 @@ export default class AuthController {
      * Login
      */
      public readonly login = (req: Request, res: Response, next: NextFunction): Response | void => {
+        logger.info("In [POST] - /login");
         try {
             if (!req.user) return res.sendStatus(401);
+            if (!req.user.id || !validator.isUUID(req.user.id)) {
+                logger.error('POST /login - Request body payload wrong type!');
+                throw new TypeGuardError("Login User - User ID wrong type!");
+            };
 
             const token = this.createNewJWTToken({ id: (req.user! as User).id });
 
@@ -93,6 +119,7 @@ export default class AuthController {
      * Logout
      */
      public async logout(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+        logger.info("In GET - /logout");
         return await this.addToBlacklist(req, res, next);
     }
         

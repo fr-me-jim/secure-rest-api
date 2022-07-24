@@ -16,6 +16,7 @@ import {
 
 // utils
 import { sanitizeObject } from '../utils/helpers';
+import logger from '../config/logger.config';
 import { 
     isUserEditProfile
 } from "../validators/User.typeguards";
@@ -37,6 +38,7 @@ class UserController {
      * GetUserProfileInfo
      */
      public readonly getUserProfileInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info('In [GET] - /profile');
         try {
             if (!req.user) res.sendStatus(404);
             return res.send({ ...req.user! }).status(200);
@@ -49,13 +51,14 @@ class UserController {
      * EditProfileUser
      */
      public readonly editProfileUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info('In [POST] - /profile/edit');
         try {
             const newUser: UserEditProfile = req.body; 
             if (!newUser || !isUserEditProfile(newUser)) {
+                logger.error('POST /profile/edit - Request body payload wrong type!');
                 throw new TypeGuardError("Edit Profile - Request body payload wrong type!");
             }
             sanitizeObject(newUser);
-            // if(!newUser) return res.sendStatus(400);
 
             const result = await this.UsersRepository.updateUser((req.user! as User).id, newUser);
             if(!result) return res.sendStatus(404);
@@ -71,9 +74,13 @@ class UserController {
      * EditProfileUser
      */
      public readonly editPasswordUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info('In [PUT] - /profile/edit/password');
         try {
             const newPassword: string | undefined = req.body.password; 
-            if(!newPassword?.trim() || newPassword.trim().length < 20) return res.sendStatus(400);
+            if(!newPassword || !newPassword?.trim() || newPassword.trim().length < 20) {
+                logger.error('PUT /profile/edit/password - Request body payload wrong type!');
+                throw new TypeGuardError("Edit Profile Password - Request body payload wrong type!");
+            };
 
             const result = await this.UsersRepository.updateUserPassword((req.user! as User).id, newPassword);
             if(!result) return res.sendStatus(404);

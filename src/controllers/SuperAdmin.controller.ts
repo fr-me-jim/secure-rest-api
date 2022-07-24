@@ -4,11 +4,21 @@ import { NextFunction, Request, Response } from 'express';
 // class
 import UserController from './User.controller';
 
+// error
+import TypeGuardError from '../errors/TypeGuardError.error';
+
 // User interfaces
 import {
     IUserRepository,
     UserCreate, UserEdit
 } from '../interfaces/User.interface';
+
+// utils
+import logger from '../config/logger.config';
+import { sanitizeObject } from '../utils/helpers';
+import { 
+    isUserCreate
+} from "../validators/User.typeguards";
 
 class SuperAdminController extends UserController {
     constructor(respository: IUserRepository) {
@@ -19,6 +29,7 @@ class SuperAdminController extends UserController {
      * GetAllUserInfo
      */
     public readonly getAllUsersInfo = async (_req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [GET] - /admin/users");
         try {
             const users = await this.UsersRepository.getAllUsers();
 
@@ -32,10 +43,14 @@ class SuperAdminController extends UserController {
      * GetUserInfo
      */
      public readonly getUserInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params.id;
-        if (!id || !validator.isUUID(id)) return res.sendStatus(400);
-
+        logger.info("In Admin [GET] - /admin/users/:id");
         try {
+            const id: string | undefined = req.params.id;
+            if (!id || !validator.isUUID(id)) {
+                logger.error('GET /admin/users/:id - Request body payload wrong type!');
+                throw new TypeGuardError("[Admin] Show User - Request body payload wrong type!");
+            };
+
             const user = await this.UsersRepository.getUserById( id );
             if(!user) return res.sendStatus(404);
 
@@ -50,9 +65,14 @@ class SuperAdminController extends UserController {
      * AddNewUser
      */
     public readonly addNewUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In Admin [POST] - /admin/users");
         try {
             const userData: UserCreate = req.body;
-            if(!userData) return res.sendStatus(400);
+            if(!userData || !isUserCreate(userData)) {
+                logger.error('POST /admin/users - Request body payload wrong type!');
+                throw new TypeGuardError("[Admin] Add User - Request body payload wrong type!");
+            };
+            sanitizeObject(userData);
 
             const user = await this.UsersRepository.createNewUser( userData );
             if(!user) return res.sendStatus(500);
@@ -67,9 +87,13 @@ class SuperAdminController extends UserController {
      * EditUser
      */
      public readonly editUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In Admin [PUT] - /admin/users/:id");
         try {
             const id: string | undefined = req.params?.id;
-            if(!id || !validator.isUUID(id)) return res.sendStatus(400);
+            if(!id || !validator.isUUID(id)) {
+                logger.error('PUT /admin/users/:id - Request body payload wrong type!');
+                throw new TypeGuardError("[Admin] Edit User - Request body payload wrong type!");
+            };
 
             const newUser: UserEdit = req.body;
             if(!newUser) return res.sendStatus(400);
@@ -87,9 +111,13 @@ class SuperAdminController extends UserController {
      * DeleteUser
      */
      public readonly deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In Admin [DELETE] - /admin/users/:id");
         try {
             const id: string | undefined = req.params?.id;
-            if(!id || !validator.isUUID(id)) return res.sendStatus(400);
+            if(!id || !validator.isUUID(id)) {
+                logger.error('DELETE /admin/users/:id - Request body payload wrong type!');
+                throw new TypeGuardError("[Admin] Edit User - Request body payload wrong type!");
+            };
 
             const result = await this.UsersRepository.deleteUser( id );
             if(!result) return res.sendStatus(404);
