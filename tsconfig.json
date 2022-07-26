@@ -11,7 +11,7 @@
     "noEmit": false,
     "resolveJsonModule": true,
     "noUnusedLocals": true,
-    "outDir": "./dist",
+    "outDir": "./build",
     "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*"]

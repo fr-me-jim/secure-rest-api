@@ -31,7 +31,7 @@ RUN npm i --production
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
 
 COPY --from=builder /usr/src/app/public .
-COPY --from=builder /usr/src/app/dist .
+COPY --from=builder /usr/src/app/build .
 
 EXPOSE 9000
 
@@ -42,4 +42,4 @@ RUN ls -l
 USER node
 RUN mkdir -p ~/logs
 
-CMD ["node", "dist/src/index.js"]
+CMD ["node", "build/src/index.js"]
