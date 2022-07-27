@@ -32,24 +32,28 @@ export interface IProductOuput extends Required<IProductAttributes> {};
 
 export type ProductType = IProductAttributes;
 
+export interface ProductCreateOptionals {
+  premium?: 0 | 1;
+};
+
 export type ProductCreate = {
   name: string;
   image: string;
   price: number;
   stock: number;
   category: string;
-  premium?: boolean;
+  premium?: 0 | 1;
   description: string;
 };
 
 export type ProductEdit = {
-  name: string;
-  image: string;
-  price: number;
-  stock: number;
-  category: string;
-  premium?: boolean;
-  description: string;
+  name?: string;
+  image?: string;
+  price?: number;
+  stock?: number;
+  category?: string;
+  premium?: 0 | 1;
+  description?: string;
 };
 
 export type ProductSearch = {
@@ -57,6 +61,6 @@ export type ProductSearch = {
   price?: number;
   stock?: number;
   category?: string;
-  premium?: boolean;
+  premium?: 0 | 1;
   description?: string;
 };
