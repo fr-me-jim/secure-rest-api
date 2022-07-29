@@ -3,6 +3,8 @@ import { NextFunction, Request, Response } from 'express';
 
 // User model
 // import Product from '../models/Product.model';
+// error
+import TypeGuardError from '../errors/TypeGuardError.error';
 
 // User interfaces
 import {
@@ -10,6 +12,14 @@ import {
     CategoryCreate, 
     ICategoryRepository, 
 } from '../interfaces/Category.interface';
+
+// utils
+import { sanitizeObject } from '../utils/helpers';
+import logger from '../config/logger.config';
+import { 
+    isCategoryEdit,
+    isCategoryCreate,
+} from "../validators/Categories.typeguard";
 
 /**
  * @class ProductController
@@ -25,6 +35,7 @@ class CategoryController {
     };
 
     public readonly getAllCategories = async (_req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info('In [GET] - /categories');
         try {
             const categories = await this.CategoriesRepository.getAllCategories();
             return res.status(200).send({ categories });
@@ -34,10 +45,12 @@ class CategoryController {
     };
 
     public readonly getCategoryInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params?.id;
-        if (!id || !validator.isUUID(id)) return res.sendStatus(400);
+        logger.info('In [GET] - /categories/:id');
 
         try {
+            const id: string = req.params?.id;
+            if (!id || !validator.isUUID(id)) return res.sendStatus(400);
+
             const category = await this.CategoriesRepository.getCategoryById(id);
             if (!category) return res.sendStatus(404);
 
@@ -48,10 +61,15 @@ class CategoryController {
     };
     
     public readonly addNewCategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const newCategory: CategoryCreate | undefined = req.body;
-        if (!newCategory) return res.sendStatus(400);
-
+        logger.info('In [POST] - /categories');
         try {
+            const newCategory: CategoryCreate = req.body;
+            if (!newCategory || !isCategoryCreate(newCategory)) {
+                logger.error('POST /categories - Request body payload wrong type!');
+                throw new TypeGuardError("Create Categories - Request body payload wrong type!");
+            }
+            sanitizeObject(newCategory);
+
             const category = await this.CategoriesRepository.createCategory(newCategory);
             if (!category) return res.sendStatus(404);
 
@@ -62,11 +80,21 @@ class CategoryController {
     };
 
     public readonly editCategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params?.id;
-        const newCategoryData: CategoryEdit | undefined = req.body;
-        if ( !id || !validator.isUUID(id) || !newCategoryData) return res.sendStatus(400);
+        logger.info('In [PUT] - /categories/:id');
 
         try {
+            const id: string = req.params?.id;
+            const newCategoryData: CategoryEdit = req.body;
+            if (!id || !validator.isUUID(id)) {
+                logger.error('PUT /categories/:id - Request ID param wrong type or missing!');
+                throw new TypeGuardError("Edit Categories - Request ID param wrong type or missing!");
+            };
+            if ( !isCategoryEdit(newCategoryData) ) {
+                logger.error('PUT /categories/:id - Request body payload wrong type!');
+                throw new TypeGuardError("Edit Categories - Request body payload wrong type!");
+            };
+            sanitizeObject(newCategoryData);
+
             const category = await this.CategoriesRepository.updateCategory(id, newCategoryData);
             if (!category) return res.sendStatus(404);
 
@@ -76,16 +104,21 @@ class CategoryController {
         }
     };
 
-    public readonly deletecategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    public readonly deleteCategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info('In [DELETE] - /categories/:id');
+
         try {
-            const id: string | undefined = req.params?.id;
-            if(!id || !validator.isUUID(id)) return res.sendStatus(400);
+            const id: string = req.params?.id;
+            if (!id || !validator.isUUID(id)) {
+                logger.error('DELETE /categories/:id - Request ID param wrong type or missing!');
+                throw new TypeGuardError("Delete Categories - Request ID param wrong type or missing!");
+            };
 
             const result = await this.CategoriesRepository.deleteCategory( id );
             if(!result) return res.sendStatus(404);
 
             return res.sendStatus(204);
-        } catch (error: any) {
+        } catch (error: unknown) {
             next(error);
         }  
     };

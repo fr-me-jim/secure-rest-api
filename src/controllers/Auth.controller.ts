@@ -55,14 +55,18 @@ export default class AuthController {
      */
      public readonly addToBlacklist = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
-            const userID: string = (req.user! as User).id;
+            const id: string = (req.user! as User).id;
+            if (!id || !validator.isUUID(id)) {
+                logger.error('GET /logout - Request ID param wrong type or missing!');
+                throw new TypeGuardError("User Login - Request ID param wrong type or missing!");
+            };
             const [, token]: string[] = req.headers.authorization!.split(' ');
-            if (!token || !userID || !validator.isJWT(token) || !validator.isUUID(userID) ) {
-                logger.error('GET /logout - Request ID or Token wrong type!');
-                throw new TypeGuardError("Logout User - Request ID or Token wrong type!");
+            if ( !token || !validator.isJWT(token) ) {
+                logger.error('GET /logout - Request Token wrong type!');
+                throw new TypeGuardError("Logout User - Request Token wrong type!");
             };
 
-            const result = await this.TokenRepository.createNewBlacklistedToken(token, userID);
+            const result = await this.TokenRepository.createNewBlacklistedToken(token, id);
             if (!result) return res.sendStatus(500);
 
             return res.sendStatus(200);

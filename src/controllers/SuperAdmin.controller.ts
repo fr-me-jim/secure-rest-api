@@ -45,10 +45,10 @@ class SuperAdminController extends UserController {
      public readonly getUserInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In Admin [GET] - /admin/users/:id");
         try {
-            const id: string | undefined = req.params.id;
+            const id: string = req.params.id;
             if (!id || !validator.isUUID(id)) {
-                logger.error('GET /admin/users/:id - Request body payload wrong type!');
-                throw new TypeGuardError("[Admin] Show User - Request body payload wrong type!");
+                logger.error('GET /admin/users/:id - Request ID param wrong type or missing!');
+                throw new TypeGuardError("[Admin] Show User - Request ID param wrong type or missing!");
             };
 
             const user = await this.UsersRepository.getUserById( id );
@@ -91,8 +91,8 @@ class SuperAdminController extends UserController {
         try {
             const id: string | undefined = req.params?.id;
             if(!id || !validator.isUUID(id)) {
-                logger.error('PUT /admin/users/:id - Request body payload wrong type!');
-                throw new TypeGuardError("[Admin] Edit User - Request body payload wrong type!");
+                logger.error('PUT /admin/users/:id - Request ID param wrong type or missing!');
+                throw new TypeGuardError("[Admin] Edit User - Request ID param wrong type or missing!");
             };
 
             const newUser: UserEdit = req.body;
@@ -113,10 +113,10 @@ class SuperAdminController extends UserController {
      public readonly deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In Admin [DELETE] - /admin/users/:id");
         try {
-            const id: string | undefined = req.params?.id;
+            const id: string = req.params?.id;
             if(!id || !validator.isUUID(id)) {
-                logger.error('DELETE /admin/users/:id - Request body payload wrong type!');
-                throw new TypeGuardError("[Admin] Edit User - Request body payload wrong type!");
+                logger.error('DELETE /admin/users/:id - Request ID param wrong type or missing!');
+                throw new TypeGuardError("[Admin] Edit User - Request ID param wrong type or missing!");
             };
 
             const result = await this.UsersRepository.deleteUser( id );

@@ -23,7 +23,7 @@ export default class AdminCategoryRouter {
     public readonly SetRoutes = (): Router => {
         this.router.post("/", this.categoryController.addNewCategory);
         this.router.put("/:id", this.categoryController.editCategory);
-        this.router.delete("/:id", this.categoryController.deletecategory);
+        this.router.delete("/:id", this.categoryController.deleteCategory);
 
         return this.router;
     };
