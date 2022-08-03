@@ -22,6 +22,7 @@ WORKDIR /usr/src/app
 # RUN mkdir -p /var/log/server
 
 # Bundle app source
+COPY .env .
 COPY package* .
 # COPY . /usr/src/app
 
@@ -30,7 +31,7 @@ RUN npm i --production
 # RUN npm run build
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
 
-COPY --from=builder /usr/src/app/public .
+# COPY --from=builder /usr/src/app/public .
 COPY --from=builder /usr/src/app/build .
 
 EXPOSE 9000
