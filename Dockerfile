@@ -36,7 +36,8 @@ COPY --from=builder /usr/src/app/build ./build
 
 EXPOSE 9000
 
-RUN mkdir public
+RUN mkdir public logs
+RUN chown node:node logs
 RUN chown node:node public
 RUN ls -l
 
