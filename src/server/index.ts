@@ -4,7 +4,8 @@ import express, { Router } from 'express';
 import type {
     Request, 
     Response,
-    Application
+    Application,
+    NextFunction
 } from 'express';
 // import morgan from "morgan";
 // import cookieParser from "cookie-parser";
@@ -66,7 +67,7 @@ export default class APIServer {
         this.app.use(this.ExpressErrorHandler);
     };
 
-    private ExpressErrorHandler(error: unknown, _req: Request, res: Response): Response {
+    private ExpressErrorHandler(error: unknown, _req: Request, res: Response, _next: NextFunction): Response {
         logger.error((error as Error).message);
         if (error instanceof TypeGuardError) return res.sendStatus(400);
         if (error instanceof ValidationError) return res.sendStatus(400);
