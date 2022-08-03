@@ -32,7 +32,7 @@ RUN npm i --production
 # RUN npx copy './src/**/*.{json,yaml,html,png}' ./dist/src
 
 # COPY --from=builder /usr/src/app/public .
-COPY --from=builder /usr/src/app/build .
+COPY --from=builder /usr/src/app/build ./build
 
 EXPOSE 9000
 
