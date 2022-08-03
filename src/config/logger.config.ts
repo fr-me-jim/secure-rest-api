@@ -3,7 +3,7 @@ import path from 'path';
 import winston from 'winston';
 
 const logDirPath: string = `${path.resolve('.')}/logs`;
-
+console.log("Log dir set to: ", logDirPath);
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),

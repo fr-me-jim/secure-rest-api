@@ -1,13 +1,12 @@
-import express, 
-{ 
-    Router, 
+import cors from 'cors';
+import passport from "passport";
+import express, { Router } from 'express';
+import type {
     Request, 
     Response,
-    Application, 
+    Application
 } from 'express';
-import cors from 'cors';
 // import morgan from "morgan";
-import passport from "passport";
 // import cookieParser from "cookie-parser";
 // import { WriteStream } from "fs";
 
@@ -67,8 +66,8 @@ export default class APIServer {
         this.app.use(this.ExpressErrorHandler);
     };
 
-    private ExpressErrorHandler(error: any, _req: Request, res: Response): Response {
-        logger.error(error.message);
+    private ExpressErrorHandler(error: unknown, _req: Request, res: Response): Response {
+        logger.error((error as Error).message);
         if (error instanceof TypeGuardError) return res.sendStatus(400);
         if (error instanceof ValidationError) return res.sendStatus(400);
         if (error instanceof ValidationErrorItem) return res.sendStatus(400);

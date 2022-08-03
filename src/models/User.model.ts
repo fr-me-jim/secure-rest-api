@@ -96,7 +96,7 @@ User.afterSync( async () =>{
             where: { email: "admin@gmail.com" },
             defaults: {
                 email: "admin@gmail.com",
-                password: "128128128",
+                password: "EP65rqpqbuz>:3)oV#XEAr^:|>=tx/nO",
                 firstName: "admin",
                 secondName: "admin",
                 privileges: 2
