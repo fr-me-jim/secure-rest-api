@@ -1,4 +1,4 @@
-// import cors from 'cors';
+import cors from 'cors';
 import passport from "passport";
 import express, { Router } from 'express';
 import type {
@@ -56,7 +56,7 @@ export default class APIServer {
     };
 
     private readonly SetMiddlewares = (): void => {
-        // this.app.use(cors());
+        this.app.use(cors());
         this.app.use(express.json());
         // this.app.use(cookieParser());
         this.app.use(passport.initialize());
