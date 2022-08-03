@@ -20,7 +20,7 @@ class Product extends Model<IProductAttributes, IProductInput> {
     declare image: string;
     declare price: number;
     declare stock: number;
-    declare premium: boolean;
+    declare premium: 0 | 1;
     declare category: string;
     declare description: string;
 

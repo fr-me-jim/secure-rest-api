@@ -19,7 +19,7 @@ export interface IProductAttributes {
   image: string;
   price: number;
   stock: number;
-  premium: boolean;
+  premium: 0 | 1;
   category: string;
   description: string;
   
