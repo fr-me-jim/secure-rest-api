@@ -19,7 +19,7 @@ services:
       volumes: 
         - ./nginx.conf:/etc/nginx/nginx.conf:ro
         - /etc/letsencrypt:/etc/letsencrypt:ro
-        - /var/log/nginx/:/var/log/nginx/
+        - /var/log/nginx:/var/log/nginx
 
       depends_on:
         - tfm-backend
@@ -71,10 +71,10 @@ services:
       - tfm-network
     volumes:
       # - ./pgdata:/home/postgres/pgdata
+      - ./pgdata:/var/lib/postgresql/data
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
       - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
       - ./scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-      - ./pgdata:/var/lib/postgresql/data/pgdata
 
 # volumes:
 #   pgdata:
