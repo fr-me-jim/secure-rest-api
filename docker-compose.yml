@@ -56,7 +56,7 @@ services:
     #   dockerfile: Dockerfile.postgresql
     user: postgres
     # image: tfm-database
-    image: postgres:14.3-alpine
+    image: postgres:14-alpine
     container_name: tfm-database
     command: [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
     deploy:
