@@ -41,7 +41,7 @@ services:
 
     volumes:
       - ./public:/usr/src/app/public
-      - /var/log/server:/usr/src/app/logs
+      - ./logs/server:/usr/src/app/logs
       # - /var/log/server:/home/node/logs
       # - /var/log/server:/var/log/server:rw
       
@@ -51,7 +51,7 @@ services:
     user: postgres
     restart: always
     expose: [ 5432 ]
-    image: postgres:14-alpine
+    image: postgres:14.3-alpine
     container_name: tfm-database
     command: [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf" ] 
     deploy:

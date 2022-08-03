@@ -39,9 +39,8 @@ EXPOSE 9000
 RUN mkdir public logs
 RUN chown node:node logs
 RUN chown node:node public
-RUN ls -l
 
 USER node
-RUN mkdir -p ~/logs
+# RUN mkdir -p ~/logs
 
 CMD ["node", "build/src/index.js"]
