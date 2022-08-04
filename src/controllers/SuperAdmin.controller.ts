@@ -43,7 +43,7 @@ class SuperAdminController extends UserController {
      * GetUserInfo
      */
      public readonly getUserInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info("In Admin [GET] - /admin/users/:id");
+        logger.info("In [Admin] [GET] - /admin/users/:id");
         try {
             const id: string = req.params.id;
             if (!id || !validator.isUUID(id)) {
@@ -64,17 +64,18 @@ class SuperAdminController extends UserController {
      * AddNewUser
      */
     public readonly addNewUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info("In Admin [POST] - /admin/users");
+        logger.info("In [Admin] [POST] - /admin/users");
         try {
             const userData: UserCreate = req.body;
-            console.log('[TypeGuard]: ', isUserCreate(userData))
             if(!userData || !isUserCreate(userData)) {
                 throw new TypeGuardError("[Admin] Add User - Request body payload wrong type!");
             };
             sanitizeObject(userData);
 
-            const user = await this.UsersRepository.createNewUser( userData );
-            if(!user) return res.sendStatus(500);
+            const result = await this.UsersRepository.createNewUser( userData );
+            if(!result) return res.sendStatus(500);
+
+            const { password, ...user } = result;
 
             return res.send( user ).status(201);
         } catch (error: unknown) {
@@ -86,7 +87,7 @@ class SuperAdminController extends UserController {
      * EditUser
      */
      public readonly editUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info("In Admin [PUT] - /admin/users/:id");
+        logger.info("In [Admin] [PUT] - /admin/users/:id");
         try {
             const id: string | undefined = req.params?.id;
             if(!id || !validator.isUUID(id)) {
@@ -96,10 +97,12 @@ class SuperAdminController extends UserController {
             const newUser: UserEdit = req.body;
             if(!newUser) return res.sendStatus(400);
 
-            const user = await this.UsersRepository.updateUser( id, newUser );
-            if(!user) return res.sendStatus(404);
+            const result = await this.UsersRepository.updateUser( id, newUser );
+            if(!result) return res.sendStatus(404);
 
-            return res.send({ ...user }).status(200);
+            const { password, ...user } = result;
+
+            return res.send( user ).status(200);
         } catch (error: unknown) {
             next(error);
         }  
@@ -109,7 +112,7 @@ class SuperAdminController extends UserController {
      * DeleteUser
      */
      public readonly deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info("In Admin [DELETE] - /admin/users/:id");
+        logger.info("In [Admin] [DELETE] - /admin/users/:id");
         try {
             const id: string = req.params?.id;
             if(!id || !validator.isUUID(id)) {

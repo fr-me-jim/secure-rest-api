@@ -72,7 +72,6 @@ export const isUserCreate = (instance: UserCreate): instance is UserCreate => {
     Object.keys(instance).find( key => {
         // if property does not exists
         if (template[key as keyof UserCreate] === undefined && templateOptional[key as keyof UserCreateOptionals] === undefined) {
-            console.log('does not exist', key)
             isTemplate = false;
             return true; // break loop
         };
@@ -80,14 +79,12 @@ export const isUserCreate = (instance: UserCreate): instance is UserCreate => {
         if (template[key as keyof UserCreate] !== undefined) {
             mandatoryAmount++;
             if (typeof instance[key as keyof UserCreate] !== typeof template[key as keyof UserCreate]) {
-                console.log('is not correct type', key)
                 isTemplate = false;
                 return true; // break loop
             }
 
             // if email property not email-like 
             if (key === "email" && !validator.isEmail(instance["email"])) {
-                console.log('is not email', key)
                 isTemplate = false;
                 return true; // break loop
             }

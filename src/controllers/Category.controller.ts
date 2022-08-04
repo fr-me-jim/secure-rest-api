@@ -1,8 +1,6 @@
 import validator from "validator";
 import { NextFunction, Request, Response } from 'express';
 
-// User model
-// import Product from '../models/Product.model';
 // error
 import TypeGuardError from '../errors/TypeGuardError.error';
 
@@ -49,7 +47,9 @@ class CategoryController {
 
         try {
             const id: string = req.params?.id;
-            if (!id || !validator.isUUID(id)) return res.sendStatus(400);
+            if (!id || !validator.isUUID(id)) {
+                throw new TypeGuardError("Show Category - Request ID param wrong type or missing!");
+            };
 
             const category = await this.CategoriesRepository.getCategoryById(id);
             if (!category) return res.sendStatus(404);
@@ -61,11 +61,11 @@ class CategoryController {
     };
     
     public readonly addNewCategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info('In [POST] - /categories');
+        logger.info('In [Admin] [POST] - /admin/categories');
         try {
             const newCategory: CategoryCreate = req.body;
             if (!newCategory || !isCategoryCreate(newCategory)) {
-                throw new TypeGuardError("Create Categories - Request body payload wrong type!");
+                throw new TypeGuardError("[Admin] Create Categories - Request body payload wrong type!");
             }
             sanitizeObject(newCategory);
 
@@ -79,16 +79,16 @@ class CategoryController {
     };
 
     public readonly editCategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info('In [PUT] - /categories/:id');
+        logger.info('In [Admin] [PUT] - /admin/categories/:id');
 
         try {
             const id: string = req.params?.id;
             const newCategoryData: CategoryEdit = req.body;
             if (!id || !validator.isUUID(id)) {
-                throw new TypeGuardError("Edit Categories - Request ID param wrong type or missing!");
+                throw new TypeGuardError("[Admin] Edit Categories - Request ID param wrong type or missing!");
             };
             if ( !isCategoryEdit(newCategoryData) ) {
-                throw new TypeGuardError("Edit Categories - Request body payload wrong type!");
+                throw new TypeGuardError("[Admin] Edit Categories - Request body payload wrong type!");
             };
             sanitizeObject(newCategoryData);
 
@@ -102,12 +102,12 @@ class CategoryController {
     };
 
     public readonly deleteCategory = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info('In [DELETE] - /categories/:id');
+        logger.info('In [Admin] [DELETE] - /admin/categories/:id');
 
         try {
             const id: string = req.params?.id;
             if (!id || !validator.isUUID(id)) {
-                throw new TypeGuardError("Delete Categories - Request ID param wrong type or missing!");
+                throw new TypeGuardError("[Admin] Delete Categories - Request ID param wrong type or missing!");
             };
 
             const result = await this.CategoriesRepository.deleteCategory( id );
