@@ -13,6 +13,7 @@ export const isPremiumValues = (premium: number): boolean => {
 export const isProductCreate = (instance: ProductCreate): instance is ProductCreate => {
     if (Object.keys(instance).length === 0) return false;
 
+    const mandatoryTemplate: number = 6;
     const template: ProductCreate = {
         name: "templateString",
         image: "templateString",
@@ -26,7 +27,8 @@ export const isProductCreate = (instance: ProductCreate): instance is ProductCre
         premium: 0
     };
 
-    let isTemplate = true;
+    let isTemplate: boolean = true;
+    let mandatoryAmount: number = 0;
     Object.keys(instance).find(key => {
         // if property does not exists
         if (template[key as keyof ProductCreate] === undefined || templateOptional[key as keyof ProductCreateOptionals] === undefined) {
@@ -35,6 +37,8 @@ export const isProductCreate = (instance: ProductCreate): instance is ProductCre
         };
 
         if (template[key as keyof ProductCreate] !== undefined) {
+            mandatoryAmount++;
+
             if (typeof instance[key as keyof ProductCreate] !== typeof template[key as keyof ProductCreate]) {
                 isTemplate = false;
                 return true; // break loop
@@ -58,6 +62,8 @@ export const isProductCreate = (instance: ProductCreate): instance is ProductCre
         return false;
     });
 
+    if (mandatoryAmount !== mandatoryTemplate) return false;
+
     return isTemplate;
 };
 
@@ -74,7 +80,7 @@ export const isProductEdit = (instance: ProductEdit): instance is ProductEdit =>
         description: "templateString"
     };
 
-    let isTemplate = true;
+    let isTemplate: boolean = true;
     Object.keys(instance).find(key => {
         // if property does not exists
         if (templateOptional[key as keyof ProductEdit] === undefined) {
@@ -111,7 +117,7 @@ export const isProductSearch = (instance: ProductSearch): instance is ProductSea
         description: "templateString"
     };
 
-    let isTemplate = true;
+    let isTemplate: boolean = true;
     Object.keys(instance).find(key => {
         // if property does not exists
         if (templateOptional[key as keyof ProductSearch] === undefined) {

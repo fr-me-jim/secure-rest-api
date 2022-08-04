@@ -17,18 +17,22 @@ export const isValidPrivilege = (privileges: UserPrivileges): boolean => {
 export const isUserLogin = (instance: UserLogin): instance is UserLogin => {
     if (Object.keys(instance).length === 0) return false;
 
+    const mandatoryTemplate: number = 2;
     const template: UserLogin = {
         email: "example@gmail.com",
         password: "templateString"
     };
 
-    let isTemplate = true;
+    let isTemplate: boolean = true;
+    let mandatoryAmount: number = 0;
     Object.keys(instance).find(key => {
         // if property does not exists
         if (template[key as keyof UserLogin] === undefined) {
             isTemplate = false;
             return true; // break loop
         }
+
+        mandatoryAmount++;
 
         if (typeof instance[key as keyof UserLogin] !== typeof template[key as keyof UserLogin]) {
             isTemplate = false;
@@ -43,12 +47,15 @@ export const isUserLogin = (instance: UserLogin): instance is UserLogin => {
         return false;
     });
 
+    if (mandatoryAmount !== mandatoryTemplate) return false;
+
     return isTemplate;
 };
 
 export const isUserCreate = (instance: UserCreate): instance is UserCreate => {
     if (Object.keys(instance).length === 0) return false;
 
+    const mandatoryTemplate: number = 4;
     const template: UserCreate = {
         email: "example@gmail.com",
         password: "templateString",
@@ -60,23 +67,27 @@ export const isUserCreate = (instance: UserCreate): instance is UserCreate => {
         privileges: 0
     };
 
-
-    let isTemplate = true;
+    let isTemplate: boolean = true;
+    let mandatoryAmount: number = 0;
     Object.keys(instance).find( key => {
         // if property does not exists
         if (template[key as keyof UserCreate] === undefined || templateOptional[key as keyof UserCreateOptionals] === undefined) {
+            console.log('does not exist', key)
             isTemplate = false;
             return true; // break loop
         };
 
         if (template[key as keyof UserCreate] !== undefined) {
+            mandatoryAmount++;
             if (typeof instance[key as keyof UserCreate] !== typeof template[key as keyof UserCreate]) {
+                console.log('is not correct type', key)
                 isTemplate = false;
                 return true; // break loop
             }
 
             // if email property not email-like 
             if (key === "email" && !validator.isEmail(instance["email"])) {
+                console.log('is not email', key)
                 isTemplate = false;
                 return true; // break loop
             }
@@ -101,6 +112,8 @@ export const isUserCreate = (instance: UserCreate): instance is UserCreate => {
         return false;
     });
 
+    if (mandatoryAmount !== mandatoryTemplate) return false;
+
     return isTemplate;
 };
 
@@ -114,7 +127,7 @@ export const isUserEdit = (instance: UserEdit): instance is UserEdit => {
         privileges: 0
     };
 
-    let isTemplate = true;
+    let isTemplate: boolean = true;
     Object.keys(instance).find(key => {
         // if property does not exists
         if (templateOptional[key as keyof UserEdit] === undefined) {
@@ -153,7 +166,7 @@ export const isUserEditProfile = (instance: UserEditProfile): instance is UserEd
         secondName: "templateString",
     };
 
-    let isTemplate = true;
+    let isTemplate: boolean = true;
     Object.keys(instance).find(key => {
         // if property does not exists
         if (templateOptional[key as keyof UserEditProfile] === undefined) {
