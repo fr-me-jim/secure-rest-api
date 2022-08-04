@@ -1,4 +1,4 @@
-import cors from 'cors';
+// import cors from 'cors';
 import passport from "passport";
 import express, { Router } from 'express';
 import type {
@@ -56,7 +56,7 @@ export default class APIServer {
     };
 
     private readonly SetMiddlewares = (): void => {
-        this.app.use(cors());
+        // this.app.use(cors());
         this.app.use(express.json());
         // this.app.use(cookieParser());
         this.app.use(passport.initialize());
@@ -82,6 +82,7 @@ export default class APIServer {
      */
     public readonly listen = (): void => {
         this.app.listen(this.port, async () => {
+            logger.info("Starting App");
             console.log(`== NODE_ENV: ${process.env.NODE_ENV} ==`);
             try {
                 await this.connection.authenticate();
@@ -93,6 +94,7 @@ export default class APIServer {
                 throw error;
             }
             
+            logger.info(`Server running on port ${this.port}`);
             console.log("Server running on port:", this.port);
         }); 
     };
