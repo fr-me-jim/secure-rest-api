@@ -47,7 +47,6 @@ class SuperAdminController extends UserController {
         try {
             const id: string = req.params.id;
             if (!id || !validator.isUUID(id)) {
-                logger.error('GET /admin/users/:id - Request ID param wrong type or missing!');
                 throw new TypeGuardError("[Admin] Show User - Request ID param wrong type or missing!");
             };
 
@@ -70,7 +69,6 @@ class SuperAdminController extends UserController {
             const userData: UserCreate = req.body;
             console.log('[TypeGuard]: ', isUserCreate(userData))
             if(!userData || !isUserCreate(userData)) {
-                logger.error('POST /admin/users - Request body payload wrong type!');
                 throw new TypeGuardError("[Admin] Add User - Request body payload wrong type!");
             };
             sanitizeObject(userData);
@@ -92,7 +90,6 @@ class SuperAdminController extends UserController {
         try {
             const id: string | undefined = req.params?.id;
             if(!id || !validator.isUUID(id)) {
-                logger.error('PUT /admin/users/:id - Request ID param wrong type or missing!');
                 throw new TypeGuardError("[Admin] Edit User - Request ID param wrong type or missing!");
             };
 
@@ -116,7 +113,6 @@ class SuperAdminController extends UserController {
         try {
             const id: string = req.params?.id;
             if(!id || !validator.isUUID(id)) {
-                logger.error('DELETE /admin/users/:id - Request ID param wrong type or missing!');
                 throw new TypeGuardError("[Admin] Edit User - Request ID param wrong type or missing!");
             };
 

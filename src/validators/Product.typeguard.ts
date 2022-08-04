@@ -31,7 +31,7 @@ export const isProductCreate = (instance: ProductCreate): instance is ProductCre
     let mandatoryAmount: number = 0;
     Object.keys(instance).find(key => {
         // if property does not exists
-        if (template[key as keyof ProductCreate] === undefined || templateOptional[key as keyof ProductCreateOptionals] === undefined) {
+        if (template[key as keyof ProductCreate] === undefined && templateOptional[key as keyof ProductCreateOptionals] === undefined) {
             isTemplate = false;
             return true; // break loop
         };

@@ -71,7 +71,7 @@ export const isUserCreate = (instance: UserCreate): instance is UserCreate => {
     let mandatoryAmount: number = 0;
     Object.keys(instance).find( key => {
         // if property does not exists
-        if (template[key as keyof UserCreate] === undefined || templateOptional[key as keyof UserCreateOptionals] === undefined) {
+        if (template[key as keyof UserCreate] === undefined && templateOptional[key as keyof UserCreateOptionals] === undefined) {
             console.log('does not exist', key)
             isTemplate = false;
             return true; // break loop

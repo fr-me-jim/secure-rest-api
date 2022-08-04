@@ -65,7 +65,6 @@ class CategoryController {
         try {
             const newCategory: CategoryCreate = req.body;
             if (!newCategory || !isCategoryCreate(newCategory)) {
-                logger.error('POST /categories - Request body payload wrong type!');
                 throw new TypeGuardError("Create Categories - Request body payload wrong type!");
             }
             sanitizeObject(newCategory);
@@ -86,11 +85,9 @@ class CategoryController {
             const id: string = req.params?.id;
             const newCategoryData: CategoryEdit = req.body;
             if (!id || !validator.isUUID(id)) {
-                logger.error('PUT /categories/:id - Request ID param wrong type or missing!');
                 throw new TypeGuardError("Edit Categories - Request ID param wrong type or missing!");
             };
             if ( !isCategoryEdit(newCategoryData) ) {
-                logger.error('PUT /categories/:id - Request body payload wrong type!');
                 throw new TypeGuardError("Edit Categories - Request body payload wrong type!");
             };
             sanitizeObject(newCategoryData);
@@ -110,7 +107,6 @@ class CategoryController {
         try {
             const id: string = req.params?.id;
             if (!id || !validator.isUUID(id)) {
-                logger.error('DELETE /categories/:id - Request ID param wrong type or missing!');
                 throw new TypeGuardError("Delete Categories - Request ID param wrong type or missing!");
             };
 

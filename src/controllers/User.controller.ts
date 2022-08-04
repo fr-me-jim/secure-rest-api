@@ -55,7 +55,6 @@ class UserController {
         try {
             const newUser: UserEditProfile = req.body; 
             if (!newUser || !isUserEditProfile(newUser)) {
-                logger.error('POST /profile/edit - Request body payload wrong type!');
                 throw new TypeGuardError("Edit Profile - Request body payload wrong type!");
             }
             sanitizeObject(newUser);
@@ -78,7 +77,6 @@ class UserController {
         try {
             const newPassword: string | undefined = req.body.password; 
             if(!newPassword || !newPassword?.trim() || newPassword.trim().length < 20) {
-                logger.error('PUT /profile/edit/password - Request body payload wrong type!');
                 throw new TypeGuardError("Edit Profile Password - Request body payload wrong type!");
             };
 
