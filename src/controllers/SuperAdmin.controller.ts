@@ -68,6 +68,7 @@ class SuperAdminController extends UserController {
         logger.info("In Admin [POST] - /admin/users");
         try {
             const userData: UserCreate = req.body;
+            console.log('[TypeGuard]: ', isUserCreate(userData))
             if(!userData || !isUserCreate(userData)) {
                 logger.error('POST /admin/users - Request body payload wrong type!');
                 throw new TypeGuardError("[Admin] Add User - Request body payload wrong type!");
