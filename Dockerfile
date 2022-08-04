@@ -39,6 +39,7 @@ EXPOSE 9000
 RUN mkdir public logs
 RUN chown node:node logs
 RUN chown node:node public
+RUN ls -la
 
 USER node
 # RUN mkdir -p ~/logs

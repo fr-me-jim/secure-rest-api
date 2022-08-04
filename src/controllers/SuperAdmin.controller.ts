@@ -75,7 +75,7 @@ class SuperAdminController extends UserController {
             const result = await this.UsersRepository.createNewUser( userData );
             if(!result) return res.sendStatus(500);
 
-            const { password, ...user } = result;
+            const { password, ...user } = result.get();
 
             return res.send( user ).status(201);
         } catch (error: unknown) {
@@ -89,7 +89,7 @@ class SuperAdminController extends UserController {
      public readonly editUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [Admin] [PUT] - /admin/users/:id");
         try {
-            const id: string | undefined = req.params?.id;
+            const id: string = req.params?.id;
             if(!id || !validator.isUUID(id)) {
                 throw new TypeGuardError("[Admin] Edit User - Request ID param wrong type or missing!");
             };

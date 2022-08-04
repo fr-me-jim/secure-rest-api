@@ -48,7 +48,7 @@ class ProductController {
 
         try {
             const category: string = req.params.category_name && sanitizeString(req.params.category_name); 
-            if (!category || !!validator.isAlphanumeric(category, undefined, { ignore: "-_" })) {
+            if (!category || !validator.isAlphanumeric(category, undefined, { ignore: "-_" })) {
                 throw new TypeGuardError("Filter Products by Category - Request category name param wrong type or missing!");
             }
 
