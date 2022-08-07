@@ -42,20 +42,26 @@ export interface OrderEditRequest {
     client_id?: string;  
 };
 
-export interface OrderEdit {
+export interface OrderSearchRequest {
     date?: string;
     status?: OrderStatus;
     client_id?: string;  
 };
 
+export interface OrderEdit {
+    date?: Date;
+    status?: OrderStatus;
+    client_id?: string;  
+};
+
 export interface OrderEditClient {
-    date?: string;
+    date?: Date;
     status?: OrderStatus;
     orderItems?: OrderItemRequest[]
 };
 
 export interface OrderSearch {
-    date?: string;
+    date?: Date;
     status?: OrderStatus;
     client_id?: string;  
 };

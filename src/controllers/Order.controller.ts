@@ -1,9 +1,8 @@
 import validator from "validator";
 import { NextFunction, Request, Response } from 'express';
 
-// User model
-// import Order from '../models/Order.model';
-// import { sanitizeString } from "../utils/helpers";
+// error
+import TypeGuardError from '../errors/TypeGuardError.error';
 
 // Order interfaces
 import {
@@ -21,6 +20,16 @@ import {
     IOrderItemRepository,
 } from '../interfaces/OrderItem.interface';
 
+// utils
+import logger from '../config/logger.config';
+import { sanitizeObject } from '../utils/helpers';
+import { 
+    isOrderItemRequest
+} from "../validators/OrderItem.typeguards";
+import { 
+    isOrderCreate,
+} from "../validators/Order.typeguards";
+
 /**
  * @class OrderController
  * @desc Responsible for handling API requests for the
@@ -37,6 +46,7 @@ class OrderController {
     };
 
     public readonly getAllOrders = async (_req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [GET] - /admin/orders");
         try {
             const orders = await this.OrdersRepository.getAllOrders();
             return res.status(200).send({ orders });
@@ -46,10 +56,14 @@ class OrderController {
     };
 
     public readonly getOrderInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params?.id;
-        if (!id || !validator.isUUID(id)) return res.sendStatus(400);
+        logger.info("In [GET] - /admin/orders/:id");
 
         try {
+            const id: string = req.params?.id;
+            if (!id || !validator.isUUID(id)) {
+                throw new TypeGuardError("[Admin] Show Order - Request ID param wrong type or missing!");
+            };
+
             const order = await this.OrdersRepository.getOrderById(id);
             if (!order) return res.sendStatus(404);
 
@@ -60,10 +74,14 @@ class OrderController {
     };
 
     public readonly getClientOrderInfo = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params?.id;
-        if (!id || !validator.isUUID(id)) return res.sendStatus(400);
+        logger.info("In [GET] - /orders/own/:id");
 
         try {
+            const id: string = req.params?.id;
+            if (!id || !validator.isUUID(id)) {
+                throw new TypeGuardError("Show Client Order - Request ID param wrong type or missing!");
+            };
+
             const order = await this.OrdersRepository.getOrderById(id, req.user!.id!);
             if (!order) return res.sendStatus(404);
 
@@ -75,6 +93,7 @@ class OrderController {
 
 
     public readonly getAllClientOrders = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [GET] - /orders/own");
         try {
             const orders = await this.OrdersRepository.getOrdersByClientId(req.user!.id!);
             return res.status(200).send({ orders });
@@ -84,10 +103,14 @@ class OrderController {
     };
 
     public readonly getItemsByOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params?.id;
-        if (!id || !validator.isUUID(id)) return res.sendStatus(400);
+        logger.info("In [GET] - /orders/own/:id/items");
 
         try {
+            const id: string = req.params?.id;
+            if (!id || !validator.isUUID(id)) {
+                throw new TypeGuardError("Show Client Order Items - Request ID param wrong type or missing!");
+            };
+
             const items = await this.OrderItemRepository.getOrderItemsByOrderId(id);
             if (!items) return res.sendStatus(409);
 
@@ -98,6 +121,7 @@ class OrderController {
     };
     
     public readonly addNewOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [POST] - /orders/own/place-order");
         const client_id: string = req.user!.id!;
         const orderItems: OrderItemRequest[] = req.body;
         if (!client_id || !validator.isUUID(client_id) || orderItems.length === 0) return res.sendStatus(400);
@@ -131,8 +155,9 @@ class OrderController {
     };
 
     public readonly editClientOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params?.id;
-        const newOrderData: OrderEditClient | undefined = req.body;
+        logger.info("In [PUT] - /orders/own/:id");
+        const id: string = req.params?.id;
+        const newOrderData: OrderEditClient = req.body;
         console.log('[New Order]', newOrderData)
         if ( !id || !validator.isUUID(id) || !newOrderData) return res.sendStatus(400);
 
@@ -147,8 +172,9 @@ class OrderController {
     };
 
     public readonly editOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const id: string | undefined = req.params?.id;
-        const newOrderData: OrderEdit | undefined = req.body;
+        logger.info("In [PUT] - /admin/orders/:id");
+        const id: string = req.params?.id;
+        const newOrderData: OrderEdit = req.body;
         if ( !id || !validator.isUUID(id) || !newOrderData) return res.sendStatus(400);
 
         try {
@@ -162,8 +188,9 @@ class OrderController {
     };
 
     public readonly cancelOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [PUT] - /orders/own/:id/cancellation");
         try {
-            const id: string | undefined = req.params?.id;
+            const id: string = req.params?.id;
             if(!id || !validator.isUUID(id)) return res.sendStatus(400);
 
             const order = await this.OrdersRepository.updateOrder(id, { status: "cancelled" }, req.user!.id);
@@ -176,8 +203,9 @@ class OrderController {
     };
 
     public readonly deleteOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [DELETE] - /admin/orders/:id");
         try {
-            const id: string | undefined = req.params?.id;
+            const id: string = req.params?.id;
             if(!id || !validator.isUUID(id)) return res.sendStatus(400);
 
             const result = await this.OrdersRepository.deleteOrder( id );
@@ -192,12 +220,13 @@ class OrderController {
 
     private readonly rollbackOrderCreation = async (order_id: string, itemsCreated: string[]): Promise<void> => {
         try {
-            await this.OrdersRepository.deleteOrder(order_id);
             if (itemsCreated.length) {
                 for (let i = 0; i < itemsCreated.length; i++) {
                     await this.OrderItemRepository.deleteOrderItem(itemsCreated[i]);
                 }
             }
+
+            await this.OrdersRepository.deleteOrder(order_id);
         } catch (error: unknown) {
             throw error;
         }

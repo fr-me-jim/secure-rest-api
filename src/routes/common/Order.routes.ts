@@ -26,6 +26,7 @@ export default class OrderRouter {
     public readonly SetRoutes = (): Router => {
         this.router.get("/own", this.orderController.getAllClientOrders);
         this.router.get("/own/:id", this.orderController.getClientOrderInfo);
+        this.router.get("/own/:id/items", this.orderController.getItemsByOrder);
 
         this.router.put("/own/:id", this.orderController.editClientOrder);
         this.router.put("/own/:id/cancellation", this.orderController.cancelOrder);

@@ -1,9 +1,9 @@
 import validator from 'validator';
 import { 
-    OrderEdit,
     OrderCreate,
-    OrderSearch,
     OrderStatus,
+    OrderEditRequest,
+    OrderSearchRequest,
 } from "../interfaces/Order.interface";
 
 export const isValidStatus = (status: OrderStatus): boolean => {
@@ -55,10 +55,10 @@ export const isOrderCreate = (instance: OrderCreate): instance is OrderCreate =>
     return isTemplate;
 };
 
-export const isOrderEdit = (instance: OrderEdit): instance is OrderEdit => {
+export const isOrderEditRequest = (instance: OrderEditRequest): instance is OrderEditRequest => {
     if (Object.keys(instance).length === 0) return false;
 
-    const templateOptional: OrderEdit = {
+    const templateOptional: OrderEditRequest = {
         date: "templateString",
         client_id: "templateString",
         status: "pending",
@@ -67,12 +67,12 @@ export const isOrderEdit = (instance: OrderEdit): instance is OrderEdit => {
     let isTemplate: boolean = true;
     Object.keys(instance).find(key => {
         // if property does not exists
-        if (templateOptional[key as keyof OrderEdit] === undefined) {
+        if (templateOptional[key as keyof OrderEditRequest] === undefined) {
             isTemplate = false;
             return true; // break loop
         }
 
-        if (typeof instance[key as keyof OrderEdit] !== typeof templateOptional[key as keyof OrderEdit]) {
+        if (typeof instance[key as keyof OrderEditRequest] !== typeof templateOptional[key as keyof OrderEditRequest]) {
             isTemplate = false;
             return true; // break loop
         }
@@ -99,10 +99,10 @@ export const isOrderEdit = (instance: OrderEdit): instance is OrderEdit => {
     return isTemplate;
 };
 
-export const isOrderSearch = (instance: OrderSearch): instance is OrderSearch => {
+export const isOrderSearch = (instance: OrderSearchRequest): instance is OrderSearchRequest => {
     if (Object.keys(instance).length === 0) return false;
 
-    const templateOptional: OrderSearch = {
+    const templateOptional: OrderSearchRequest = {
         date: "templateString",
         client_id: "templateString",
         status: "pending",
@@ -111,12 +111,12 @@ export const isOrderSearch = (instance: OrderSearch): instance is OrderSearch =>
     let isTemplate: boolean = true;
     Object.keys(instance).find(key => {
         // if property does not exists
-        if (templateOptional[key as keyof OrderSearch] === undefined) {
+        if (templateOptional[key as keyof OrderSearchRequest] === undefined) {
             isTemplate = false;
             return true; // break loop
         }
 
-        if (typeof instance[key as keyof OrderSearch] !== typeof templateOptional[key as keyof OrderSearch]) {
+        if (typeof instance[key as keyof OrderSearchRequest] !== typeof templateOptional[key as keyof OrderSearchRequest]) {
             isTemplate = false;
             return true; // break loop
         }
