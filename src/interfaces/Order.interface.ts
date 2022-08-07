@@ -16,7 +16,7 @@ export interface IOrderRepository {
 };
 
 export type OrderStatus = 'pending' | 'payed' | 'shipped' | 'delivered' | 'cancelled';
-
+export type OrderDateRequest = string; 
 export interface IOrderAttributes {
     id: string;
     date: Date;
@@ -31,25 +31,31 @@ export interface IOrderInput extends Optional<IOrderAttributes, 'id' | 'date'> {
 export interface IOrderOuput extends Required<IOrderAttributes> {};
 
 
-export type OrderCreate = {
+export interface OrderCreate {
     status: OrderStatus;
     client_id: string;  
 };
 
-export type OrderEdit = {
-    date?: Date;
+export interface OrderEditRequest {
+    date?: string;
     status?: OrderStatus;
     client_id?: string;  
 };
 
-export type OrderEditClient = {
-    date?: Date;
+export interface OrderEdit {
+    date?: string;
+    status?: OrderStatus;
+    client_id?: string;  
+};
+
+export interface OrderEditClient {
+    date?: string;
     status?: OrderStatus;
     orderItems?: OrderItemRequest[]
 };
 
-export type OrderSearch = {
-    date?: Date;
+export interface OrderSearch {
+    date?: string;
     status?: OrderStatus;
     client_id?: string;  
 };
