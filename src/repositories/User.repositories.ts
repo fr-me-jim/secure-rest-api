@@ -1,4 +1,5 @@
 import argon2 from "argon2";
+import { Op } from 'sequelize';
 
 // models
 import User from '../models/User.model';
@@ -67,7 +68,9 @@ class UserRepositories implements IUserRepository {
         
         try {
             const users = await this._model.findAll({ 
-                where: { ...userAttributes }, 
+                where: { [Op.or]: [{
+                    ...userAttributes
+                }] }, 
                 attributes: { exclude: exclusions },
                 raw: true 
             });

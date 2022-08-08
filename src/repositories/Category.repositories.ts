@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 // models
 import Category from '../models/Category.model';
 
@@ -58,7 +60,9 @@ export default class CategoryRepositories implements ICategoryRepository {
 
         try {
             const categories = await this._model.findAll({ 
-                where: { ...categoryAttributes }, 
+                where: { [Op.or]: [{
+                    ...categoryAttributes
+                }]}, 
                 raw: true 
             });
 
