@@ -65,14 +65,21 @@ export default class ProductRepositories implements IProductRepository {
                     {
                         name: {
                             [Op.iLike]: productAttributes.name
-                        },
+                        }
+                    },{
                         category: {
                             [Op.iLike]: productAttributes.category
-                        },
+                        }
+                    },{
                         description: {
                             [Op.iLike]: productAttributes.description
-                        },
-                        ...productAttributes
+                        }
+                    },{
+                        price: productAttributes.price
+                    }, {
+                        stock: productAttributes.stock
+                    },{
+                        premium: productAttributes.premium
                     }
                 ] }, 
                 raw: true 
