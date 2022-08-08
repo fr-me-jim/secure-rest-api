@@ -9,8 +9,8 @@ import {
     OrderEdit, 
     OrderCreate, 
     // OrderSearch,
+    OrderEditRequest,
     IOrderRepository,
-    OrderEditClient,
 } from '../interfaces/Order.interface';
 import {
     // OrderItemEdit, 
@@ -24,10 +24,10 @@ import {
 import logger from '../config/logger.config';
 import { sanitizeObject } from '../utils/helpers';
 import { 
-    isOrderItemRequest
+    isOrderItemCreate
 } from "../validators/OrderItem.typeguards";
 import { 
-    isOrderCreate,
+    isOrderEditRequest
 } from "../validators/Order.typeguards";
 
 /**
@@ -85,7 +85,9 @@ class OrderController {
             const order = await this.OrdersRepository.getOrderById(id, req.user!.id!);
             if (!order) return res.sendStatus(404);
 
-            return res.status(200).send({ order });
+            const orderItems = await this.OrderItemRepository.getOrderItemsByOrderId( order.id );
+
+            return res.status(200).send({ ...order.get(), items: orderItems });
         } catch (error: unknown) {
             next(error);
         }
@@ -122,13 +124,20 @@ class OrderController {
     
     public readonly addNewOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [POST] - /orders/own/place-order");
-        const client_id: string = req.user!.id!;
-        const orderItems: OrderItemRequest[] = req.body;
-        if (!client_id || !validator.isUUID(client_id) || orderItems.length === 0) return res.sendStatus(400);
-
+        
         let orderID: string = "";
         let itemsCreated: string[] = [];
         try {
+            const client_id: string = req.user!.id!;
+            if (!client_id || !validator.isUUID(client_id)) {
+                throw new TypeGuardError("Place Order - Request Client ID param wrong type or missing!");
+            };
+
+            const orderItems: OrderItemRequest[] = req.body;
+            if (!orderItems.length) {
+                throw new TypeGuardError("Place Order - Request body items list is empty!");
+            };
+
             const orderData: OrderCreate = {
                 status: "pending",
                 client_id
@@ -139,6 +148,11 @@ class OrderController {
             
             for (let i = 0; i < orderItems.length; i++) {
                 const item: OrderItemCreate = { ...orderItems[i], order_id: order.id };
+                if (!isOrderItemCreate(item)) {
+                    this.rollbackOrderCreation(order.id, itemsCreated);
+                    throw new TypeGuardError("Place Order - Request Order Item wrong type!");
+                };
+                sanitizeObject(item);
                 const result = await this.OrderItemRepository.createOrderItem(item);
                 if (!result) {
                     this.rollbackOrderCreation(order.id, itemsCreated);
@@ -156,13 +170,26 @@ class OrderController {
 
     public readonly editClientOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [PUT] - /orders/own/:id");
-        const id: string = req.params?.id;
-        const newOrderData: OrderEditClient = req.body;
-        console.log('[New Order]', newOrderData)
-        if ( !id || !validator.isUUID(id) || !newOrderData) return res.sendStatus(400);
 
         try {
-            const order = await this.OrdersRepository.updateOrder(id, newOrderData, req.user!.id!);
+            const id: string = req.params?.id;
+            if ( !id || !validator.isUUID(id)) {
+                throw new TypeGuardError("Edit Client Order - Request ID param wrong type or missing!");
+            };
+
+            const newOrderData: OrderEditRequest = req.body;
+            console.log('[New Order]', newOrderData)
+            if ( !newOrderData || !isOrderEditRequest(newOrderData) ) {
+                throw new TypeGuardError("Edit Client Order - Request body payload wrong type! or missing!");
+            };
+
+            const newOrderDataEdit: OrderEdit = {
+                date: req.body.date && new Date(req.body.date),
+                ...req.body
+            };
+            sanitizeObject(newOrderDataEdit);
+
+            const order = await this.OrdersRepository.updateOrder(id, newOrderDataEdit, req.user!.id!);
             if (!order) return res.sendStatus(409);
 
             return res.status(200).send({ ...order.get() });
@@ -173,12 +200,25 @@ class OrderController {
 
     public readonly editOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [PUT] - /admin/orders/:id");
-        const id: string = req.params?.id;
-        const newOrderData: OrderEdit = req.body;
-        if ( !id || !validator.isUUID(id) || !newOrderData) return res.sendStatus(400);
 
         try {
-            const order = await this.OrdersRepository.updateOrder(id, newOrderData);
+            const id: string = req.params?.id;
+            if ( !id || !validator.isUUID(id)) {
+                throw new TypeGuardError("[Admin] Edit Order - Request ID param wrong type or missing!");
+            };
+
+            const newOrderData: OrderEditRequest = req.body;
+            if ( !newOrderData || !isOrderEditRequest(newOrderData) ) {
+                throw new TypeGuardError("[Admin] Edit Order - Request body payload wrong type! or missing!");
+            };
+
+            const newOrderDataEdit: OrderEdit = {
+                date: req.body.date && new Date(req.body.date),
+                ...req.body
+            };
+            sanitizeObject(newOrderDataEdit);
+
+            const order = await this.OrdersRepository.updateOrder(id, newOrderDataEdit);
             if (!order) return res.sendStatus(409);
 
             return res.status(200).send({ ...order.get() });
@@ -189,9 +229,12 @@ class OrderController {
 
     public readonly cancelOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [PUT] - /orders/own/:id/cancellation");
+
         try {
             const id: string = req.params?.id;
-            if(!id || !validator.isUUID(id)) return res.sendStatus(400);
+            if ( !id || !validator.isUUID(id)) {
+                throw new TypeGuardError("Cancel Client Order - Request ID param wrong type or missing!");
+            };
 
             const order = await this.OrdersRepository.updateOrder(id, { status: "cancelled" }, req.user!.id);
             if (!order) return res.sendStatus(409);
@@ -204,9 +247,12 @@ class OrderController {
 
     public readonly deleteOrder = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [DELETE] - /admin/orders/:id");
+
         try {
             const id: string = req.params?.id;
-            if(!id || !validator.isUUID(id)) return res.sendStatus(400);
+            if ( !id || !validator.isUUID(id)) {
+                throw new TypeGuardError("[Admin] Delete Order - Request ID param wrong type or missing!");
+            };
 
             const result = await this.OrdersRepository.deleteOrder( id );
             if(result === 0) return res.sendStatus(404);
