@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 // models
 import Product from '../models/Product.model';
 
@@ -56,9 +58,23 @@ export default class ProductRepositories implements IProductRepository {
     public readonly getProductsByAttributes = async (productAttributes: ProductSearch): Promise<Product[]> => { 
         if (!productAttributes) throw new Error("Required Object with attributes to search");
 
+        // const { name, category, description, ...equalAttributes } = productAttributes;
         try {
             const products = await this._model.findAll({ 
-                where: { ...productAttributes }, 
+                where: { [Op.or]: [
+                    {
+                        name: {
+                            [Op.iLike]: productAttributes.name
+                        },
+                        category: {
+                            [Op.iLike]: productAttributes.category
+                        },
+                        description: {
+                            [Op.iLike]: productAttributes.description
+                        },
+                        ...productAttributes
+                    }
+                ] }, 
                 raw: true 
             });
 

@@ -100,7 +100,7 @@ class SuperAdminController extends UserController {
             const result = await this.UsersRepository.updateUser( id, newUser );
             if(!result) return res.sendStatus(404);
 
-            const { password, ...user } = result;
+            const { password, ...user } = result.get();
 
             return res.send( user ).status(200);
         } catch (error: unknown) {
