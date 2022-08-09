@@ -58,30 +58,20 @@ export default class ProductRepositories implements IProductRepository {
     public readonly getProductsByAttributes = async (productAttributes: ProductSearch): Promise<Product[]> => { 
         if (!productAttributes) throw new Error("Required Object with attributes to search");
 
-        // const { name, category, description, ...equalAttributes } = productAttributes;
+        const conditionMap = Object.keys(productAttributes).map( key => {
+            if (key === 'name'|| key === 'category' || key === 'description') {
+                return { 
+                    [key]: {
+                        [Op.iLike]: productAttributes[key as keyof ProductSearch] 
+                    }
+                };
+            }
+
+            return { [key]: productAttributes[key as keyof ProductSearch] };
+        });
         try {
             const products = await this._model.findAll({ 
-                where: { [Op.or]: [
-                    {
-                        name: {
-                            [Op.iLike]: productAttributes.name
-                        }
-                    },{
-                        category: {
-                            [Op.iLike]: productAttributes.category
-                        }
-                    },{
-                        description: {
-                            [Op.iLike]: productAttributes.description
-                        }
-                    },{
-                        price: productAttributes.price
-                    }, {
-                        stock: productAttributes.stock
-                    },{
-                        premium: productAttributes.premium
-                    }
-                ] }, 
+                where: { [Op.or]: conditionMap }, 
                 raw: true 
             });
 
