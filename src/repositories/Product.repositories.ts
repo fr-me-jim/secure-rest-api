@@ -62,7 +62,7 @@ export default class ProductRepositories implements IProductRepository {
             if (key === 'name'|| key === 'category' || key === 'description') {
                 return { 
                     [key]: {
-                        [Op.iLike]: productAttributes[key as keyof ProductSearch] 
+                        [Op.substring]: productAttributes[key as keyof ProductSearch] 
                     }
                 };
             }
