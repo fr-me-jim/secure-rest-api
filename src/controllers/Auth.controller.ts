@@ -118,7 +118,7 @@ export default class AuthController {
                 secure: true, 
                 signed: true,
                 httpOnly: true, 
-                maxAge: 72 * 60
+                maxAge: 72 * 60 * 60
             }).end();
         } catch (error: unknown) {  
             next(error);
