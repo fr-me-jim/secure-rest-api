@@ -73,7 +73,6 @@ export default class AuthController {
             if (!result) return res.sendStatus(500);
 
         } catch (error: unknown) {
-            console.log(error)
             next(error);
         }
     };
@@ -136,12 +135,14 @@ export default class AuthController {
      * Logout
      */
     public async logout(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-        logger.info("In GET - /logout");
+        logger.info("In [GET] - /logout");
 
         try {
+            console.log('in here')
             await this.addToBlacklist(req, res, next);
             return res.status(200).clearCookie('access_token').end();
         } catch (error: unknown) {
+            console.log(error)
             next(error)
         }
     };
