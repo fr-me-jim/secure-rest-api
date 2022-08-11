@@ -93,7 +93,7 @@ export default class AuthController {
             
             const token = this.createNewJWTToken({ id: result!.id });
             
-            return res.status(201).cookie('access_token', token, { httpOnly: true, secure: true, signed: true });
+            return res.status(201).cookie('access_token', token, { httpOnly: true, secure: true, signed: true }).end();
 
             // return res.send({ token }).status(201);
         } catch (error: unknown) {
@@ -115,7 +115,7 @@ export default class AuthController {
 
             const token = this.createNewJWTToken({ id: (req.user! as User).id });
 
-            return res.status(200).cookie('access_token', token, { httpOnly: true, secure: true, signed: true });
+            return res.status(200).cookie('access_token', token, { httpOnly: true, secure: true, signed: true }).end();
             // return res.send({ token }).status(200);
         } catch (error: unknown) {  
             next(error);
