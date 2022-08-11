@@ -53,29 +53,27 @@ export default class AuthController {
     /**
      * AddToBlacklist
      */
-     public readonly addToBlacklist = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        logger.info("In AddToBlacklist - /logout");
+    //  public readonly addToBlacklist = async (userID: string, token: string): Promise<Response | void> => {
+    //     logger.info("In AddToBlacklist - /logout");
 
-        try {
-            const id: string = (req.user! as User).id;
-            if (!id || !validator.isUUID(id)) {
-                logger.error('GET /logout - Request ID param wrong type or missing!');
-                throw new TypeGuardError("User Login - Request ID param wrong type or missing!");
-            };
+    //     try {
+    //         if (!userID || !validator.isUUID(userID)) {
+    //             logger.error('AddToBlacklist - Request ID param wrong type or missing!');
+    //             throw new TypeGuardError("User Login - Request ID param wrong type or missing!");
+    //         };
             
-            const token: string = req.signedCookies['access_token'];
-            if ( !token || !validator.isJWT(token) ) {
-                logger.error('GET /logout - Request Token wrong type!');
-                throw new TypeGuardError("Logout User - Request Token wrong type!");
-            };
+    //         if ( !token || !validator.isJWT(token) ) {
+    //             logger.error('AddToBlacklist - Request Token wrong type!');
+    //             throw new TypeGuardError("Logout User - Request Token wrong type!");
+    //         };
 
-            const result = await this.TokenRepository.createNewBlacklistedToken(token, id);
-            if (!result) return res.sendStatus(500);
+    //         const result = await this.TokenRepository.createNewBlacklistedToken(token, userID);
+    //         if (!result) return null;
 
-        } catch (error: unknown) {
-            next(error);
-        }
-    };
+    //     } catch (error: unknown) {
+    //         throw error;
+    //     }
+    // };
 
     /**
      * RegisterUser
@@ -138,8 +136,22 @@ export default class AuthController {
         logger.info("In [GET] - /logout");
 
         try {
+            const id: string = (req.user! as User).id;
+            if (!id || !validator.isUUID(id)) {
+                logger.error('GET /logout - Request ID param wrong type or missing!');
+                throw new TypeGuardError("User Login - Request ID param wrong type or missing!");
+            };
+            
+            const token: string = req.signedCookies['access_token'];
+            if ( !token || !validator.isJWT(token) ) {
+                logger.error('GET /logout - Request Token wrong type!');
+                throw new TypeGuardError("Logout User - Request Token wrong type!");
+            };
             console.log('in here')
-            await this.addToBlacklist(req, res, next);
+            const result = await this.TokenRepository.createNewBlacklistedToken(token, id);
+            if (!result) return res.sendStatus(500);
+
+            // await this.addToBlacklist(req, res, next);
             return res.status(200).clearCookie('access_token').end();
         } catch (error: unknown) {
             console.log(error)
