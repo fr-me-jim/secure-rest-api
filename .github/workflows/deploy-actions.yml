@@ -19,6 +19,8 @@ jobs:
         name: Make .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
+          file_name: .env
+          fail_on_empty: true
           envkey_PORT: ${{ secrets.SERVER_LISTEN_PORT }}
           envkey_DB_PORT: ${{ secrets.PG_DB_PORT }}
           envkey_DB_USERNAME: ${{ secrets.PG_DB_USERNAME }}
@@ -32,8 +34,8 @@ jobs:
           envkey_JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
           envkey_JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          file_name: .env
-          fail_on_empty: true
+          envkey_COOKIE_SIGNATURE: ${{ secrets.COOKIE_SIGNATURE }}
+          
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -63,15 +65,15 @@ jobs:
         name: Make .env.docker file
         uses: SpicyPizza/create-envfile@v1.3
         with:
+          fail_on_empty: true
+          file_name: .env.docker
           envkey_POSTGRES_USER: ${{ secrets.PG_DB_ADMIN_USERNAME }}
           envkey_POSTGRES_PASSWORD: ${{ secrets.PG_DB_ADMIN_PASSWORD }}
           envkey_PG_SERVER_USER: ${{ secrets.PG_DB_USERNAME }}
           envkey_PG_SERVER_PWD: ${{ secrets.PG_DB_PASSWORD }}
           envkey_PG_SERVER_DB: ${{ secrets.PG_DB_NAME }}
           envkey_PG_SERVER_DB_SCHEMA: ${{ secrets.PG_DB_SCHEMA }}
-          # envkey_PGDATA: /var/lib/postgresql/data/pgdata
-          file_name: .env.docker
-          fail_on_empty: true
+
       - 
         name: Copy files to server 
         uses: appleboy/scp-action@master

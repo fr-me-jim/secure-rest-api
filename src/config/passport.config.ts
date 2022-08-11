@@ -1,7 +1,8 @@
+import { Request } from "express";
 import { PassportStatic } from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
 // import { Strategy as GoogleStrategy } from 'passport-google-oidc';
-import { Strategy as JWTStrategy, ExtractJwt, VerifiedCallback } from "passport-jwt";
+import { Strategy as JWTStrategy, VerifiedCallback } from "passport-jwt";
 // import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 // model
@@ -21,10 +22,7 @@ export default class PassportConfig {
         this.UsersRepository = repository;
     };
 
-    // private readonly cookieExtractor = (req: Request): string => {
-    //     const token = req.cookies['access_token'];
-    //     return token;
-    // };
+    private readonly cookieExtractor = (req: Request): string => req.signedCookies['access_token'] || "";
 
     public readonly SetStrategy = (): PassportStatic => {
         this.passport.serializeUser( (user, done: VerifiedCallback) => {
@@ -36,7 +34,7 @@ export default class PassportConfig {
         });
 
         this.passport.use(new JWTStrategy({ 
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: this.cookieExtractor,
             secretOrKey: process.env.JWT_SECRET!
         }, this.getUserByJWT));
 

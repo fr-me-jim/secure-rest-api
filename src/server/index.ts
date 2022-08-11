@@ -1,4 +1,6 @@
+// import csurf from 'csurf';
 import passport from "passport";
+import cookieParser from "cookie-parser";
 import express, { Router } from 'express';
 import type {
     Request, 
@@ -7,7 +9,6 @@ import type {
     NextFunction
 } from 'express';
 // import morgan from "morgan";
-// import cookieParser from "cookie-parser";
 // import { WriteStream } from "fs";
 
 // errors
@@ -56,9 +57,19 @@ export default class APIServer {
 
     private readonly SetMiddlewares = (): void => {
         this.app.use(express.json());
-        // this.app.use(cookieParser());
-        this.app.use(passport.initialize());
         this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(cookieParser(process.env.COOKIE_SIGNATURE));
+
+        // this.app.use(csurf({ 
+        //     cookie: {
+        //         path: '/',
+        //         httpOnly: true,
+        //         key: 'XSRF-Token',
+        //         secure: process.env.NODE_ENV === 'production',
+        //         signed: process.env.NODE_ENV === 'production',
+        //     } 
+        // }));
+        this.app.use(passport.initialize());
         // this.app.use(morgan(this.debugLevel, { stream: this.accessLogStream }));
 
         this.app.use('/api', this.router);  

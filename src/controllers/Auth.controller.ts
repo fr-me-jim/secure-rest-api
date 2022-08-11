@@ -92,8 +92,10 @@ export default class AuthController {
             if(!result) return res.sendStatus(500);
             
             const token = this.createNewJWTToken({ id: result!.id });
+            
+            return res.status(201).cookie('access_token', token, { httpOnly: true, secure: true, signed: true });
 
-            return res.send({ token }).status(201);
+            // return res.send({ token }).status(201);
         } catch (error: unknown) {
             next(error);
         }  
@@ -113,7 +115,8 @@ export default class AuthController {
 
             const token = this.createNewJWTToken({ id: (req.user! as User).id });
 
-            return res.send({ token }).status(200);
+            return res.status(200).cookie('access_token', token, { httpOnly: true, secure: true, signed: true });
+            // return res.send({ token }).status(200);
         } catch (error: unknown) {  
             next(error);
         }
@@ -124,7 +127,13 @@ export default class AuthController {
      */
      public async logout(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         logger.info("In GET - /logout");
-        return await this.addToBlacklist(req, res, next);
-    }
+
+        try {
+            await this.addToBlacklist(req, res, next);
+            return res.clearCookie('access_token').end();
+        } catch (error: unknown) {
+            next(error)
+        }
+    };
         
 };
