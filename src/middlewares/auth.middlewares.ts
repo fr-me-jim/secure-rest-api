@@ -7,9 +7,9 @@ import Token from "../models/Token.model";
 // check if token is blacklisted - middleware 
 export const isTokenBlacklisted = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try { 
-    if (!req.headers.authorization || !req.user) return res.sendStatus(401);
+    if (!req.signedCookies['access_token'] || !req.user) return res.sendStatus(401);
     
-    const token: string | undefined = req.headers.authorization?.split(' ')[1];
+    const token: string = req.signedCookies['access_token'];
     const blacklisted = await Token.findOne({ where: { token }, raw: true });
     if (blacklisted) return res.sendStatus(401);
     
