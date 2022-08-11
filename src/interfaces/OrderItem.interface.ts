@@ -16,7 +16,7 @@ export interface IOrderItemAttributes {
     id: string;
     order_id: string;
     product_id: string;
-    quantity: number;
+    amount: number;
     price: number;
     
     createdAt?: Date;
@@ -28,26 +28,26 @@ export interface IOrderItemOuput extends Required<IOrderItemAttributes> {};
 
 export type OrderItemRequest = {
     product_id: string;
-    quantity: number;
+    amount: number;
     price: number;  
 };
 
 export type OrderItemCreate = {
     order_id: string;
     product_id: string;
-    quantity: number;
+    amount: number;
     price: number;  
 };
 
 export type OrderItemEdit = {
     product_id?: string;
-    quantity?: number;
+    amount?: number;
     price?: number; 
 };
 
 export type OrderItemSearch = {
     order_id?: string;
     product_id?: string;
-    quantity?: number;
+    amount?: number;
     price?: number; 
 };

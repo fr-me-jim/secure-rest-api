@@ -19,7 +19,7 @@ class OrderItem extends Model<IOrderItemAttributes, IOrderItemInput> {
     declare id: string;
     declare order_id: string;
     declare product_id: string;
-    declare quantity: number;
+    declare amount: number;
     declare price: number;
 
     declare readonly createdAt?: Date;
@@ -42,7 +42,7 @@ OrderItem.init({
         },
         unique: "uniqueOrderProduct"
     },
-    quantity: {
+    amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {

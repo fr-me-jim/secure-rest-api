@@ -12,7 +12,7 @@ export const isOrderItemRequest = (instance: OrderItemCreate): instance is Order
     const mandatoryTemplate: number = 3;
     const template: OrderItemRequest = {
         product_id: "templateString",
-        quantity: 10,
+        amount: 10,
         price: 10,  
     };
 
@@ -37,6 +37,11 @@ export const isOrderItemRequest = (instance: OrderItemCreate): instance is Order
             return true; // break loop
         }
 
+        if (key === "amount" && instance["amount"] <= 0) {
+            isTemplate = false;
+            return true; // break loop
+        }
+
         return false;
     });
 
@@ -52,7 +57,7 @@ export const isOrderItemCreate = (instance: OrderItemCreate): instance is OrderI
     const template: OrderItemCreate = {
         order_id: "templateString",
         product_id: "templateString",
-        quantity: 10,
+        amount: 10,
         price: 10,  
     };
 
@@ -82,6 +87,11 @@ export const isOrderItemCreate = (instance: OrderItemCreate): instance is OrderI
             return true; // break loop
         }
 
+        if (key === "amount" && instance["amount"] <= 0) {
+            isTemplate = false;
+            return true; // break loop
+        }
+
         return false;
     });
 
@@ -95,7 +105,7 @@ export const isOrderItemEdit = (instance: OrderItemCreate): instance is OrderIte
 
     const templateOptional: OrderItemEdit = {
         product_id: "templateString",
-        quantity: 10,
+        amount: 10,
         price: 10,  
     };
 
@@ -117,6 +127,11 @@ export const isOrderItemEdit = (instance: OrderItemCreate): instance is OrderIte
             return true; // break loop
         }
 
+        if (key === "amount" && instance["amount"] <= 0) {
+            isTemplate = false;
+            return true; // break loop
+        }
+
         return false;
     });
 
@@ -129,7 +144,7 @@ export const isOrderItemSearch = (instance: OrderItemCreate): instance is OrderI
     const templateOptional: OrderItemSearch = {
         order_id: "templateString",
         product_id: "templateString",
-        quantity: 10,
+        amount: 10,
         price: 10,  
     };
 
@@ -153,6 +168,11 @@ export const isOrderItemSearch = (instance: OrderItemCreate): instance is OrderI
         }
 
         if (key === "product_id" && !validator.isUUID(instance["product_id"])) {
+            isTemplate = false;
+            return true; // break loop
+        }
+
+        if (key === "amount" && instance["amount"] <= 0) {
             isTemplate = false;
             return true; // break loop
         }
