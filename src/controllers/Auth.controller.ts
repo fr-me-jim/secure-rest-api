@@ -60,7 +60,8 @@ export default class AuthController {
                 logger.error('GET /logout - Request ID param wrong type or missing!');
                 throw new TypeGuardError("User Login - Request ID param wrong type or missing!");
             };
-            const [, token]: string[] = req.headers.authorization!.split(' ');
+            
+            const token: string = req.signedCookies['access_token'];
             if ( !token || !validator.isJWT(token) ) {
                 logger.error('GET /logout - Request Token wrong type!');
                 throw new TypeGuardError("Logout User - Request Token wrong type!");
@@ -70,7 +71,7 @@ export default class AuthController {
             if (!result) return res.sendStatus(500);
 
             return res.sendStatus(200);
-        } catch (error: any) {
+        } catch (error: unknown) {
             next(error);
         }
     };
@@ -94,8 +95,6 @@ export default class AuthController {
             const token = this.createNewJWTToken({ id: result!.id });
             
             return res.status(201).cookie('access_token', token, { httpOnly: true, secure: true, signed: true }).end();
-
-            // return res.send({ token }).status(201);
         } catch (error: unknown) {
             next(error);
         }  
@@ -115,8 +114,12 @@ export default class AuthController {
 
             const token = this.createNewJWTToken({ id: (req.user! as User).id });
 
-            return res.status(200).cookie('access_token', token, { httpOnly: true, secure: true, signed: true }).end();
-            // return res.send({ token }).status(200);
+            return res.status(200).cookie('access_token', token, { 
+                secure: true, 
+                signed: true,
+                httpOnly: true, 
+                maxAge: 72 * 60
+            }).end();
         } catch (error: unknown) {  
             next(error);
         }
