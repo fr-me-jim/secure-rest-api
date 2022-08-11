@@ -132,11 +132,11 @@ export default class AuthController {
      /**
      * Logout
      */
-    public async logout(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    public readonly logout = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [GET] - /logout");
 
         try {
-            const id: string = (req.user! as User).id;
+            const id: string = req.user!.id;
             if (!id || !validator.isUUID(id)) {
                 logger.error('GET /logout - Request ID param wrong type or missing!');
                 throw new TypeGuardError("User Login - Request ID param wrong type or missing!");
