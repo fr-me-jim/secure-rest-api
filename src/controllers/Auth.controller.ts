@@ -54,6 +54,8 @@ export default class AuthController {
      * AddToBlacklist
      */
      public readonly addToBlacklist = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In AddToBlacklist - /logout");
+
         try {
             const id: string = (req.user! as User).id;
             if (!id || !validator.isUUID(id)) {
@@ -70,9 +72,8 @@ export default class AuthController {
             const result = await this.TokenRepository.createNewBlacklistedToken(token, id);
             if (!result) return res.sendStatus(500);
 
-            return res.sendStatus(200);
         } catch (error: unknown) {
-            console.error(error)
+            console.log(error)
             next(error);
         }
     };
@@ -134,12 +135,12 @@ export default class AuthController {
      /**
      * Logout
      */
-     public async logout(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    public async logout(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         logger.info("In GET - /logout");
 
         try {
             await this.addToBlacklist(req, res, next);
-            return res.clearCookie('access_token').end();
+            return res.status(200).clearCookie('access_token').end();
         } catch (error: unknown) {
             next(error)
         }

@@ -14,7 +14,7 @@ export const isTokenBlacklisted = async (req: Request, res: Response, next: Next
     if (blacklisted) return res.sendStatus(401);
     
     return next();
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.sendStatus(500);
     throw error;
   }
