@@ -33,7 +33,7 @@ export default class AuthController {
         this.jwtSecret = process.env.JWT_SECRET!;
         this.jwtOptions = {
             algorithm: (process.env.JWT_ALG! as Algorithm) || undefined,
-            expiresIn: parseInt(process.env.JWT_EXPIRATION! || "0") || undefined,
+            expiresIn: parseInt(process.env.JWT_EXPIRATION! || "0") || 5 * 60 * 60,
             issuer: process.env.JWT_ISSUER!,
             audience: process.env.JWT_AUDIENCE!
         };
@@ -72,6 +72,7 @@ export default class AuthController {
 
             return res.sendStatus(200);
         } catch (error: unknown) {
+            console.error(error)
             next(error);
         }
     };
@@ -94,7 +95,12 @@ export default class AuthController {
             
             const token = this.createNewJWTToken({ id: result!.id });
             
-            return res.status(201).cookie('access_token', token, { httpOnly: true, secure: true, signed: true }).end();
+            return res.status(201).cookie('access_token', token, { 
+                secure: true, 
+                signed: true,
+                httpOnly: true, 
+                maxAge: parseInt(process.env.JWT_EXPIRATION! || "0") || 5 * 60 * 60
+            }).end();
         } catch (error: unknown) {
             next(error);
         }  
@@ -118,7 +124,7 @@ export default class AuthController {
                 secure: true, 
                 signed: true,
                 httpOnly: true, 
-                maxAge: 72 * 60 * 60
+                maxAge: parseInt(process.env.JWT_EXPIRATION! || "0") || 5 * 60 * 60
             }).end();
         } catch (error: unknown) {  
             next(error);
