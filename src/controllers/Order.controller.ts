@@ -84,10 +84,11 @@ class OrderController {
 
             const order = await this.OrdersRepository.getOrderById(id, req.user!.id!);
             if (!order) return res.sendStatus(404);
+            // order.get()
 
             const orderItems = await this.OrderItemRepository.getOrderItemsByOrderId( order.id );
 
-            return res.status(200).send({ ...order.get(), items: orderItems });
+            return res.status(200).send({ ...order, items: orderItems });
         } catch (error: unknown) {
             next(error);
         }
