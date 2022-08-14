@@ -92,8 +92,9 @@ export default class AuthController {
             };
 
             const token = this.createNewJWTToken({ id: (req.user! as User).id });
+            const { password, ...user } = req.user;
 
-            return res.status(200).cookie('access_token', token, { 
+            return res.status(200).send(user).cookie('access_token', token, { 
                 secure: true, 
                 signed: true,
                 httpOnly: true, 

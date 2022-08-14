@@ -5,9 +5,7 @@ import User from '../models/User.model';
 
 declare global {
   namespace Express {
-    interface User {
-      id: string;
-    }
+    interface User extends IUserAttributes {}
   }
 }
 
