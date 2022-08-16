@@ -19,7 +19,7 @@ services:
         - ./nginx.conf:/etc/nginx/nginx.conf:ro
         - /etc/letsencrypt:/etc/letsencrypt:ro
         - /var/log/nginx:/var/log/nginx
-        - /var/www/html:/var/www/html
+        - /home/tfm-server/secure-rest-api-frontend:/var/www/html
 
       depends_on:
         - tfm-backend
