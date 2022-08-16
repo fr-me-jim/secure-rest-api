@@ -56,24 +56,25 @@ export default class AuthController {
      public readonly registerUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         logger.info("In [POST] - /signin");
         try {
-            const user: UserCreate = req.body;
-            if(!user || !isUserCreate(user) || user.password.length < 20) {
+            const newUser: UserCreate = req.body;
+            if(!newUser || !isUserCreate(newUser) || newUser.password.length < 20) {
                 logger.error('POST /signin - Request body payload wrong type!');
                 throw new TypeGuardError("Register User - Request body payload wrong type!");
             };
-            sanitizeObject(user);
+            sanitizeObject(newUser);
 
-            const result = await this.UsersRepository.createNewUser(user);
+            const result = await this.UsersRepository.createNewUser(newUser);
             if(!result) return res.sendStatus(500);
             
             const token = this.createNewJWTToken({ id: result!.id });
+            const { password, ...user } = result.get();
             
             return res.status(201).cookie('access_token', token, { 
                 secure: true, 
                 signed: true,
                 httpOnly: true, 
                 maxAge: parseInt(process.env.JWT_EXPIRATION! || "0") || 5 * 60 * 60 * 1000
-            }).end();
+            }).send(user).end();
         } catch (error: unknown) {
             next(error);
         }  
