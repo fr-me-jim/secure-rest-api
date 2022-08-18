@@ -71,6 +71,10 @@ export default class APIServer {
             } 
         }));
         this.app.use(passport.initialize());
+        this.app.all('*', function (req: Request, res: Response) {
+            res.cookie('XSRF-TOKEN', req.csrfToken());
+            // res.render('index')
+        })
         // this.app.use(morgan(this.debugLevel, { stream: this.accessLogStream }));
 
         this.app.use('/api', this.router);  
