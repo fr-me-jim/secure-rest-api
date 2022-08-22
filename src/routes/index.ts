@@ -94,7 +94,7 @@ export default class RouterAPI {
                 secure: process.env.NODE_ENV === 'production',
                 signed: process.env.NODE_ENV === 'production',
             } 
-        })
+        });
         this.middlewares = [ 
             csrfProtection,
             this.strategy.authenticate('jwt', { session: false }), 

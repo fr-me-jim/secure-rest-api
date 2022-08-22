@@ -1,4 +1,3 @@
-// import csurf from 'csurf';
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import express, { Router } from 'express';
@@ -59,17 +58,6 @@ export default class APIServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(cookieParser(process.env.COOKIE_SIGNATURE));
-
-        // this.app.use(csurf({ 
-        //     cookie: {
-        //         path: '/',
-        //         httpOnly: true,
-        //         key: 'XSRF-Token',
-        //         domain: 'tfm.jediupc.com',
-        //         secure: process.env.NODE_ENV === 'production',
-        //         signed: process.env.NODE_ENV === 'production',
-        //     } 
-        // }));
         this.app.use(passport.initialize());
         // this.app.use(morgan(this.debugLevel, { stream: this.accessLogStream }));
 
@@ -79,7 +67,7 @@ export default class APIServer {
 
     private ExpressErrorHandler(error: unknown, _req: Request, res: Response, _next: NextFunction): Response {
         logger.error((error as Error).message);
-        console.log(typeof error)
+        console.log((error as Error).message)
         if (error instanceof TypeGuardError) return res.sendStatus(400);
         if (error instanceof ValidationError) return res.sendStatus(400);
         if (error instanceof ValidationErrorItem) return res.sendStatus(400);

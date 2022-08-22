@@ -22,7 +22,7 @@ export default class AuthRouter {
 
     public readonly SetRoutes = (): Router => {
         this.router.get('/csrf', (req: Request, res: Response) => {
-            res.cookie('XSRF-TOKEN', req.csrfToken()).end();
+            res.status(200).cookie('XSRF-TOKEN', req.csrfToken()).end();
         });
         this.router.post("/signin", this.routerAPI.middlewares[0], this.authController.registerUser);
         this.router.get("/logout", ...this.routerAPI.middlewares, this.authController.logout);
