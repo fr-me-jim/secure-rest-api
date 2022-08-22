@@ -1,4 +1,3 @@
-import csurf from 'csurf';
 import multer, { Multer } from "multer";
 import { Router } from "express";
 import passport, { PassportStatic } from 'passport';
@@ -84,19 +83,7 @@ export default class RouterAPI {
         this.OrderItemRepository = new OrderItemRepositories();
 
         this.strategy = new PassportConfig(passport, this.UserRepository).SetStrategy();
-
-        const csrfProtection = csurf({ 
-            cookie: {
-                path: '/',
-                httpOnly: true,
-                key: 'XSRF-TOKEN',
-                domain: 'tfm.jediupc.com',
-                secure: process.env.NODE_ENV === 'production',
-                signed: process.env.NODE_ENV === 'production',
-            } 
-        });
         this.middlewares = [ 
-            csrfProtection,
             this.strategy.authenticate('jwt', { session: false }), 
             isTokenBlacklisted 
         ];

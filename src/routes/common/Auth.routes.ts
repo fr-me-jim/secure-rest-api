@@ -24,9 +24,9 @@ export default class AuthRouter {
         this.router.get('/csrf', (req: Request, res: Response) => {
             res.status(200).cookie('XSRF-TOKEN', req.csrfToken()).end();
         });
-        this.router.post("/signin", this.routerAPI.middlewares[0], this.authController.registerUser);
+        this.router.post("/signin", this.authController.registerUser);
         this.router.get("/logout", ...this.routerAPI.middlewares, this.authController.logout);
-        this.router.post("/login", this.routerAPI.middlewares[0], this.routerAPI.strategy.authenticate('local', { session: false }), this.authController.login);
+        this.router.post("/login", this.routerAPI.strategy.authenticate('local', { session: false }), this.authController.login);
 
         return this.router;
     };
