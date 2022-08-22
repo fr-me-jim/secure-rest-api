@@ -1,4 +1,4 @@
-import csurf from 'csurf';
+// import csurf from 'csurf';
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import express, { Router } from 'express';
@@ -60,21 +60,17 @@ export default class APIServer {
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(cookieParser(process.env.COOKIE_SIGNATURE));
 
-        this.app.use(csurf({ 
-            cookie: {
-                path: '/',
-                httpOnly: true,
-                key: 'XSRF-Token',
-                domain: 'tfm.jediupc.com',
-                secure: process.env.NODE_ENV === 'production',
-                signed: process.env.NODE_ENV === 'production',
-            } 
-        }));
+        // this.app.use(csurf({ 
+        //     cookie: {
+        //         path: '/',
+        //         httpOnly: true,
+        //         key: 'XSRF-Token',
+        //         domain: 'tfm.jediupc.com',
+        //         secure: process.env.NODE_ENV === 'production',
+        //         signed: process.env.NODE_ENV === 'production',
+        //     } 
+        // }));
         this.app.use(passport.initialize());
-        this.app.all('*', function (req: Request, res: Response) {
-            res.cookie('XSRF-TOKEN', req.csrfToken()).end();
-            // res.render('index')
-        })
         // this.app.use(morgan(this.debugLevel, { stream: this.accessLogStream }));
 
         this.app.use('/api', this.router);  
