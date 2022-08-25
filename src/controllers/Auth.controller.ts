@@ -51,6 +51,18 @@ export default class AuthController {
     };
 
     /**
+     * getCSRFToken
+     */
+     public readonly getCSRFToken = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        logger.info("In [GET] - /csrf");
+        try {
+            return res.status(200).send({ csrf: req.csrfToken() });
+        } catch (error: unknown) {
+            next(error);
+        }  
+    };
+
+    /**
      * RegisterUser
      */
      public readonly registerUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {

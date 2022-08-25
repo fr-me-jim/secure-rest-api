@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 
 // main RouterAPI
 import RouterAPI from "../";
@@ -21,9 +21,7 @@ export default class AuthRouter {
     };
 
     public readonly SetRoutes = (): Router => {
-        this.router.get('/csrf', (req: Request, res: Response) => {
-            res.status(200).cookie('XSRF-TOKEN', req.csrfToken()).end();
-        });
+        this.router.get('/csrf', this.authController.getCSRFToken);
         this.router.post("/signin", this.authController.registerUser);
         this.router.get("/logout", ...this.routerAPI.middlewares, this.authController.logout);
         this.router.post("/login", this.routerAPI.strategy.authenticate('local', { session: false }), this.authController.login);
