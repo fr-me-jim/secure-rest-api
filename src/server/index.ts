@@ -78,7 +78,6 @@ export default class APIServer {
 
     private ExpressErrorHandler(error: unknown, _req: Request, res: Response, _next: NextFunction): Response {
         logger.error((error as Error).message);
-        console.log((error as Error).message)
         if (error instanceof TypeGuardError) return res.sendStatus(400);
         if (error instanceof ValidationError) return res.sendStatus(400);
         if (error instanceof ValidationErrorItem) return res.sendStatus(400);
