@@ -59,14 +59,6 @@ export default class APIServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(cookieParser(process.env.COOKIE_SIGNATURE));
-        console.log({
-            path: '/',
-            httpOnly: true,
-            key: 'XSRF-TOKEN',
-            domain: 'tfm.jediupc.com',
-            secure: process.env.NODE_ENV === 'production',
-            signed: process.env.NODE_ENV === 'production',
-        })
         this.app.use(csurf({ 
             cookie: {
                 path: '/',
